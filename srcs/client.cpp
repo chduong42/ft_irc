@@ -6,7 +6,7 @@
 /*   By: chduong <chduong@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 03:55:27 by chduong           #+#    #+#             */
-/*   Updated: 2022/11/10 04:44:31 by chduong          ###   ########.fr       */
+/*   Updated: 2022/11/14 15:44:58 by chduong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int main()
     struct sockaddr_in addr;
     struct sockaddr addrConnect;
     int nPort = 1234;
-    char * pszHost = "127.0.0.1";
+    const char *pszHost = "127.0.0.1";
 
 	hSocket = socket( PF_INET, SOCK_STREAM, 0 );
    /*  Liaison avec le port local (ici 0)  */
