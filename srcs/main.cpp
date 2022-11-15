@@ -6,20 +6,44 @@
 /*   By: chduong <chduong@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:03:13 by chduong           #+#    #+#             */
-/*   Updated: 2022/11/10 01:59:31 by chduong          ###   ########.fr       */
+/*   Updated: 2022/11/15 19:51:32 by chduong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
+#include "Server.hpp"
 
- int	main(int argc, char **argv)
+int	check_port(char *port)
 {
-	if (argc > 1)
+	long l = strtol(s, &port, 10);
+	if (*port) {
+		// conversion failed because the input wasn't a number
+	}
+	else {
+		// use converted
+	}
+}
+
+int		main(int ac, char **av)
+{
+	if (ac != 3)
 	{
 		std::cout << "Usage: ./ircserv <port> <password>" << std::endl;
-		exit(EXIT_FAILURE);
+		return (1);
 	}
-	while (42) {
+	try
+	{
+		Server	server(av[1], av[2]);
+		server.launch();
 	}
-	return (0);
+	catch(const std::invalid_argument &ex)
+	{
+		std::cout << "error in " << ex.what() << std::endl;
+		std::cout << "error in port" << std::endl; 
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+
+	return 0;
 }
