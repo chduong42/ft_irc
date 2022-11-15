@@ -1,12 +1,15 @@
 #include "Server.hpp"
+#include <cstring>
 
-Server::Server(const String &port, const String &pass)
+Server::Server(const std::string &port, const std::string &pass)
 	: _loop(1), _host("127.0.0.1"), _port(port), _password(pass)
 {
 	_sock = createSocket();
 }
 
-Server::~Server() {}
+Server::~Server()
+{
+}
 
 int		Server::createSocket()
 {
@@ -45,16 +48,44 @@ int		Server::createSocket()
 
 void	Server::newClient()
 {
-	int	new_fd = accept(_sock, NULL, NULL);
-
+	int new_fd;
 	std::cout << "POLLiN events" << std::endl;
+	new_fd = accept(_sock, NULL, NULL);
 	if (new_fd < 0)
+	{
 		std::cout << " normal" << std::endl;
+	}
 	else
-		std::cout << "connection established: " << new_fd << std::endl;
+		std::cout << "connection established" << new_fd << std::endl;
 
 	pollfd pollfd = {new_fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
+}
+
+String	Server::readMsg(int fd)
+{
+
+	String	msg;
+	char	buff[256];
+	bzero(buff, 256);
+	while (!std::strstr(buff, "\r\n"))
+	{
+		bzero(buff, 256);
+		if (recv(fd, buff, 256, 0) < 0)
+		{
+			if (errno != EWOULDBLOCK)
+				throw std::runtime_error("error in recv");
+		}
+		msg = buff;
+	}
+	std::cout << "test" << std::endl;
+	return msg;
+}
+void	Server::handleMessage(int fd)
+{
+		
+		std::cout << readMsg(fd) << std::endl;
+
 }
 
 void	Server::launch()
@@ -62,11 +93,14 @@ void	Server::launch()
 	pollfd fd_server = {_sock, POLLIN, 0};
 	_pollfds.push_back(fd_server);
 	
+	
 	std::cout << _pollfds.size() << std::endl;
 	while (_loop)
 	{
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
+		{
 			throw std::runtime_error("Error while polling");
+		}
 
 		for (unsigned int i = 0; i < _pollfds.size(); i++)
 		{
@@ -80,11 +114,14 @@ void	Server::launch()
 			if ((_pollfds[i].revents  & POLLIN ) == POLLIN)
 			{
 				if (_pollfds[i].fd == _sock)
+				{
 					newClient();
-				break;
+					break;
+				}
 			}
 
 			//get deconnection ''          ''   == POLLOUT
+			handleMessage(_pollfds[i].fd);
 		}
 		
 		//read and handle messages

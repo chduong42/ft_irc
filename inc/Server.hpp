@@ -43,6 +43,8 @@ class Server {
 		int		createSocket();
 		void	launch();
 		void	newClient();
+		void	handleMessage(int fd);
+		String	readMsg(int fd);
 };
 
 #endif
