@@ -23,10 +23,8 @@ int		Server::createSocket()
 	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) 
 		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
 
-	struct sockaddr_in serv_address = {};
-
+	SOCKADDR_IN serv_address = {};
 	bzero((char *) &serv_address, sizeof(serv_address));
-
 	serv_address.sin_family = AF_INET;
 	serv_address.sin_addr.s_addr = INADDR_ANY;
 	serv_address.sin_port = htons(_port);
@@ -45,9 +43,7 @@ void	Server::newClient()
 	std::cout << "POLLiN events" << std::endl;
 	new_fd = accept(_sock, NULL, NULL);
 	if (new_fd < 0)
-	{
 		std::cout << " normal" << std::endl;
-	}
 	else
 		std::cout << "connection established" << new_fd << std::endl;
 
@@ -86,9 +82,7 @@ void	Server::launch()
 	while (_loop)
 	{
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
-		{
 			throw std::runtime_error("Error while polling");
-		}
 
 		for (unsigned int i = 0; i < _pollfds.size(); i++)
 		{
