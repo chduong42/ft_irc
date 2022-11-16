@@ -29,15 +29,15 @@ typedef std::string String;
 class Server {
 	private:
 		int						_loop;
-		SOCKET					_sock;
-		SOCKADDR_IN				_sin;
+		int						_port;
 		String					_host;
-		String					_port;
 		String					_password;
 		std::vector<pollfd>		_pollfds;
+		SOCKET					_sock;
+		// SOCKADDR_IN			_sin;
 
 	public:
-		Server(const String &port, const String &password);
+		Server(int port, const String &password);
 		~Server();
 
 		int		createSocket();

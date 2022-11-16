@@ -1,15 +1,12 @@
 #include "Server.hpp"
 #include <cstring>
 
-Server::Server(const std::string &port, const std::string &pass)
-	: _loop(1), _host("127.0.0.1"), _port(port), _password(pass)
-{
+Server::Server(int port, const String &pass)
+	: _loop(1), _port(port), _host("127.0.0.1"), _password(pass) {
 	_sock = createSocket();
 }
 
-Server::~Server()
-{
-}
+Server::~Server() {}
 
 int		Server::createSocket()
 {
@@ -22,13 +19,9 @@ int		Server::createSocket()
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)))
 		throw std::runtime_error("Error while setting socket options.");
 
-	/*
-	 * Set the socket to NON-BLOCKING mode
-	 */
+	/** Set the socket to NON-BLOCKING mode */
 	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) 
-	{
 		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
-	}
 
 	struct sockaddr_in serv_address = {};
 
@@ -36,7 +29,7 @@ int		Server::createSocket()
 
 	serv_address.sin_family = AF_INET;
 	serv_address.sin_addr.s_addr = INADDR_ANY;
-	serv_address.sin_port = htons(std::atoi(_port.c_str()));
+	serv_address.sin_port = htons(_port);
 
 	// Bind the socket to the current IP address on selected port
 	if (bind(sockfd, (struct sockaddr *) &serv_address, sizeof(serv_address)) < 0)
@@ -62,9 +55,7 @@ void	Server::newClient()
 	_pollfds.push_back(pollfd);
 }
 
-String	Server::readMsg(int fd)
-{
-
+String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
@@ -81,18 +72,15 @@ String	Server::readMsg(int fd)
 	std::cout << "test" << std::endl;
 	return msg;
 }
-void	Server::handleMessage(int fd)
-{
-		
-		std::cout << readMsg(fd) << std::endl;
 
+void	Server::handleMessage(int fd) {
+	std::cout << readMsg(fd) << std::endl;
 }
 
 void	Server::launch()
 {
 	pollfd fd_server = {_sock, POLLIN, 0};
 	_pollfds.push_back(fd_server);
-	
 	
 	std::cout << _pollfds.size() << std::endl;
 	while (_loop)
@@ -109,7 +97,7 @@ void	Server::launch()
 				//std::cout << "okok" << std::endl;
 				continue ;
 			}
-		//	std::cout << "test" << std::endl;
+			//	std::cout << "test" << std::endl;
 			//get connection pollfds[i].revents == POLLIN
 			if ((_pollfds[i].revents  & POLLIN ) == POLLIN)
 			{
