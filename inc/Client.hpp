@@ -16,7 +16,7 @@ class Client {
 		String		_message;
 		
 	public:
-		Client(int _sockfd, String nickname, String username);
+		Client(int _sockfd, SOCKADDR_IN &addr);
 		~Client();
 };
 
