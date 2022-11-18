@@ -14,13 +14,19 @@ class Client {
 		String		_username;
 		String		_realname;
 		String		_hostname;
-		String		_message;
+		String		_msg;
 		
 	public:
 		Client(int _sockfd, String nickname, String username);
 		~Client();
-		void	reply(String msg);
-		void	welcome();
+
+		void		reply(String msg);
+		void		welcome();
+		String		getNickname() const;
+		String		getUsername() const;
+		String		getRealname() const;
+		String		getHostname() const;
+		String		getMsg() const;
 };
 
 #endif
