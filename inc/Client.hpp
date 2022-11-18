@@ -1,6 +1,7 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 #include <iostream>
+# include <sys/socket.h>
 
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
@@ -9,15 +10,17 @@ typedef std::string String;
 class Client {
 	private:
 		int			_sockfd;
-		String		_host;
 		String		_nickname;
 		String		_username;
 		String		_realname;
+		String		_hostname;
 		String		_message;
 		
 	public:
-		Client(int _sockfd, SOCKADDR_IN &addr);
+		Client(int _sockfd, String nickname, String username);
 		~Client();
+		void	reply(String msg);
+		void	welcome();
 };
 
 #endif
