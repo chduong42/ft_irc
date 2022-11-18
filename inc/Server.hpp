@@ -16,6 +16,7 @@
 # include <strings.h>
 # include <iostream>
 # include <cerrno>
+# include "Client.hpp"
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
@@ -32,6 +33,7 @@ class Server {
 		String					_host;
 		String					_password;
 		std::vector<pollfd>		_pollfds;
+		std::vector<Client>		_clients;
 		int						_sock;
 		// SOCKADDR_IN			_sin;
 

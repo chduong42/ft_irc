@@ -7,11 +7,11 @@ bool	g_interrupt = false;
 
 //	Gestion du CTRL+C
 void	sigintHandler(int const sig) {
-	if (sig == SIGINT) 
-	{
-		g_interrupt = true;
-		std::cout << "\b\b";
-	}
+	if (!sig)
+		;
+	g_interrupt = true;
+	std::cout << "\b\b";
+	exit(0);
 }
 
 //	Verification et recuperation du port
