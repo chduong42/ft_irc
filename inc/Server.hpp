@@ -16,6 +16,8 @@
 # include <strings.h>
 # include <iostream>
 # include <cerrno>
+# include <sstream>
+
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
@@ -44,7 +46,7 @@ class Server {
 		void	launch();
 		void	newClient();
 		void	handleMessage(int fd);
-		String	readMsg(int fd);
+		std::vector<String>	readMsg(int fd);
 };
 
 #endif

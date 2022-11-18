@@ -46,14 +46,15 @@ void	Server::newClient()
 		std::cout << " normal" << std::endl;
 	else
 		std::cout << "connection established" << new_fd << std::endl;
-
 	pollfd pollfd = {new_fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
 }
 
-String	Server::readMsg(int fd) {
+std::vector<String>	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
+	std::vector<String> inf;
+	String tmp;
 	bzero(buff, 256);
 	while (!std::strstr(buff, "\r\n"))
 	{
@@ -65,20 +66,27 @@ String	Server::readMsg(int fd) {
 		}
 		msg = buff;
 	}
-	std::cout << "test" << std::endl;
-	return msg;
+	std::stringstream str(msg);
+	int i = 0;
+	while (std::getline(str, tmp, ' ') || std::getline(str, tmp, '\n')) {
+		inf.push_back(tmp);
+		std::cout << inf.at(i++) << std::endl;
+	}
+	return inf;
 }
 
 void	Server::handleMessage(int fd) {
-	std::cout << readMsg(fd) << std::endl;
+	std::vector<String> tmp = readMsg(fd);
 }
+
+
 
 void	Server::launch()
 {
 	pollfd fd_server = {_sock, POLLIN, 0};
 	_pollfds.push_back(fd_server);
 	
-	std::cout << _pollfds.size() << std::endl;
+	std::cout << "size struct pollfds " << _pollfds.size() << std::endl;
 	while (_loop)
 	{
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
@@ -87,12 +95,7 @@ void	Server::launch()
 		for (unsigned int i = 0; i < _pollfds.size(); i++)
 		{
 			if (_pollfds[i].revents == 0)
-			{
-				//std::cout << "okok" << std::endl;
 				continue ;
-			}
-			//	std::cout << "test" << std::endl;
-			//get connection pollfds[i].revents == POLLIN
 			if ((_pollfds[i].revents  & POLLIN ) == POLLIN)
 			{
 				if (_pollfds[i].fd == _sock)
@@ -105,7 +108,6 @@ void	Server::launch()
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
 		}
-		
 		//read and handle messages
 	}
 }
