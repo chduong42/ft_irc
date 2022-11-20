@@ -17,13 +17,12 @@
 # include <iostream>
 # include <cerrno>
 # include <sstream>
-
+# include "Client.hpp"
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
 #define closesocket(param) close(param)
 
-typedef int SOCKET;
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef std::string String;
@@ -35,18 +34,24 @@ class Server {
 		String					_host;
 		String					_password;
 		std::vector<pollfd>		_pollfds;
-		SOCKET					_sock;
+		std::vector<Client>		_clients;
+		int						_sock;
 		// SOCKADDR_IN			_sin;
 
 	public:
 		Server(int port, const String &password);
 		~Server();
 
-		int		createSocket();
-		void	launch();
-		void	newClient();
-		void	handleMessage(int fd);
-		std::vector<String>	readMsg(int fd);
+		int			createSocket();
+		void		launch();
+		void		newClient();
+		void		handleMessage(int fd);
+		String		readMsg(int fd);
+		std::vector<String>	infClient(String msg);
+
+
+		// COMMANDE IRC
+		
 };
 
 #endif

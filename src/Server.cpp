@@ -40,21 +40,26 @@ int		Server::createSocket()
 void	Server::newClient()
 {
 	int new_fd;
-	std::cout << "POLLiN events" << std::endl;
-	new_fd = accept(_sock, NULL, NULL);
+	sockaddr_in s_address = {};
+	socklen_t s_size = sizeof(s_address);
+
+	new_fd = accept(_sock, (sockaddr *) &s_address, &s_size);
 	if (new_fd < 0)
-		std::cout << " normal" << std::endl;
-	else
-		std::cout << "connection established" << new_fd << std::endl;
+		throw std::runtime_error("Error while accepting new client.");
+	std::cout << "POLLiN events" << std::endl;
+	//new_fd = accept(_sock, NULL, NULL);
+	//if (new_fd < 0)
+	//	std::cout << " normal" << std::endl;
+	//else
+//		std::cout << "connection established" << new_fd << std::endl;
+
 	pollfd pollfd = {new_fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
 }
 
-std::vector<String>	Server::readMsg(int fd) {
+String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
-	std::vector<String> inf;
-	String tmp;
 	bzero(buff, 256);
 	while (!std::strstr(buff, "\r\n"))
 	{
@@ -66,9 +71,16 @@ std::vector<String>	Server::readMsg(int fd) {
 		}
 		msg = buff;
 	}
+	
+	return msg;
+}
+
+std::vector<String>	Server::infClient(String msg) {
+	std::vector<String> inf;
+	String tmp;
 	std::stringstream str(msg);
 	int i = 0;
-	while (std::getline(str, tmp, ' ') || std::getline(str, tmp, '\n')) {
+	while (std::getline(str, tmp, '\n')) {
 		inf.push_back(tmp);
 		std::cout << inf.at(i++) << std::endl;
 	}
@@ -76,7 +88,8 @@ std::vector<String>	Server::readMsg(int fd) {
 }
 
 void	Server::handleMessage(int fd) {
-	std::vector<String> tmp = readMsg(fd);
+	String	tmp = readMsg(fd);
+	infClient(tmp);
 }
 
 
