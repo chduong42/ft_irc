@@ -17,10 +17,12 @@ class Client {
 		String		_message;
 		
 	public:
-		Client(int _sockfd, String nickname, String username);
+		Client(int fd, String host);
 		~Client();
 		void	reply(String msg);
 		void	welcome();
+		int		getFd();
+		void	debug();
 };
 
 #endif
