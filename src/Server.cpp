@@ -75,7 +75,7 @@ String	Server::readMsg(int fd) {
 	return msg;
 }
 
-std::vector<String>	Server::infClient(String msg) {
+std::vector<String>	Server::splitMsg(String msg) {
 	std::vector<String> inf;
 	String tmp;
 	std::stringstream str(msg);
@@ -89,29 +89,23 @@ std::vector<String>	Server::infClient(String msg) {
 
 void	Server::handleMessage(int fd) {
 	String	str = readMsg(fd);
-	this->_inf = infClient(str);
-	return ;
-}
-
-void	Server::test(int fd) {
-	if (this->_inf.empty())
-		return ;
+	this->_inf = splitMsg(str);
 	Client cl = findClient(fd);
 	for (std::vector<String>::iterator it = this->_inf.begin(); it != this->_inf.end(); it++)
-		callClient(*it, cl);
+		parseClient(*it, cl);
 	return ;
 }
 
-void	Server::callClient(String str, Client cl) {
+void	Server::parseClient(String str, Client cl) {
 	String tmp;
-	std::vector<String>	pass;
+	std::vector<String>	arg;
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
-	pass.push_back(tmp);
+	arg.push_back(tmp);
 	std::cout << tmp << std::endl;
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
-	int		(Server::*monpointeur[3])(std::vector<String> pass, Client cl) = {
+	int		(Server::*ptr[3])(std::vector<String> pass, Client cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdUser,
@@ -122,8 +116,8 @@ void	Server::callClient(String str, Client cl) {
 	if (tmp == cmds[i])
 	{
 		std::getline(ss, tmp, '\0');
-		pass.push_back(tmp);
-		(this->*monpointeur[i])(pass, cl);
+		arg.push_back(tmp);
+		(this->*ptr[i])(arg, cl);
 	}
 	else
 		std::cout << "on gere pas ca" << std::endl;
@@ -159,7 +153,7 @@ void	Server::launch()
 
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
-			test(_pollfds[i].fd);
+			//test(_pollfds[i].fd);
 		}
 		//read and handle messages
 	}
