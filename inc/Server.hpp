@@ -43,17 +43,18 @@ class Server {
 		Server(int port, const String &password);
 		~Server();
 
-		int			createSocket();
-		void		launch();
-		void		newClient();
-		void		handleMessage(int fd);
-		String		readMsg(int fd);
-		void		test();
-		void		callClient(String str);
-		std::vector<String>	infClient(String msg);
-		Client		findClient(int fd);
+		int						createSocket();
+		void					launch();
+		void					newClient();
+		void					handleMessage(int fd);
+		String					readMsg(int fd);
+		void					test();
+		void					callClient(String str);
+		std::vector<String>		infClient(String msg);
+		Client					findClient(int fd);
 
 		// COMMANDE IRC
+
 		
 };
 

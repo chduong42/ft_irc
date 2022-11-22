@@ -53,3 +53,24 @@ String  Client::getHostname() const {
 String  Client::getMsg() const {
     return _msg;
 }
+
+void  Client::setNickname(String newName) {
+    _nickname = newName;
+}
+
+void  Client::setUsername(String newName) {
+    _username = newName;
+}
+
+void  Client::setRealname(String newName) {
+    _realname = newName;
+}
+
+void  Client::setHostname(String newName) {
+    _hostname = newName;
+}
+
+void  Client::setMsg(String newMsg) {
+    _msg = newMsg;
+}
+
