@@ -62,6 +62,7 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
+
 	while (!std::strstr(buff, "\r\n"))
 	{
 		bzero(buff, 256);
@@ -75,28 +76,27 @@ String	Server::readMsg(int fd) {
 	return msg;
 }
 
-std::vector<String>	Server::splitMsg(String msg) {
-	std::vector<String> inf;
-	String tmp;
-	std::stringstream str(msg);
-	int i = 0;
-	while (std::getline(str, tmp, '\n')) {
-		inf.push_back(tmp);
-		std::cout << inf.at(i++) << std::endl;
-	}
-	return inf;
-}
-
 void	Server::handleMessage(int fd) {
-	String	str = readMsg(fd);
-	this->_inf = splitMsg(str);
-	Client cl = findClient(fd);
-	for (std::vector<String>::iterator it = this->_inf.begin(); it != this->_inf.end(); it++)
-		parseClient(*it, cl);
+	this->_cmd = splitCmd(readMsg(fd));
+	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
+		parseCmd(*it, findClient(fd));
 	return ;
 }
 
-void	Server::parseMsg(String str, Client cl) {
+std::vector<String>	Server::splitCmd(String msg) {
+	std::vector<String> cmd;
+	std::stringstream str(msg);
+	String tmp;
+	int i = 0;
+
+	while (std::getline(str, tmp, '\n')) {
+		cmd.push_back(tmp);
+		std::cout << cmd.at(i++) << std::endl;
+	}
+	return cmd;
+}
+
+void	Server::parseCmd(String str, Client cl) {
 	String tmp;
 	std::vector<String>	arg;
 	std::stringstream ss(str);

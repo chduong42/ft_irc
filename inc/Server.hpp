@@ -33,7 +33,7 @@ class Server {
 		int						_port;
 		String					_host;
 		String					_password;
-		std::vector<String>		_inf;
+		std::vector<String>		_cmd;
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
 		int						_sock;
@@ -42,22 +42,21 @@ class Server {
 		Server(int port, const String &password);
 		~Server();
 
-		int			createSocket();
-		void		launch();
-		void		newClient();
-		void		handleMessage(int fd);
-		void		parseMsg(String str, Client cl);
+		int						createSocket();
+		void					launch();
+		void					newClient();
+		void					handleMessage(int fd);
+		void					parseCmd(String str, Client cl);
 		
-		std::vector<String>	splitMsg(String msg);
-		String		readMsg(int fd);
-		Client		findClient(int fd);
+		std::vector<String>		splitCmd(String msg);
+		String					readMsg(int fd);
+		Client					findClient(int fd);
 
 		// COMMANDE IRC
-		int			cmdPass(std::vector<String> pass, Client cl);
-		int			cmdNick(std::vector<String> pass, Client cl);
-		int			cmdUser(std::vector<String> pass, Client cl);
+		int						cmdPass(std::vector<String> pass, Client cl);
+		int						cmdNick(std::vector<String> pass, Client cl);
+		int						cmdUser(std::vector<String> pass, Client cl);
 
-		
 };
 
 #endif
