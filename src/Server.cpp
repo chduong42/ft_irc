@@ -93,32 +93,41 @@ void	Server::handleMessage(int fd) {
 	return ;
 }
 
-void	Server::test() {
+void	Server::test(int fd) {
 	if (this->_inf.empty())
 		return ;
+	Client cl = findClient(fd);
 	for (std::vector<String>::iterator it = this->_inf.begin(); it != this->_inf.end(); it++)
-		callClient(*it);
+		callClient(*it, cl);
 	return ;
 }
 
-void	Server::callClient(String str) {
+void	Server::callClient(String str, Client cl) {
 	String tmp;
+	std::vector<String>	pass;
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
+	pass.push_back(tmp);
 	std::cout << tmp << std::endl;
-	/*std::string cmds[3] = {"PASS", "NICK", "USER"};
+	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
-	int		(Client::*monpointeur[3])(String str) = {
-			&Client::cmdPass,
-			&Client::cmdNick,
-			&Client::cmdUser,
+	int		(Server::*monpointeur[3])(std::vector<String> pass, Client cl) = {
+			&Server::cmdPass,
+			&Server::cmdNick,
+			&Server::cmdUser,
 	};
 	int i = 0;
 	while (tmp != cmds[i] && i <= 2)
 		i++;
 	if (tmp == cmds[i])
-		(_clients[0].*monpointeur[i])(str);
-	//throw cmds not found*/
+	{
+		std::getline(ss, tmp, '\0');
+		pass.push_back(tmp);
+		(this->*monpointeur[i])(pass, cl);
+	}
+	else
+		std::cout << "on gere pas ca" << std::endl;
+	
 }
 
 void	Server::launch()
@@ -150,6 +159,7 @@ void	Server::launch()
 
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
+			test(_pollfds[i].fd);
 		}
 		//read and handle messages
 	}
@@ -163,4 +173,26 @@ Client		Server::findClient(int fd)
 			return (_clients[i]);
 	}
 	throw(std::out_of_range("Error while searching for user"));
+}
+
+
+int Server::cmdPass(std::vector<String> pass, Client cl) {
+	std::cout << "Je parse PASS" << std::endl;
+	(void)cl;
+	(void)pass;
+	return 0;
+}
+
+int Server::cmdNick(std::vector<String> pass, Client cl) {
+	std::cout << "Je parse NICK" << std::endl;
+	(void)cl;
+	(void)pass;
+	return 0;
+}
+
+int Server::cmdUser(std::vector<String> pass, Client cl) {
+	std::cout << "Je parse USER" << std::endl;
+	(void)pass;
+	(void)cl;
+	return 0;
 }

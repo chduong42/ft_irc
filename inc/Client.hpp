@@ -32,6 +32,10 @@ class Client {
 		String		getHostname() const;
 		String		getMsg() const;
 
+		int cmdPass(String str);
+		int cmdNick(String str);
+		int cmdUser(String str);
+
 };
 
 #endif
