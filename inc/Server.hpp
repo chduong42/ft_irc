@@ -51,7 +51,7 @@ class Server {
 		void		test();
 		void		callClient(String str);
 		std::vector<String>	infClient(String msg);
-
+		Client		findClient(int fd);
 
 		// COMMANDE IRC
 		
