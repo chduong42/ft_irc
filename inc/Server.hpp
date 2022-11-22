@@ -16,6 +16,7 @@
 # include <strings.h>
 # include <iostream>
 # include <cerrno>
+# include <sstream>
 # include "Client.hpp"
 
 #define INVALID_SOCKET -1
@@ -32,10 +33,10 @@ class Server {
 		int						_port;
 		String					_host;
 		String					_password;
+		std::vector<String>		_inf;
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
 		int						_sock;
-		// SOCKADDR_IN			_sin;
 
 	public:
 		Server(int port, const String &password);
@@ -45,10 +46,18 @@ class Server {
 		void		launch();
 		void		newClient();
 		void		handleMessage(int fd);
+		void		test(int fd);
+		void		callClient(String str, Client cl);
+		
+		std::vector<String>	infClient(String msg);
 		String		readMsg(int fd);
 		Client		findClient(int fd);
 
 		// COMMANDE IRC
+		int			cmdPass(std::vector<String> pass, Client cl);
+		int			cmdNick(std::vector<String> pass, Client cl);
+		int			cmdUser(std::vector<String> pass, Client cl);
+
 		
 };
 
