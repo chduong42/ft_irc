@@ -1,13 +1,25 @@
 #include "Client.hpp"
 
-Client::Client(int sockfd, std::string nickname, std::string Clientname) 
-    : _sockfd(sockfd), _nickname(nickname), _hostname(Clientname)
+
+Client::Client(int sockfd, std::string hostname) 
+    : _sockfd(sockfd), _hostname(hostname)
 {
     
 }
 
-Client::~Client()
+
+Client::~Client() {}
+
+int     Client::getFd()
 {
+    return _sockfd;
+}
+
+void    Client::debug()
+{
+    std::cout << "[" << _sockfd << "]" << std::endl;
+    std::cout << "[" << _hostname << "]" << std::endl;
+    std::cout << "[" << _nickname<<"]" << std::endl;
 }
 
 void    Client::reply(String msg)
@@ -18,22 +30,26 @@ void    Client::reply(String msg)
         throw(std::out_of_range("Error while sending"));
 }
 
-void    Client::welcome()
-{
+void    Client::welcome() {
     reply("001 " + _nickname + " :Welcome " +_nickname +  " into our irc network");
 }
 
-/*int	Client::cmdNick(String str) {
-	std::vector<String> inf;
-	String tmp;
-	std::stringstream s(str);
-	int i = 0;
-	while (std::getline(s, tmp, ' ')) {
-		inf.push_back(tmp);
-	if (inf.at(0) != "NICK")
-		return -1;
-	else
-		_nickname = inf.at(1);
-	return 1;
+String  Client::getNickname() const {
+    return _nickname;
 }
-*/
+
+String  Client::getUsername() const {
+    return _username;
+}
+
+String  Client::getRealname() const {
+    return _realname;
+}
+
+String  Client::getHostname() const {
+    return _hostname;
+}
+
+String  Client::getMsg() const {
+    return _msg;
+}
