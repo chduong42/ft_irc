@@ -26,11 +26,18 @@ class Client {
 		void	welcome();
 		int		getFd();
 		void	debug();
+
 		String		getNickname() const;
 		String		getUsername() const;
 		String		getRealname() const;
 		String		getHostname() const;
 		String		getMsg() const;
+		
+		void		setNickname(String newName);
+		void		setUsername(String newName);
+		void		setRealname(String newName);
+		void		setHostname(String newName);
+		void		setMsg(String newMsg);
 
 		int cmdPass(String str);
 		int cmdNick(String str);

@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-bool	Server::NICK(Client &client, String const &params)
+bool	Server::setNickname(Client &client, String const &params)
 {
 	String	nickname;
 

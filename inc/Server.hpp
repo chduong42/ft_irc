@@ -43,6 +43,7 @@ class Server {
 		Server(int port, const String &password);
 		~Server();
 
+
 		int			createSocket();
 		void		launch();
 		void		newClient();
@@ -56,7 +57,9 @@ class Server {
 		int			cmdNick(std::vector<String> pass, Client cl);
 		int			cmdUser(std::vector<String> pass, Client cl);
 
+
 		// COMMANDE IRC
+
 		
 };
 
