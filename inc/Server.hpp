@@ -33,6 +33,7 @@ class Server {
 		int						_port;
 		String					_host;
 		String					_password;
+		std::vector<String>		_inf;
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
 		int						_sock;
@@ -47,6 +48,8 @@ class Server {
 		void		newClient();
 		void		handleMessage(int fd);
 		String		readMsg(int fd);
+		void		test();
+		void		callClient(String str);
 		std::vector<String>	infClient(String msg);
 
 

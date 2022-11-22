@@ -88,11 +88,38 @@ std::vector<String>	Server::infClient(String msg) {
 }
 
 void	Server::handleMessage(int fd) {
-	String	tmp = readMsg(fd);
-	infClient(tmp);
+	String	str = readMsg(fd);
+	this->_inf = infClient(str);
+	return ;
 }
 
+void	Server::test() {
+	if (this->_inf.empty())
+		return ;
+	for (std::vector<String>::iterator it = this->_inf.begin(); it != this->_inf.end(); it++)
+		callClient(*it);
+	return ;
+}
 
+void	Server::callClient(String str) {
+	String tmp;
+	std::stringstream ss(str);
+	std::getline(ss, tmp, ' ');
+	std::cout << tmp << std::endl;
+	/*std::string cmds[3] = {"PASS", "NICK", "USER"};
+
+	int		(Client::*monpointeur[3])(String str) = {
+			&Client::cmdPass,
+			&Client::cmdNick,
+			&Client::cmdUser,
+	};
+	int i = 0;
+	while (tmp != cmds[i] && i <= 2)
+		i++;
+	if (tmp == cmds[i])
+		(_clients[0].*monpointeur[i])(str);
+	//throw cmds not found*/
+}
 
 void	Server::launch()
 {

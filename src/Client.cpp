@@ -23,7 +23,7 @@ void    Client::welcome()
     reply("001 " + _nickname + " :Welcome " +_nickname +  " into our irc network");
 }
 
-int	Client::cmdNick(String str) {
+/*int	Client::cmdNick(String str) {
 	std::vector<String> inf;
 	String tmp;
 	std::stringstream s(str);
@@ -36,3 +36,4 @@ int	Client::cmdNick(String str) {
 		_nickname = inf.at(1);
 	return 1;
 }
+*/
