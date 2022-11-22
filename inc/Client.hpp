@@ -39,6 +39,10 @@ class Client {
 		void		setHostname(String newName);
 		void		setMsg(String newMsg);
 
+		int cmdPass(String str);
+		int cmdNick(String str);
+		int cmdUser(String str);
+
 };
 
 #endif
