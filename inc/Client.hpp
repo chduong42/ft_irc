@@ -17,16 +17,19 @@ class Client {
 		String		_msg;
 		
 	public:
-		Client(int _sockfd, String nickname, String username);
+		Client(int fd, String host);
 		~Client();
 
-		void		reply(String msg);
-		void		welcome();
+		void	reply(String msg);
+		void	welcome();
+		int		getFd();
+		void	debug();
 		String		getNickname() const;
 		String		getUsername() const;
 		String		getRealname() const;
 		String		getHostname() const;
 		String		getMsg() const;
+
 };
 
 #endif

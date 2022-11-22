@@ -1,11 +1,28 @@
 #include "Client.hpp"
 
-Client::Client(int sockfd, std::string nickname, std::string Clientname) 
-    : _sockfd(sockfd), _nickname(nickname), _hostname(Clientname) {}
+
+Client::Client(int sockfd, std::string hostname) 
+    : _sockfd(sockfd), _hostname(hostname)
+{
+    
+}
+
 
 Client::~Client() {}
 
-void    Client::reply(String msg) 
+int     Client::getFd()
+{
+    return _sockfd;
+}
+
+void    Client::debug()
+{
+    std::cout << "[" << _sockfd << "]" << std::endl;
+    std::cout << "[" << _hostname << "]" << std::endl;
+    std::cout << "[" << _nickname<<"]" << std::endl;
+}
+
+void    Client::reply(String msg)
 {
     String prefix = _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
     String paquet = ":" + prefix + " " + msg + "\r\n";

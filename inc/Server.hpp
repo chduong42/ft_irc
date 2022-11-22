@@ -46,6 +46,7 @@ class Server {
 		void		newClient();
 		void		handleMessage(int fd);
 		String		readMsg(int fd);
+		Client		findClient(int fd);
 
 		// COMMANDE IRC
 		

@@ -47,12 +47,13 @@ void	Server::newClient()
 	if (new_fd < 0)
 		throw std::runtime_error("Error while accepting new client.");
 	std::cout << "POLLiN events" << std::endl;
-	//new_fd = accept(_sock, NULL, NULL);
-	//if (new_fd < 0)
-	//	std::cout << " normal" << std::endl;
-	//else
-//		std::cout << "connection established" << new_fd << std::endl;
 
+	char hostname[2048];
+	if (getnameinfo((struct sockaddr *) &s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) !=
+		0)
+		throw std::runtime_error("Error while getting hostname on new client.");
+	//std::cout << hostname << std::endl;
+	_clients.push_back(Client(new_fd, hostname));
 	pollfd pollfd = {new_fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
 }
@@ -71,11 +72,12 @@ String	Server::readMsg(int fd) {
 		}
 		msg = buff;
 	}
-	std::cout << "test" << std::endl;
+	//std::cout << "test" << std::endl;
 	return msg;
 }
 
 void	Server::handleMessage(int fd) {
+	std::cout << "HandleMsg" << std::endl;
 	std::cout << readMsg(fd) << std::endl;
 }
 
@@ -104,6 +106,9 @@ void	Server::launch()
 				if (_pollfds[i].fd == _sock)
 				{
 					newClient();
+					std::cout << "size ==" <<_clients.size() << std::endl;
+					if (_clients.size())
+						_clients[_clients.size() - 1].debug();
 					break;
 				}
 			}
@@ -114,4 +119,14 @@ void	Server::launch()
 		
 		//read and handle messages
 	}
+}
+
+Client		Server::findClient(int fd)
+{
+	for (unsigned int i = 0; i < _clients.size(); i++)
+	{
+		if (_clients[i].getFd() == fd)
+			return (_clients[i]);
+	}
+	throw(std::out_of_range("Error while searching for user"));
 }
