@@ -37,28 +37,26 @@ class Server {
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
 		int						_sock;
-		// SOCKADDR_IN			_sin;
 
 	public:
 		Server(int port, const String &password);
 		~Server();
 
-
 		int			createSocket();
 		void		launch();
 		void		newClient();
 		void		handleMessage(int fd);
-		String		readMsg(int fd);
 		void		test(int fd);
 		void		callClient(String str, Client cl);
+		
 		std::vector<String>	infClient(String msg);
+		String		readMsg(int fd);
 		Client		findClient(int fd);
+
+		// COMMANDE IRC
 		int			cmdPass(std::vector<String> pass, Client cl);
 		int			cmdNick(std::vector<String> pass, Client cl);
 		int			cmdUser(std::vector<String> pass, Client cl);
-
-
-		// COMMANDE IRC
 
 		
 };

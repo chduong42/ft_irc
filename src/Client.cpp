@@ -1,22 +1,16 @@
 #include "Client.hpp"
 
 
-Client::Client(int sockfd, std::string hostname) 
-    : _sockfd(sockfd), _hostname(hostname)
-{
-    
-}
+Client::Client(int sockfd, std::string hostname) : _sockfd(sockfd), _hostname(hostname) {}
 
 
 Client::~Client() {}
 
-int     Client::getFd()
-{
+int     Client::getFd() {
     return _sockfd;
 }
 
-void    Client::debug()
-{
+void    Client::debug() {
     std::cout << "[" << _sockfd << "]" << std::endl;
     std::cout << "[" << _hostname << "]" << std::endl;
     std::cout << "[" << _nickname<<"]" << std::endl;

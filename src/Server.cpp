@@ -176,23 +176,3 @@ Client		Server::findClient(int fd)
 }
 
 
-int Server::cmdPass(std::vector<String> pass, Client cl) {
-	std::cout << "Je parse PASS" << std::endl;
-	(void)cl;
-	(void)pass;
-	return 0;
-}
-
-int Server::cmdNick(std::vector<String> pass, Client cl) {
-	std::cout << "Je parse NICK" << std::endl;
-	(void)cl;
-	(void)pass;
-	return 0;
-}
-
-int Server::cmdUser(std::vector<String> pass, Client cl) {
-	std::cout << "Je parse USER" << std::endl;
-	(void)pass;
-	(void)cl;
-	return 0;
-}
