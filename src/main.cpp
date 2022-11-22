@@ -7,8 +7,9 @@ bool	g_interrupt = false;
 
 //	Gestion du CTRL+C
 void	sigintHandler(int const sig) {
-	if (!sig)
-		;
+	(void)sig;
+	//if (!sig)
+	//	;
 	g_interrupt = true;
 	std::cout << "\b\b";
 	exit(0);

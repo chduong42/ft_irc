@@ -1,6 +1,8 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 #include <iostream>
+#include <vector>
+#include <sstream>
 # include <sys/socket.h>
 
 typedef struct sockaddr_in SOCKADDR_IN;
