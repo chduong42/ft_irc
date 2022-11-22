@@ -46,10 +46,9 @@ class Server {
 		void		launch();
 		void		newClient();
 		void		handleMessage(int fd);
-		void		test(int fd);
-		void		callClient(String str, Client cl);
+		void		parseClient(String str, Client cl);
 		
-		std::vector<String>	infClient(String msg);
+		std::vector<String>	splitMsg(String msg);
 		String		readMsg(int fd);
 		Client		findClient(int fd);
 
