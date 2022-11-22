@@ -1,14 +1,14 @@
 #include "Client.hpp"
 
+
 Client::Client(int sockfd, std::string hostname) 
     : _sockfd(sockfd), _hostname(hostname)
 {
     
 }
 
-Client::~Client()
-{
-}
+
+Client::~Client() {}
 
 int     Client::getFd()
 {
@@ -30,7 +30,26 @@ void    Client::reply(String msg)
         throw(std::out_of_range("Error while sending"));
 }
 
-void    Client::welcome()
-{
+void    Client::welcome() {
     reply("001 " + _nickname + " :Welcome " +_nickname +  " into our irc network");
+}
+
+String  Client::getNickname() const {
+    return _nickname;
+}
+
+String  Client::getUsername() const {
+    return _username;
+}
+
+String  Client::getRealname() const {
+    return _realname;
+}
+
+String  Client::getHostname() const {
+    return _hostname;
+}
+
+String  Client::getMsg() const {
+    return _msg;
 }

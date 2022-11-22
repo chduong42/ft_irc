@@ -14,15 +14,22 @@ class Client {
 		String		_username;
 		String		_realname;
 		String		_hostname;
-		String		_message;
+		String		_msg;
 		
 	public:
 		Client(int fd, String host);
 		~Client();
+
 		void	reply(String msg);
 		void	welcome();
 		int		getFd();
 		void	debug();
+		String		getNickname() const;
+		String		getUsername() const;
+		String		getRealname() const;
+		String		getHostname() const;
+		String		getMsg() const;
+
 };
 
 #endif
