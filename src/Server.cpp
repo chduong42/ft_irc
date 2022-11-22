@@ -96,7 +96,7 @@ void	Server::handleMessage(int fd) {
 	return ;
 }
 
-void	Server::parseClient(String str, Client cl) {
+void	Server::parseMsg(String str, Client cl) {
 	String tmp;
 	std::vector<String>	arg;
 	std::stringstream ss(str);
