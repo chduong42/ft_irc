@@ -77,8 +77,21 @@ String	Server::readMsg(int fd) {
 }
 
 void	Server::handleMessage(int fd) {
-	std::cout << "HandleMsg" << std::endl;
-	std::cout << readMsg(fd) << std::endl;
+	try
+	{
+		Client	client = findClient(fd);
+		client.debug();
+		std::cout << "HandleMsg" << std::endl;
+		std::cout << readMsg(fd) << std::endl;
+		//client.execute(readMsg(fd))
+	}
+
+	catch (std::out_of_range &e)
+	{
+
+	}
+	//std::cout << "HandleMsg" << std::endl;
+	//std::cout << readMsg(fd) << std::endl;
 }
 
 void	Server::launch()
