@@ -6,7 +6,7 @@
 #    By: chduong <chduong@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/23 07:36:57 by chduong          ###   ########.fr        #
+#    Updated: 2022/11/23 10:38:44 by chduong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,9 @@ INC			=	-I inc
 #           & OBJECT FILES    	        #
 #           & DEPENDENCIES    	        #
 #########################################
-SRC		=	main.cpp	Server.cpp Client.cpp NICK.cpp USER.cpp PASS.cpp
+SRC		=	main.cpp		Server.cpp		Client.cpp\
+			NICK.cpp 		USER.cpp 		PASS.cpp
+			
 
 OBJ		=	$(SRC:%.cpp=%.o)
 OBJ		:=	$(addprefix $(OBJ_DIR), $(OBJ))

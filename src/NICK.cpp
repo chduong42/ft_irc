@@ -24,7 +24,7 @@ bool	valid_nickname(String name) {
 		return (false);
 	if (!isSpecial(name[0]) && !isalpha(name[0]))
 		return (false);
-	for (int i = 1; i < name.size(); ++i)
+	for (size_t i = 1; i < name.size(); ++i)
 	{
 		if (!isalnum(name[i] && !isSpecial(name[i]) && name[i] != '-'))
 			return (false);
