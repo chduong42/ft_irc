@@ -62,6 +62,7 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
+
 	while (!std::strstr(buff, "\r\n"))
 	{
 		bzero(buff, 256);
@@ -75,34 +76,50 @@ String	Server::readMsg(int fd) {
 	return msg;
 }
 
-std::vector<String>	Server::splitMsg(String msg) {
-	std::vector<String> inf;
-	String tmp;
-	std::stringstream str(msg);
-	int i = 0;
-	while (std::getline(str, tmp, '\n')) {
-		inf.push_back(tmp);
-		std::cout << inf.at(i++) << std::endl;
-	}
-	return inf;
-}
-
 void	Server::handleMessage(int fd) {
-	String	str = readMsg(fd);
-	this->_inf = splitMsg(str);
-	Client cl = findClient(fd);
-	for (std::vector<String>::iterator it = this->_inf.begin(); it != this->_inf.end(); it++)
-		parseClient(*it, cl);
+	/*try
+	{
+		Client	client = findClient(fd);
+		client.debug();
+		std::cout << "HandleMsg" << std::endl;
+		std::cout << readMsg(fd) << std::endl;
+		//client.execute(readMsg(fd))
+	}
+
+	catch (std::out_of_range &e)
+	{
+
+	}*/
+	//std::cout << "HandleMsg" << std::endl;
+	//std::cout << readMsg(fd) << std::endl;
+	this->_cmd = splitCmd(readMsg(fd));
+	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
+		parseCmd(*it, findClient(fd));
 	return ;
 }
 
-void	Server::parseClient(String str, Client cl) {
+std::vector<String>	Server::splitCmd(String msg) {
+	std::vector<String> cmd;
+	std::stringstream str(msg);
+	String tmp;
+	int i = 0;
+
+	while (std::getline(str, tmp, '\n')) {
+		cmd.push_back(tmp);
+		std::cout << cmd.at(i++) << std::endl;
+	}
+	return cmd;
+}
+
+void	Server::parseCmd(String str, Client cl) {
 	String tmp;
 	std::vector<String>	arg;
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
+
 	arg.push_back(tmp);
-	std::cout << tmp << std::endl;
+  std::cout << "tmp = " << tmp << std::endl;
+
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
 	int		(Server::*ptr[3])(std::vector<String> pass, Client cl) = {

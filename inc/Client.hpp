@@ -9,6 +9,11 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef std::string String;
 
+enum State{
+	HANDSHAKE,
+	LOGIN
+};
+
 class Client {
 	private:
 		int			_sockfd;
@@ -17,16 +22,17 @@ class Client {
 		String		_realname;
 		String		_hostname;
 		String		_msg;
+		State		_state;
 		
 	public:
 		Client(int fd, String host);
 		~Client();
 
-		void	reply(String msg);
-		void	welcome();
-		int		getFd();
-		void	debug();
+		void		reply(String msg);
+		void		welcome();
+		void		debug();
 
+		int			getFd() const;
 		String		getNickname() const;
 		String		getUsername() const;
 		String		getRealname() const;
@@ -38,10 +44,7 @@ class Client {
 		void		setRealname(String newName);
 		void		setHostname(String newName);
 		void		setMsg(String newMsg);
-
-		int cmdPass(String str);
-		int cmdNick(String str);
-		int cmdUser(String str);
+		void		setState(State newState);
 
 };
 
