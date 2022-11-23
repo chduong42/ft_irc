@@ -44,6 +44,8 @@ class Server {
 		int						createSocket();
 		void					launch();
 		void					newClient();
+		void					clientDisconnect(int fd);
+		void					eraseClient(int fd);
 		void					handleMessage(int fd);
 		void					parseCmd(String str, Client cl);
 		

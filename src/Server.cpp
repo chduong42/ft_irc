@@ -58,6 +58,40 @@ void	Server::newClient()
 	_pollfds.push_back(pollfd);
 }
 
+void	Server::eraseClient(int fd)
+{
+	std::vector<Client>::iterator it = _clients.begin();
+
+	while (it != _clients.end())
+	{
+		if (it->getFd() == fd)
+		{
+			_clients.erase(it);
+			return ;
+		}
+		it++;
+	}
+
+}
+
+void	Server::clientDisconnect(int fd)
+{
+	std::vector<pollfd>::iterator it = _pollfds.begin();
+	eraseClient(fd);
+	while (it != _pollfds.end())
+	{
+		if (it->fd == fd)
+		{
+			_pollfds.erase(it);
+			break;
+		}
+		it++;
+	}
+	close(fd);
+	std::cout << "disconnexion succefull" << std::endl;
+
+}
+
 String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
@@ -118,11 +152,11 @@ void	Server::parseCmd(String str, Client cl) {
 	std::getline(ss, tmp, ' ');
 
 	arg.push_back(tmp);
-  std::cout << "tmp = " << tmp << std::endl;
+  	std::cout << "tmp = " << tmp << std::endl;
 
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
-	int		(Server::*ptr[3])(std::vector<String> pass, Client cl) = {
+	int		(Server::*ptr[3])(std::vector<String> args, Client cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdUser,
@@ -138,7 +172,7 @@ void	Server::parseCmd(String str, Client cl) {
 	}
 	else
 		std::cout << "on gere pas ca" << std::endl;
-	
+	return ;	
 }
 
 void	Server::launch()
@@ -156,6 +190,11 @@ void	Server::launch()
 		{
 			if (_pollfds[i].revents == 0)
 				continue ;
+			if ((_pollfds[i].revents & POLLHUP) == POLLHUP)
+			{
+				clientDisconnect(_pollfds[i].fd);
+				break ;
+			}
 			if ((_pollfds[i].revents  & POLLIN ) == POLLIN)
 			{
 				if (_pollfds[i].fd == _sock)
@@ -170,7 +209,6 @@ void	Server::launch()
 
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
-			//test(_pollfds[i].fd);
 		}
 		//read and handle messages
 	}
