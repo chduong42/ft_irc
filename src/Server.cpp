@@ -77,6 +77,21 @@ String	Server::readMsg(int fd) {
 }
 
 void	Server::handleMessage(int fd) {
+	/*try
+	{
+		Client	client = findClient(fd);
+		client.debug();
+		std::cout << "HandleMsg" << std::endl;
+		std::cout << readMsg(fd) << std::endl;
+		//client.execute(readMsg(fd))
+	}
+
+	catch (std::out_of_range &e)
+	{
+
+	}*/
+	//std::cout << "HandleMsg" << std::endl;
+	//std::cout << readMsg(fd) << std::endl;
 	this->_cmd = splitCmd(readMsg(fd));
 	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
 		parseCmd(*it, findClient(fd));
@@ -101,8 +116,10 @@ void	Server::parseCmd(String str, Client cl) {
 	std::vector<String>	arg;
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
+
 	arg.push_back(tmp);
-	std::cout << tmp << std::endl;
+  std::cout << "tmp = " << tmp << std::endl;
+
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
 	int		(Server::*ptr[3])(std::vector<String> pass, Client cl) = {
