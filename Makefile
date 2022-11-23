@@ -40,7 +40,7 @@ INC			=	-I inc
 #           & OBJECT FILES    	        #
 #           & DEPENDENCIES    	        #
 #########################################
-SRC		=	main.cpp	Server.cpp Client.cpp
+SRC		=	main.cpp	Server.cpp Client.cpp NICK.cpp PASS.cpp USER.cpp
 
 OBJ		=	$(SRC:%.cpp=%.o)
 OBJ		:=	$(addprefix $(OBJ_DIR), $(OBJ))

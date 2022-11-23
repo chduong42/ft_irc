@@ -88,8 +88,7 @@ std::vector<String>	Server::infClient(String msg) {
 }
 
 void	Server::handleMessage(int fd) {
-<<<<<<< HEAD
-	try
+	/*try
 	{
 		Client	client = findClient(fd);
 		client.debug();
@@ -101,10 +100,9 @@ void	Server::handleMessage(int fd) {
 	catch (std::out_of_range &e)
 	{
 
-	}
+	}*/
 	//std::cout << "HandleMsg" << std::endl;
 	//std::cout << readMsg(fd) << std::endl;
-=======
 	String	str = readMsg(fd);
 	this->_inf = infClient(str);
 	return ;
@@ -145,7 +143,6 @@ void	Server::callClient(String str, Client cl) {
 	else
 		std::cout << "on gere pas ca" << std::endl;
 	
->>>>>>> cc7a56630283b5147e77a265ada8444366b21f85
 }
 
 void	Server::launch()
