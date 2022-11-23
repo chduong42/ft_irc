@@ -62,6 +62,7 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
+
 	while (!std::strstr(buff, "\r\n"))
 	{
 		bzero(buff, 256);
@@ -73,18 +74,6 @@ String	Server::readMsg(int fd) {
 		msg = buff;
 	}
 	return msg;
-}
-
-std::vector<String>	Server::infClient(String msg) {
-	std::vector<String> inf;
-	String tmp;
-	std::stringstream str(msg);
-	int i = 0;
-	while (std::getline(str, tmp, '\n')) {
-		inf.push_back(tmp);
-		std::cout << inf.at(i++) << std::endl;
-	}
-	return inf;
 }
 
 void	Server::handleMessage(int fd) {
@@ -103,30 +92,37 @@ void	Server::handleMessage(int fd) {
 	}*/
 	//std::cout << "HandleMsg" << std::endl;
 	//std::cout << readMsg(fd) << std::endl;
-	String	str = readMsg(fd);
-	this->_inf = infClient(str);
+	this->_cmd = splitCmd(readMsg(fd));
+	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
+		parseCmd(*it, findClient(fd));
 	return ;
 }
 
-void	Server::test(int fd) {
-	if (this->_inf.empty())
-		return ;
-	Client cl = findClient(fd);
-	for (std::vector<String>::iterator it = this->_inf.begin(); it != this->_inf.end(); it++)
-		callClient(*it, cl);
-	return ;
-}
-
-void	Server::callClient(String str, Client cl) {
+std::vector<String>	Server::splitCmd(String msg) {
+	std::vector<String> cmd;
+	std::stringstream str(msg);
 	String tmp;
-	std::vector<String>	pass;
+	int i = 0;
+
+	while (std::getline(str, tmp, '\n')) {
+		cmd.push_back(tmp);
+		std::cout << cmd.at(i++) << std::endl;
+	}
+	return cmd;
+}
+
+void	Server::parseCmd(String str, Client cl) {
+	String tmp;
+	std::vector<String>	arg;
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
-	pass.push_back(tmp);
-	std::cout << "tmp = " << tmp << std::endl;
+
+	arg.push_back(tmp);
+  std::cout << "tmp = " << tmp << std::endl;
+
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
-	int		(Server::*monpointeur[3])(std::vector<String> pass, Client cl) = {
+	int		(Server::*ptr[3])(std::vector<String> pass, Client cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdUser,
@@ -137,8 +133,8 @@ void	Server::callClient(String str, Client cl) {
 	if (tmp == cmds[i])
 	{
 		std::getline(ss, tmp, '\0');
-		pass.push_back(tmp);
-		(this->*monpointeur[i])(pass, cl);
+		arg.push_back(tmp);
+		(this->*ptr[i])(arg, cl);
 	}
 	else
 		std::cout << "on gere pas ca" << std::endl;
@@ -174,7 +170,7 @@ void	Server::launch()
 
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
-			test(_pollfds[i].fd);
+			//test(_pollfds[i].fd);
 		}
 		//read and handle messages
 	}

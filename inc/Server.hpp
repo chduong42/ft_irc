@@ -33,7 +33,7 @@ class Server {
 		int						_port;
 		String					_host;
 		String					_password;
-		std::vector<String>		_inf;
+		std::vector<String>		_cmd;
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
 		int						_sock;
@@ -42,23 +42,57 @@ class Server {
 		Server(int port, const String &password);
 		~Server();
 
-		int			createSocket();
-		void		launch();
-		void		newClient();
-		void		handleMessage(int fd);
-		void		test(int fd);
-		void		callClient(String str, Client cl);
+		int						createSocket();
+		void					launch();
+		void					newClient();
+		void					handleMessage(int fd);
+		void					parseCmd(String str, Client cl);
 		
-		std::vector<String>	infClient(String msg);
-		String		readMsg(int fd);
-		Client		findClient(int fd);
+		std::vector<String>		splitCmd(String msg);
+		String					readMsg(int fd);
+		Client					findClient(int fd);
+
+		bool					already_used(String name, Client cl);
 
 		// COMMANDE IRC
-		int			cmdPass(std::vector<String> pass, Client cl);
-		int			cmdNick(std::vector<String> pass, Client cl);
-		int			cmdUser(std::vector<String> pass, Client cl);
+		int						cmdPass(std::vector<String> pass, Client cl);
+		int						cmdNick(std::vector<String> pass, Client cl);
+		int						cmdUser(std::vector<String> pass, Client cl);
 
-		
+};
+
+enum    e_rplNum {
+	RPL_WELCOME = 001,
+	RPL_YOURHOST = 002,
+	RPL_CREATED = 003,
+	RPL_MYINFO = 004,
+
+	RPL_UMODEIS = 221,
+	RPL_AWAY = 301,
+	RPL_WHOISREGNICK = 307,
+	RPL_WHOSIUSER = 311,
+	RPL_WHOISOPERATOR = 313,
+	RPL_ENDOFWHOIS = 318,
+	RPL_CHANNELMODEIS = 324,
+	RPL_TOPIC = 332,
+	RPL_WHOISMODES = 379,
+	RPL_YOUREOPER = 381,
+
+	ERR_NOSUCHNICK = 401,
+	ERR_NOSUCHCHANNEL = 403,
+	ERR_CANTSENDTOCHAN = 404,
+	ERR_NORECIPENT = 411,
+	ERR_NOTEXTTOSEND = 412,
+	ERR_NONICKNAMEGIVEN = 431,
+	ERR_ERRONEUSNICKNAME = 432,
+	ERR_NICKNAMEINUSE = 433,
+	ERR_NEEDMOREPARAMS = 461,
+	ERR_ALREADYREGISTRED = 462,
+	ERR_PASSWDMISMATCH = 464,
+	ERR_UNKNOWNMODE = 472,
+	ERR_NOPRIVILEGES = 481,
+	ERR_UMODEUNKNOWNFLAG = 501,
+	ERR_USERSDONTMATCH = 502
 };
 
 #endif
