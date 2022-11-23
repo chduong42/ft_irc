@@ -127,11 +127,11 @@ void	Server::handleMessage(int fd) {
 	//std::cout << "HandleMsg" << std::endl;
 	//std::cout << readMsg(fd) << std::endl;
 	std::cout << "HandleMsg" << std::endl;
-		std::cout << readMsg(fd) << std::endl;
-	//this->_cmd = splitCmd(readMsg(fd));
-	//for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
-	//	parseCmd(*it, findClient(fd));
-	//return ;
+		//std::cout << readMsg(fd) << std::endl;
+	this->_cmd = splitCmd(readMsg(fd));
+	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
+		parseCmd(*it, findClient(fd));
+	return ;
 }
 
 std::vector<String>	Server::splitCmd(String msg) {
