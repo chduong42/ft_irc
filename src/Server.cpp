@@ -58,6 +58,40 @@ void	Server::newClient()
 	_pollfds.push_back(pollfd);
 }
 
+void	Server::eraseClient(int fd)
+{
+	std::vector<Client>::iterator it = _clients.begin();
+
+	while (it != _clients.end())
+	{
+		if (it->getFd() == fd)
+		{
+			_clients.erase(it);
+			return ;
+		}
+		it++;
+	}
+
+}
+
+void	Server::clientDisconnect(int fd)
+{
+	std::vector<pollfd>::iterator it = _pollfds.begin();
+	eraseClient(fd);
+	while (it != _pollfds.end())
+	{
+		if (it->fd == fd)
+		{
+			_pollfds.erase(it);
+			break;
+		}
+		it++;
+	}
+	close(fd);
+	std::cout << "disconnexion succefull" << std::endl;
+
+}
+
 String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
@@ -92,10 +126,12 @@ void	Server::handleMessage(int fd) {
 	}*/
 	//std::cout << "HandleMsg" << std::endl;
 	//std::cout << readMsg(fd) << std::endl;
-	this->_cmd = splitCmd(readMsg(fd));
-	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
-		parseCmd(*it, findClient(fd));
-	return ;
+	std::cout << "HandleMsg" << std::endl;
+		std::cout << readMsg(fd) << std::endl;
+	//this->_cmd = splitCmd(readMsg(fd));
+	//for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
+	//	parseCmd(*it, findClient(fd));
+	//return ;
 }
 
 std::vector<String>	Server::splitCmd(String msg) {
@@ -156,6 +192,11 @@ void	Server::launch()
 		{
 			if (_pollfds[i].revents == 0)
 				continue ;
+			if ((_pollfds[i].revents & POLLHUP) == POLLHUP)
+			{
+				clientDisconnect(_pollfds[i].fd);
+				break ;
+			}
 			if ((_pollfds[i].revents  & POLLIN ) == POLLIN)
 			{
 				if (_pollfds[i].fd == _sock)
@@ -170,6 +211,7 @@ void	Server::launch()
 
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
+			
 			//test(_pollfds[i].fd);
 		}
 		//read and handle messages

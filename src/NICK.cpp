@@ -20,8 +20,8 @@ bool	isSpecial(char c) {
 }
 
 bool	valid_nickname(String name) {
-	if (name.size() > 9)
-		return (false);
+	//if (name.size() > 9)
+	//	return (false);
 	if (!isSpecial(name[0]) && !isalpha(name[0]))
 		return (false);
 	for (size_t i = 1; i < name.size(); ++i)
