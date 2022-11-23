@@ -123,7 +123,7 @@ void	Server::callClient(String str, Client cl) {
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
 	pass.push_back(tmp);
-	std::cout << tmp << std::endl;
+	std::cout << "tmp = " << tmp << std::endl;
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
 	int		(Server::*monpointeur[3])(std::vector<String> pass, Client cl) = {

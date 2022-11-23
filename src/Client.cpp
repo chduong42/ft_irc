@@ -1,7 +1,10 @@
 #include "Client.hpp"
 
 
-Client::Client(int sockfd, std::string hostname) : _sockfd(sockfd), _hostname(hostname) {}
+Client::Client(int sockfd, std::string hostname) : _sockfd(sockfd), _hostname(hostname) 
+{
+    _state = HANDSHAKE;
+}
 
 
 Client::~Client() {}
@@ -66,5 +69,10 @@ void  Client::setHostname(String newName) {
 
 void  Client::setMsg(String newMsg) {
     _msg = newMsg;
+}
+
+void  Client::setState(State new_state)
+{
+    _state = new_state;
 }
 
