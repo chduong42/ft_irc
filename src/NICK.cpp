@@ -32,14 +32,38 @@ bool	valid_nickname(String name) {
 	return (true);
 }
 
-int Server::cmdNick(std::vector<String> args, Client cl) {
-	if (args[1].empty())
-		std::cout << "431 ERR_NONICKNAMEGIVEN" << std::endl;
-	if (args[1] == cl.getNickname())
+String	ERR_NONICKNAMEGIVEN(Client client) {
+	return ("431 " + client.getNickname() + " :No nickname given");
+}
+
+String	ERR_ERRONEUSNICKNAME(Client client, String newNick) {
+	return ("432 " + client.getNickname() + " " + newNick + " :Erroneus nickname");
+}
+
+String	ERR_NICKNAMEINUSE(Client client, String newNick) {
+	return ("433 " + client.getNickname() + " " + newNick + " :Nickname is already in use");
+}
+
+int Server::cmdNick(std::vector<String> args, Client cl)
+{
+	String newNick = args[1].substr(0, args[1].size() - 1); // enleve le \r a la fin de pass
+
+	if (newNick == cl.getNickname())
 		return (0);
-	if (already_used(args[1], cl) == true)
-		std::cout << "433 ERR_NICKNAMEINUSE" << std::endl;
-	if (valid_nickname(args[1]) == false)
-		std::cout << "432 ERR_ERRONEUSNICKNAME" << std::endl;
+	if (newNick.empty())
+	{
+		cl.reply(ERR_NONICKNAMEGIVEN(cl));
+		return (-1);
+	}
+	if (valid_nickname(newNick) == false)
+	{
+		cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
+		return (-1);
+	}
+	if (already_used(newNick, cl) == true)
+	{
+		cl.reply(ERR_NICKNAMEINUSE(cl, newNick));
+		return (-1);
+	}
 	return 0;
 }

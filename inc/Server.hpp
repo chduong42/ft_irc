@@ -21,7 +21,6 @@
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
-#define closesocket(param) close(param)
 
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
@@ -61,7 +60,7 @@ class Server {
 
 };
 
-enum    e_rplNum {
+enum    numRepl {
 	RPL_WELCOME = 001,
 	RPL_YOURHOST = 002,
 	RPL_CREATED = 003,

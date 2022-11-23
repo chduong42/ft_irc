@@ -4,6 +4,7 @@ String	ERR_PASSWDMISMATCH(Client &client)
 {
 	return ("464 " + client.getNickname() + " :Password incorrect");
 }
+
 String	ERR_NEEDMOREPARAMS(Client &client)
 {
 	String cmd = "PASS";

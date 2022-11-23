@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: msainton <msainton@student.42.fr>          +#+  +:+       +#+         #
+#    By: chduong <chduong@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/22 18:22:46 by msainton         ###   ########.fr        #
+#    Updated: 2022/11/23 07:36:57 by chduong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ AR			=	ar rcs
 RM			= 	rm -rf
 
 CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98
-CXXFLAGS	+=	-MMD -MP -g3
+CXXFLAGS	+=	-MMD -MP
 
 LFLAGS		=	
 DEBUG		=	-g3 -fsanitize=address,undefined
