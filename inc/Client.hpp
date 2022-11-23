@@ -22,11 +22,11 @@ class Client {
 		Client(int fd, String host);
 		~Client();
 
-		void	reply(String msg);
-		void	welcome();
-		int		getFd();
-		void	debug();
+		void		reply(String msg);
+		void		welcome();
+		void		debug();
 
+		int			getFd() const;
 		String		getNickname() const;
 		String		getUsername() const;
 		String		getRealname() const;
