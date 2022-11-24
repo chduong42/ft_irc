@@ -99,11 +99,16 @@ String	Server::readMsg(int fd) {
 
 	while (!std::strstr(buff, "\r\n"))
 	{
+		int k = 0;
 		bzero(buff, 256);
-		if (recv(fd, buff, 256, 0) < 0)
+		if ((k = recv(fd, buff, 256, 0)) < 0)
 		{
 			if (errno != EWOULDBLOCK)
 				throw std::runtime_error("error in recv");
+		}
+		else if (k == 0)
+		{
+			throw(std::out_of_range("TEST DECO"));
 		}
 		msg = buff;
 	}
@@ -126,7 +131,16 @@ void	Server::handleMessage(int fd) {
 	}*/
 	//std::cout << "HandleMsg" << std::endl;
 	//std::cout << readMsg(fd) << std::endl;
-	this->_cmd = splitCmd(readMsg(fd));
+	try
+	{
+		this->_cmd = splitCmd(readMsg(fd));
+	}
+	catch(const std::exception& e)
+	{
+		clientDisconnect(fd);
+		std::cerr << e.what() << '\n';
+		return ;
+	}
 	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
 		parseCmd(*it, findClient(fd));
 	return ;
@@ -147,11 +161,11 @@ std::vector<String>	Server::splitCmd(String msg) {
 
 void	Server::parseCmd(String str, Client cl) {
 	String tmp;
-	std::vector<String>	arg;
+	std::vector<String>	args;
 	std::stringstream ss(str);
 	std::getline(ss, tmp, ' ');
 
-	arg.push_back(tmp);
+	args.push_back(tmp);
   	std::cout << "tmp = " << tmp << std::endl;
 
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
@@ -166,9 +180,17 @@ void	Server::parseCmd(String str, Client cl) {
 		i++;
 	if (tmp == cmds[i])
 	{
-		std::getline(ss, tmp, '\0');
-		arg.push_back(tmp);
-		(this->*ptr[i])(arg, cl);
+		if (i == 2)
+		{
+			while (std::getline(ss, tmp, ' '))
+				args.push_back(tmp);
+		}
+		else
+		{
+			std::getline(ss, tmp, '\0');
+			args.push_back(tmp);
+		}
+		(this->*ptr[i])(args, cl);
 	}
 	else
 		std::cout << "on gere pas ca" << std::endl;
@@ -190,11 +212,11 @@ void	Server::launch()
 		{
 			if (_pollfds[i].revents == 0)
 				continue ;
-			if ((_pollfds[i].revents & POLLHUP) == POLLHUP)
+			/*if ((_pollfds[i].revents & POLLHUP) == POLLHUP)
 			{
 				clientDisconnect(_pollfds[i].fd);
 				break ;
-			}
+			}*/
 			if ((_pollfds[i].revents  & POLLIN ) == POLLIN)
 			{
 				if (_pollfds[i].fd == _sock)

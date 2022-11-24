@@ -55,15 +55,16 @@ int Server::cmdNick(std::vector<String> args, Client cl)
 		cl.reply(ERR_NONICKNAMEGIVEN(cl));
 		return (-1);
 	}
-	if (valid_nickname(newNick) == false)
+	/*if (valid_nickname(newNick) == false)
 	{
 		cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
 		return (-1);
-	}
+	}*/
 	if (already_used(newNick, cl) == true)
 	{
 		cl.reply(ERR_NICKNAMEINUSE(cl, newNick));
 		return (-1);
 	}
+	cl.setNickname(newNick);
 	return 0;
 }
