@@ -257,7 +257,7 @@ Client		&Server::findClient(int fd)
 	for (unsigned int i = 0; i < _clients.size(); i++)
 	{
 		if (_clients[i].getFd() == fd)
-			return (&_clients[i]);
+			return (_clients[i]);
 	}
 	throw(std::out_of_range("Error while searching for user"));
 }
