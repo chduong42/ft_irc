@@ -48,7 +48,7 @@ int Server::cmdNick(std::vector<String> args, Client cl)
 {
 	String newNick = args[1].substr(0, args[1].size() - 1); // enleve le \r a la fin de pass
 
-	return 8;
+	//return 8;
 	if (newNick == cl.getNickname())
 		return (0);
 	if (newNick.empty())
@@ -56,15 +56,17 @@ int Server::cmdNick(std::vector<String> args, Client cl)
 		cl.reply(ERR_NONICKNAMEGIVEN(cl));
 		return (-1);
 	}
-	if (valid_nickname(newNick) == false)
-	{
-		cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
-		return (-1);
-	}
+	//if (valid_nickname(newNick) == false)
+	//{
+//		cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
+//		return (-1);
+//	}
 	if (already_used(newNick, cl) == true)
 	{
 		cl.reply(ERR_NICKNAMEINUSE(cl, newNick));
 		return (-1);
 	}
+	cl.setNickname(newNick);
+	std::cout << "nickname set to : " << cl.getNickname() << std::endl;
 	return 0;
 }
