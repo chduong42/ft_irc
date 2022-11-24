@@ -1,8 +1,8 @@
 #include "Server.hpp"
 
-int Server::cmdUser(std::vector<String> args, Client cl) {
-	for (size_t i = 0; i < args.size(); i++)
-		std::cout << args.at(i) << std::endl;
+int Server::cmdUser(std::vector<String> args, Client &cl) {
+	//for (size_t i = 0; i < args.size(); i++)
+	//	std::cout << args.at(i) << std::endl;
 	String cmd = args.at(0);
 	if (args.size() < 5)
 	{

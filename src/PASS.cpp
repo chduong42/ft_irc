@@ -29,7 +29,7 @@ int		teststring(String test)
 
 //enlever le /r de pass
 
-int Server::cmdPass(std::vector<String> pass, Client cl) {
+int Server::cmdPass(std::vector<String> pass, Client &cl) {
 	std::cout << "Je parse PASS" << std::endl;
 	//std::cout << pass.size() << std::endl;
 	
