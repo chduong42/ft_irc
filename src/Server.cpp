@@ -46,8 +46,8 @@ void	Server::displayClient()
 	}
 	for (size_t j = 0; j < i; j++)
 	{
-		std::cout << "client[" << i << "]" <<_clients.at(j).getNickname() << std::endl;
-		std::cout << "client[" << i << "]" <<_clients.at(j).getUsername() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getNickname() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getUsername() << std::endl;
 	}
 	
 	return ;

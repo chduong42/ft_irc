@@ -41,13 +41,12 @@ String	ERR_ERRONEUSNICKNAME(Client client, String newNick) {
 }
 
 String	ERR_NICKNAMEINUSE(Client client, String newNick) {
-	return ("433 " + client.getNickname() + " " + newNick + " :Nickname is already in use");
+	return ("433 " + client.getNickname() + " " + newNick + " " + newNick + " :Nickname is already in use");
 }
 
 int Server::cmdNick(std::vector<String> args, Client &cl)
 {
 	String newNick = args[1].substr(0, args[1].size() - 1); // enleve le \r a la fin de pass
-	std::cout << "new nick : " << newNick << std::endl;
 
 	if (newNick == cl.getNickname())
 		return (0);
@@ -67,6 +66,6 @@ int Server::cmdNick(std::vector<String> args, Client &cl)
 		return (-1);
 	}
 	cl.setNickname(newNick);
-	std::cout << "nickname set to : " << cl.getNickname() << std::endl;
+	displayClient();
 	return 0;
 }
