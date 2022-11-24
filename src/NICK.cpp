@@ -22,11 +22,11 @@ bool	isSpecial(char c) {
 bool	valid_nickname(String name) {
 	if (name.size() > 9)
 		return (false);
-	if (!isSpecial(name[0]) && !isalpha(name[0]))
+	if (!(isSpecial(name[0]) || isalpha(name[0])))
 		return (false);
 	for (size_t i = 1; i < name.size(); ++i)
 	{
-		if (!isalnum(name[i] && !isSpecial(name[i]) && name[i] != '-'))
+		if (!(isalnum(name[i]) || isSpecial(name[i]) || name[i] == '-'))
 			return (false);
 	}
 	return (true);
@@ -44,29 +44,30 @@ String	ERR_NICKNAMEINUSE(Client client, String newNick) {
 	return ("433 " + client.getNickname() + " " + newNick + " :Nickname is already in use");
 }
 
-int Server::cmdNick(std::vector<String> args, Client cl)
+int Server::cmdNick(std::vector<String> args, Client *cl)
 {
 	String newNick = args[1].substr(0, args[1].size() - 1); // enleve le \r a la fin de pass
+	std::cout << "new nick : " << newNick << std::endl;
 
 	//return 8;
-	if (newNick == cl.getNickname())
+	if (newNick == cl->getNickname())
 		return (0);
 	if (newNick.empty())
 	{
-		cl.reply(ERR_NONICKNAMEGIVEN(cl));
+		cl->reply(ERR_NONICKNAMEGIVEN(*cl));
 		return (-1);
 	}
-	/*if (valid_nickname(newNick) == false)
+	if (valid_nickname(newNick) == false)
 	{
-		cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
-		return (-1);
-	}*/
-	if (already_used(newNick, cl) == true)
-	{
-		cl.reply(ERR_NICKNAMEINUSE(cl, newNick));
+		cl->reply(ERR_ERRONEUSNICKNAME(*cl, newNick));
 		return (-1);
 	}
-	cl.setNickname(newNick);
-	std::cout << "nickname set to : " << cl.getNickname() << std::endl;
+	if (already_used(newNick, *cl) == true)
+	{
+		cl->reply(ERR_NICKNAMEINUSE(*cl, newNick));
+		return (-1);
+	}
+	cl->setNickname(newNick);
+	std::cout << "nickname set to : " << cl->getNickname() << std::endl;
 	return 0;
 }
