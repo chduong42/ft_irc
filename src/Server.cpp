@@ -37,6 +37,22 @@ int		Server::createSocket()
 	return sockfd;
 }
 
+void	Server::displayClient()
+{
+	size_t i = 0;
+	for (std::vector<Client>::iterator it = this->_clients.begin() ; it != this->_clients.end(); ++it)
+	{
+		i++;
+	}
+	for (size_t j = 0; j < i; j++)
+	{
+		std::cout << "client[" << i << "]" <<_clients.at(j).getNickname() << std::endl;
+		std::cout << "client[" << i << "]" <<_clients.at(j).getUsername() << std::endl;
+	}
+	
+	return ;
+}
+
 void	Server::newClient()
 {
 	int new_fd;
@@ -159,7 +175,7 @@ std::vector<String>	Server::splitCmd(String msg) {
 	return cmd;
 }
 
-void	Server::parseCmd(String str, Client *cl) {
+void	Server::parseCmd(String str, Client &cl) {
 	String tmp;
 	std::vector<String>	args;
 	std::stringstream ss(str);
@@ -170,7 +186,7 @@ void	Server::parseCmd(String str, Client *cl) {
 
 	std::string cmds[3] = {"PASS", "NICK", "USER"};
 
-	int		(Server::*ptr[3])(std::vector<String> args, Client *cl) = {
+	int		(Server::*ptr[3])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdUser,
@@ -236,12 +252,12 @@ void	Server::launch()
 	}
 }
 
-Client*		Server::findClient(int fd)
+Client		&Server::findClient(int fd)
 {
 	for (unsigned int i = 0; i < _clients.size(); i++)
 	{
 		if (_clients[i].getFd() == fd)
-			return (&_clients[i]);
+			return (_clients[i]);
 	}
 	throw(std::out_of_range("Error while searching for user"));
 }

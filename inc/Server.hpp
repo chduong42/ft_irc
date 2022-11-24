@@ -48,18 +48,19 @@ class Server {
 		void					clientDisconnect(int fd);
 		void					eraseClient(int fd);
 		void					handleMessage(int fd);
-		void					parseCmd(String str, Client *cl);
-		
+		void					parseCmd(String str, Client &cl);
+		void					displayClient();
+
 		std::vector<String>		splitCmd(String msg);
 		String					readMsg(int fd);
-		Client*					findClient(int fd);
+		Client					&findClient(int fd);
 
 		bool					already_used(String name, Client cl);
 
 		// COMMANDE IRC
-		int						cmdPass(std::vector<String> pass, Client *cl);
-		int						cmdNick(std::vector<String> pass, Client *cl);
-		int						cmdUser(std::vector<String> pass, Client *cl);
+		int						cmdPass(std::vector<String> pass, Client &cl);
+		int						cmdNick(std::vector<String> pass, Client &cl);
+		int						cmdUser(std::vector<String> pass, Client &cl);
 
 };
 

@@ -29,13 +29,13 @@ int		teststring(String test)
 
 //enlever le /r de pass
 
-int Server::cmdPass(std::vector<String> pass, Client *cl) {
-	// std::cout << "Je parse PASS" << std::endl;
+int Server::cmdPass(std::vector<String> pass, Client &cl) {
+	std::cout << "Je parse PASS" << std::endl;
 	//std::cout << pass.size() << std::endl;
 	
 	if (pass.size() < 2)
 	{
-		cl->reply(ERR_NEEDMOREPARAMS(*cl));
+		cl.reply(ERR_NEEDMOREPARAMS(cl));
 		return -1;
 	}
 	String mdp = pass[1].substr(0, pass[1].size() - 1); // enleve le \r a la fin de pass
@@ -44,9 +44,9 @@ int Server::cmdPass(std::vector<String> pass, Client *cl) {
 		std::cout <<"pass[1] : " << "[" << mdp << "]"<< std::endl;
 		std::cout << "password : " << "[" << _password << "]" << std::endl;
 		teststring(pass[1]);
-		cl->reply(ERR_PASSWDMISMATCH(*cl));
+		cl.reply(ERR_PASSWDMISMATCH(cl));
 		return -1;
 	}
-	cl->setState(LOGIN);
+	cl.setState(LOGIN);
 	return 0;
 }
