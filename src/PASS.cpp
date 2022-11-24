@@ -31,8 +31,6 @@ int		teststring(String test)
 
 int Server::cmdPass(std::vector<String> pass, Client cl) {
 	std::cout << "Je parse PASS" << std::endl;
-	(void)cl;
-	(void)pass;
 	//std::cout << pass.size() << std::endl;
 	
 	if (pass.size() < 2)
@@ -50,6 +48,5 @@ int Server::cmdPass(std::vector<String> pass, Client cl) {
 		return -1;
 	}
 	cl.setState(LOGIN);
-
 	return 0;
 }
