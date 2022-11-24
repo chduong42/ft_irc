@@ -21,7 +21,14 @@ void    Client::reply(String msg) {
 }
 
 void    Client::welcome() {
+    if (_state != LOGIN || _nickname.empty()/* || _username.empty()*/)
+    {
+        std::cout << "if welcome" << _state << _nickname << std::endl;
+        return ;
+    }
+    _state = REGISTERED;
     reply("001 " + _nickname + " :Welcome " +_nickname +  " into our irc network");
+    std::cout << _nickname << " is registered" << std::endl;
 }
 
 int     Client::getFd() const {return _sockfd;}
@@ -39,6 +46,7 @@ void  Client::setMsg(String newMsg) {_msg = newMsg;}
 
 void  Client::setState(State new_state)
 {
+    //std::cout << "new state = " << new_state << std::endl;
     _state = new_state;
 }
 
