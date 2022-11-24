@@ -65,5 +65,6 @@ int Server::cmdNick(std::vector<String> args, Client cl)
 		cl.reply(ERR_NICKNAMEINUSE(cl, newNick));
 		return (-1);
 	}
+	cl.setNickname(newNick);
 	return 0;
 }
