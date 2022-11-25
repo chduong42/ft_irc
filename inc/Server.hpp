@@ -54,6 +54,7 @@ class Server {
 		std::vector<String>		splitCmd(String msg);
 		String					readMsg(int fd);
 		Client					&findClient(int fd);
+		Client					&findClient(String nickname);
 
 		bool					already_used(String name, Client cl);
 
@@ -61,6 +62,7 @@ class Server {
 		int						cmdPass(std::vector<String> pass, Client &cl);
 		int						cmdNick(std::vector<String> pass, Client &cl);
 		int						cmdUser(std::vector<String> pass, Client &cl);
+		int						cmdPrvMsg(std::vector<String> pass, Client &cl);
 
 };
 
