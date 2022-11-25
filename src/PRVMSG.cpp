@@ -39,6 +39,7 @@ int Server::cmdPrvMsg(std::vector<String> params, Client &cl)
         std::cout << "message = " << "[" << msg << "]" << std::endl;
         String paquet = RPL_PRIVMSG(cl, recipient.getNickname(), msg);
         std::cout << paquet << recipient.getFd() << std::endl;
+        paquet += "\r\n";
         if (send(recipient.getFd(), paquet.c_str(), paquet.length(), 0) < 0)
             throw std::out_of_range("error while sendig in privmsg");
 
