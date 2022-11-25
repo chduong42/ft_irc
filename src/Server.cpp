@@ -184,19 +184,20 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = " << tmp << std::endl;
 
-	std::string cmds[3] = {"PASS", "NICK", "USER"};
+	std::string cmds[4] = {"PASS", "NICK", "USER", "PRIVMSG"};
 
-	int		(Server::*ptr[3])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[4])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdUser,
+			&Server::cmdPrvMsg,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 2)
+	while (tmp != cmds[i] && i <= 3)
 		i++;
 	if (tmp == cmds[i])
 	{
-		if (i == 2)
+		if (i == 2 || i == 3)
 		{
 			while (std::getline(ss, tmp, ' '))
 				args.push_back(tmp);
@@ -257,6 +258,16 @@ Client		&Server::findClient(int fd)
 	for (unsigned int i = 0; i < _clients.size(); i++)
 	{
 		if (_clients[i].getFd() == fd)
+			return (_clients[i]);
+	}
+	throw(std::out_of_range("Error while searching for user"));
+}
+
+Client		&Server::findClient(String nick)
+{
+	for (unsigned int i = 0; i < _clients.size(); i++)
+	{
+		if (_clients[i].getNickname() == nick)
 			return (_clients[i]);
 	}
 	throw(std::out_of_range("Error while searching for user"));
