@@ -38,6 +38,7 @@ String  Client::getUsername() const {return _username;}
 String  Client::getRealname() const {return _realname;}
 String  Client::getHostname() const {return _hostname;}
 String  Client::getMsg() const {return _msg;}
+State  Client::getState() const {return _state;}
 
 void  Client::setNickname(String newName) {_nickname = newName;}
 void  Client::setUsername(String newName) {_username = newName;}

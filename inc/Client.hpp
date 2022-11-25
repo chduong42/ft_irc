@@ -39,6 +39,7 @@ class Client {
 		String		getRealname() const;
 		String		getHostname() const;
 		String		getMsg() const;
+		State		getState() const;
 		
 		void		setNickname(String newName);
 		void		setUsername(String newName);

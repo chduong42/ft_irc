@@ -63,6 +63,7 @@ class Server {
 		int						cmdNick(std::vector<String> pass, Client &cl);
 		int						cmdUser(std::vector<String> pass, Client &cl);
 		int						cmdPrvMsg(std::vector<String> pass, Client &cl);
+		int						cmdPing(std::vector<String> args, Client &cl);
 
 };
 
