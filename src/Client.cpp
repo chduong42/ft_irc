@@ -16,12 +16,13 @@ void    Client::debug() {
 void    Client::reply(String msg) {
     String prefix = _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
     String paquet = ":" + prefix + " " + msg + "\r\n";
+    std::cout << "---> " << paquet << std::endl;
     if (send(_sockfd, paquet.c_str(), paquet.length(), 0) < 0)
         throw(std::out_of_range("Error while sending"));
 }
 
 void    Client::welcome() {
-    if (_state != LOGIN || _nickname.empty()/* || _username.empty()*/)
+    if (_state != LOGIN || _nickname.empty() /* || _username.empty()*/)
     {
         std::cout << "if welcome" << _state << _nickname << std::endl;
         return ;
