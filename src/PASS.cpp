@@ -48,6 +48,5 @@ int Server::cmdPass(std::vector<String> pass, Client &cl) {
 		return -1;
 	}
 	cl.setState(LOGIN);
-	//std::cout << "in pass" << << std::endl;
 	return 0;
 }

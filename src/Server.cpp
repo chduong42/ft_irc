@@ -48,6 +48,7 @@ void	Server::displayClient()
 	{
 		std::cout << "client[" << j << "]" <<_clients.at(j).getNickname() << std::endl;
 		std::cout << "client[" << j << "]" <<_clients.at(j).getUsername() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getRealname() << std::endl;
 	}
 	
 	return ;
@@ -159,6 +160,7 @@ void	Server::handleMessage(int fd) {
 	}
 	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
 		parseCmd(*it, findClient(fd));
+	displayClient();
 	return ;
 }
 

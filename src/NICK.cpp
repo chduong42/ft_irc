@@ -72,6 +72,5 @@ int Server::cmdNick(std::vector<String> args, Client &cl)
 	if (cl.getState() == REGISTERED)
         cl.reply(SUCCESS_NICK(cl, newNick));
 	cl.setNickname(newNick);
-	displayClient();
 	return 0;
 }
