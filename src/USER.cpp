@@ -14,6 +14,10 @@ int Server::cmdUser(std::vector<String> args, Client &cl) {
 		cl.reply("462 " + cl.getNickname() + " " + cmd + " :Unauthorized command (already registered)");
 	}
 	else if (args.size() == 5)
+	{
 		cl.setUsername(args.at(1));
+		std::cout << "okok" << std::endl;
+	}
+	cl.welcome();
 	return 0;
 }

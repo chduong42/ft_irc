@@ -41,7 +41,8 @@ INC			=	-I inc
 #           & DEPENDENCIES    	        #
 #########################################
 SRC		=	main.cpp		Server.cpp		Client.cpp\
-			NICK.cpp 		USER.cpp 		PASS.cpp
+			NICK.cpp 		USER.cpp 		PASS.cpp	\
+			PRVMSG.cpp
 			
 
 OBJ		=	$(SRC:%.cpp=%.o)
