@@ -20,7 +20,7 @@ String      getMessage(std::vector<String> params)
         message += params[i];
         i++;
     }
-    message = message.substr(0, message.size() - 1); //enleve le \r
+    message = erasebr(message); //enleve le \r
     return message;
 
 }
@@ -30,8 +30,11 @@ int Server::cmdPrvMsg(std::vector<String> params, Client &cl)
     std::cout << "ENTER IN PRIVMSG" << std::endl;
     if (!cl.getFd())
         return -1;
-    if (params.size() < 2)
-        return -1;
+    if (params.size() < 3)
+	{
+        cl.reply("461 " + cl.getNickname() + " " + "PRIVMSG" + " :Not enough parameters");
+		return -1;
+	}
     try
     {
         Client  recipient = findClient(params[1]);      
