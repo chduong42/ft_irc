@@ -1,5 +1,11 @@
 #include "Server.hpp"
 
+String	erasebr(String str) {
+	if (str[str.size() - 1] == '\r')
+		return str.substr(0, (str.size() - 1));
+	return str;
+}
+
 String	ERR_PASSWDMISMATCH(Client &client)
 {
 	return ("464 " + client.getNickname() + " :Password incorrect");
@@ -38,7 +44,7 @@ int Server::cmdPass(std::vector<String> pass, Client &cl) {
 		cl.reply(ERR_NEEDMOREPARAMS(cl));
 		return -1;
 	}
-	String mdp = pass[1].substr(0, pass[1].size() - 1); // enleve le \r a la fin de pass
+	String mdp = erasebr(pass[1]); // enleve le \r a la fin de pass
 	if (mdp != _password)
 	{
 		std::cout <<"pass[1] : " << "[" << mdp << "]"<< std::endl;

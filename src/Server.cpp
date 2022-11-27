@@ -2,7 +2,7 @@
 #include <cstring>
 
 Server::Server(int port, const String &pass)
-	: _loop(1), _port(port), _host("127.0.0.1"), _password(pass) {
+	: _loop(1), _port(port), _host("127.0.0.1"), _password(pass), _operPassword("operpass") {
 	_sock = createSocket();
 }
 
@@ -114,7 +114,7 @@ String	Server::readMsg(int fd) {
 	char	buff[256];
 	bzero(buff, 256);
 
-	while (!std::strstr(buff, "\r\n"))
+	while (!std::strstr(buff, "\n"))
 	{
 		int k = 0;
 		bzero(buff, 256);
@@ -127,7 +127,7 @@ String	Server::readMsg(int fd) {
 		{
 			throw(std::out_of_range("TEST DECO"));
 		}
-		msg = buff;
+		msg += buff;
 	}
 	return msg;
 }
@@ -186,11 +186,12 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = " << tmp << std::endl;
 
-	std::string cmds[4] = {"PASS", "NICK", "USER", "PRIVMSG"};
+	std::string cmds[5] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG"};
 
-	int		(Server::*ptr[4])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[5])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
+			&Server::cmdOper,
 			&Server::cmdUser,
 			&Server::cmdPrvMsg,
 	};
@@ -199,16 +200,16 @@ void	Server::parseCmd(String str, Client &cl) {
 		i++;
 	if (tmp == cmds[i])
 	{
-		if (i == 2 || i == 3)
-		{
-			while (std::getline(ss, tmp, ' '))
-				args.push_back(tmp);
-		}
-		else
-		{
-			std::getline(ss, tmp, '\0');
+		//if (i >= 2)
+		//{
+		while (std::getline(ss, tmp, ' '))
 			args.push_back(tmp);
-		}
+		//}
+		//else
+		//{
+		//	std::getline(ss, tmp, '\0');
+		//	args.push_back(tmp);
+		//}
 		(this->*ptr[i])(args, cl);
 	}
 	else

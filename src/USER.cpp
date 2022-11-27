@@ -11,17 +11,21 @@ bool	validUsername(String str) {
 
 int Server::cmdUser(std::vector<String> args, Client &cl) {
 	String tmp;
-	for (size_t i = 0; i < args.size(); i++)
-		std::cout << "ICIIIII  :" << args.at(i) << std::endl;
 	String cmd = args.at(0);
 	if (args.size() < 5)
+	{
 		cl.reply("461 " + cl.getNickname() + " " + cmd + " :Not enough parameters");
+		return -1;
+	}
 	//else if (validUsername(args.at(1)) == false)
 	//{
 	//	cl.reply
 	//}
 	else if (cl.getUsername() == args.at(1))
+	{
 		cl.reply("462 " + cl.getNickname() + " " + cmd + " :Unauthorized command (already registered)");
+		return -1;
+	}
 	else if (args.size() == 5)
 	{
 		cl.setUsername(args.at(1));
