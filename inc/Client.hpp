@@ -1,9 +1,13 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
+
+class Client;
+
 # include <iostream>
 # include <vector>
 # include <sstream>
 # include <sys/socket.h>
+# include <Channel.hpp>
 
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
@@ -15,6 +19,7 @@ enum State{
 	REGISTERED
 };
 
+
 class Client {
 	private:
 		int			_sockfd;
@@ -25,6 +30,7 @@ class Client {
 		String		_msg;
 		State		_state;
 		bool		_isoper;
+		std::vector<Channel>	_channels;
 
 		
 	public:

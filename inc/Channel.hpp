@@ -9,17 +9,17 @@ class Channel;
 class Channel 
 {
     private:
-        String                  _name;
+        std::string                  _name;
         std::vector<Client>     _clients;
     public:
-        Channel(String _name);
+        Channel(std::string _name);
         ~Channel();
 
-        String  getName()       const;
+        std::string  getName()       const;
         std::vector<Client>     &getClients();
         void                    addClient(Client &client);
         void                    eraseClient(Client &cl);
-        void                    broadcast();
+        void                    broadcast(std::string message);
 
 
 

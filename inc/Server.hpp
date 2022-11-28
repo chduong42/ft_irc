@@ -53,6 +53,7 @@ class Server {
 		void					handleMessage(int fd);
 		void					parseCmd(String str, Client &cl);
 		void					displayClient();
+Channel							&findChannel(String name);
 
 		std::vector<String>		splitCmd(String msg);
 		String					readMsg(int fd);

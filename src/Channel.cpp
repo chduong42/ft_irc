@@ -1,4 +1,16 @@
 #include "Channel.hpp"
+#include "Server.hpp"
+
+Channel     &Server::findChannel(std::string name)
+{
+    for (unsigned int i = 0; i < _channels.size(); i++)
+    {
+        if (_channels[i].getName() == name)
+            return (_channels[i]);
+    }
+    throw (std::out_of_range("didnt find channel"));
+}
+
 
 Channel::Channel(String Name) : _name(Name){}
 
@@ -23,6 +35,14 @@ void                    Channel::eraseClient(Client &cl)
             _clients.erase(it);
             return ;
         }
+    }
+}
+
+void                    Channel::broadcast(std::string message)
+{
+    for (unsigned int i = 0; i < _clients.size(); i++)
+    {
+        _clients[i].reply(message);
     }
 }
 
