@@ -1,23 +1,23 @@
 #include "Server.hpp"
 
-		/*command can only be used as oper
-		KICK    - Eject a client from the channel
+		/*KICK    - Eject a client from the channel
         MODE    - Change the channel's mode
         INVITE  - Invite a client to an invite-only channel (mode +i)
         TOPIC   - Change the channel topic in a mode +t channel*/
 
 int	Server::cmdOper(std::vector<String> args, Client &cl)
 {
-//	for (size_t i = 0; i < args.size(); i++)
-//		std::cout << "ICIIIII  :" << args.at(i) << std::endl;
+	for (size_t i = 0; i < args.size(); i++)
+		std::cout << args.at(i) << std::endl;
+	
 	String cmd = args.at(0);
-	String pswd = erasebr(args.at(2));
 	if (args.size() < 3)
 	{
 		cl.reply("461 " + cl.getNickname() + " " + cmd + " :Not enough parameters");
 		return -1;
 	}
-	else if (this->_operPassword != pswd)
+	String pswd = erasebr(args.at(2));
+	if (this->_operPassword != pswd)
 	{
 		cl.reply("464 " + cl.getNickname() + " " + cmd + " :Password incorrect");
 		return -1;

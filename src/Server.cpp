@@ -39,16 +39,13 @@ int		Server::createSocket()
 
 void	Server::displayClient()
 {
-	size_t i = 0;
-	for (std::vector<Client>::iterator it = this->_clients.begin() ; it != this->_clients.end(); ++it)
-		i++;
-	i -=1;
-	//for (size_t j = 0; j <= i; j++)
-	//{
-		std::cout << "client[" << i << "]" <<_clients.at(i).getNickname() << std::endl;
-		std::cout << "client[" << i << "]" <<_clients.at(i).getUsername() << std::endl;
-		std::cout << "client[" << i << "]" <<_clients.at(i).getRealname() << std::endl;
-	//}
+	size_t i = _clients.size();
+	for (size_t j = 0; j < i; j++)
+	{
+		std::cout << "client[" << j << "]" <<_clients.at(j).getNickname() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getUsername() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getRealname() << std::endl;
+	}
 	return ;
 }
 
