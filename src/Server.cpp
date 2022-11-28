@@ -113,7 +113,7 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
-
+	std::cout << "in readmsg" << std::endl;
 	while (!std::strstr(buff, "\n"))
 	{
 		int k = 0;
@@ -186,17 +186,18 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = " << tmp << std::endl;
 
-	std::string cmds[5] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG"};
+	std::string cmds[6] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN",};
 
-	int		(Server::*ptr[5])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[6])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
 			&Server::cmdUser,
 			&Server::cmdPrvMsg,
+			&Server::cmdJoin,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 3)
+	while (tmp != cmds[i] && i <= 5)
 		i++;
 	if (tmp == cmds[i])
 	{

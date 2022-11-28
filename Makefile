@@ -42,7 +42,8 @@ INC			=	-I inc
 #########################################
 SRC		=	main.cpp		Server.cpp		Client.cpp\
 			NICK.cpp 		USER.cpp 		PASS.cpp	\
-			PRVMSG.cpp		OPER.cpp
+			PRVMSG.cpp		Channel.cpp		JOIN.cpp	\
+			OPER.cpp
 			
 
 OBJ		=	$(SRC:%.cpp=%.o)
