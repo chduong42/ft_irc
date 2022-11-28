@@ -19,6 +19,7 @@
 # include <sstream>
 
 # include "Client.hpp"
+# include "Channel.hpp"
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
@@ -38,6 +39,7 @@ class Server {
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
 		int						_sock;
+		std::vector<Channel>	_channels;
 
 	public:
 		Server(int port, const String &password);
@@ -65,6 +67,7 @@ class Server {
 		int						cmdUser(std::vector<String> pass, Client &cl);
 		int						cmdPrvMsg(std::vector<String> pass, Client &cl);
 		int						cmdPing(std::vector<String> args, Client &cl);
+		int						cmdJoin(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
 		int						cmdKill(std::vector<String> args, Client &cl);
 
