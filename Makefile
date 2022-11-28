@@ -6,7 +6,7 @@
 #    By: chduong <chduong@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/28 19:50:16 by chduong          ###   ########.fr        #
+#    Updated: 2022/11/28 21:49:32 by chduong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,10 @@ INC			=	-I inc
 #           & OBJECT FILES    	        #
 #           & DEPENDENCIES    	        #
 #########################################
-SRC		=	main.cpp		Server.cpp		Client.cpp\
-			NICK.cpp 		USER.cpp 		PASS.cpp	\
-			PRVMSG.cpp		Channel.cpp		JOIN.cpp	\
-			OPER.cpp		PING.cpp
+SRC		=	main.cpp		Server.cpp		Client.cpp		Channel.cpp\
+${addprefix cmd/,\
+			NICK.cpp 		USER.cpp 		PASS.cpp		JOIN.cpp\
+			PRVMSG.cpp		OPER.cpp		PING.cpp}
 			
 
 OBJ		=	$(SRC:%.cpp=%.o)
