@@ -75,6 +75,7 @@ class Server {
 
 //utils
 String					erasebr(String str);
+String					ERR_NEEDMOREPARAMS(Client &client, String cmd);
 
 // enum    numRepl {
 // 	RPL_WELCOME = 001,

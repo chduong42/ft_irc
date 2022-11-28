@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: msainton <msainton@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/28 19:43:38 by msainton         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 #########################################
 #			EXEC NAME & FOLDERS			#
@@ -41,9 +30,9 @@ INC			=	-I inc
 #           & DEPENDENCIES    	        #
 #########################################
 SRC		=	main.cpp		Server.cpp		Client.cpp\
-			NICK.cpp 		USER.cpp 		PASS.cpp\
-			KILL.cpp		PRVMSG.cpp		Channel.cpp\
-			JOIN.cpp		OPER.cpp
+			NICK.cpp 		USER.cpp 		PASS.cpp	\
+			PRVMSG.cpp		Channel.cpp		JOIN.cpp	\
+			OPER.cpp		PING.cpp		KILL.cpp
 			
 
 OBJ		=	$(SRC:%.cpp=%.o)
