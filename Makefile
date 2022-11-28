@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: msainton <msainton@student.42.fr>          +#+  +:+       +#+         #
+#    By: chduong <chduong@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/27 11:42:02 by msainton         ###   ########.fr        #
+#    Updated: 2022/11/28 19:50:16 by chduong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ INC			=	-I inc
 SRC		=	main.cpp		Server.cpp		Client.cpp\
 			NICK.cpp 		USER.cpp 		PASS.cpp	\
 			PRVMSG.cpp		Channel.cpp		JOIN.cpp	\
-			OPER.cpp
+			OPER.cpp		PING.cpp
 			
 
 OBJ		=	$(SRC:%.cpp=%.o)
