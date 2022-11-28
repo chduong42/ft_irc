@@ -195,6 +195,7 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdUser,
 			&Server::cmdPrvMsg,
 			&Server::cmdJoin,
+			&Server::cmdPing,
 	};
 	int i = 0;
 	while (tmp != cmds[i] && i <= 6)
