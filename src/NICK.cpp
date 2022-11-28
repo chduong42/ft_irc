@@ -50,8 +50,7 @@ String	SUCCESS_NICK(String newNick) {
 
 int Server::cmdNick(std::vector<String> args, Client &cl)
 {
-	String newNick = args[1].substr(0, args[1].size() - 1); // enleve le \r a la fin de pass
-	std::cout << "new nick : " << newNick << std::endl;
+	String newNick = erasebr(args[1]); // enleve le \r a la fin de pass
 
 	if (newNick == cl.getNickname())
 		return (0);
@@ -73,7 +72,6 @@ int Server::cmdNick(std::vector<String> args, Client &cl)
 	//if (cl.getState() == REGISTERED)
         cl.reply(SUCCESS_NICK(newNick));
 	cl.setNickname(newNick);
-	std::cout << "nickname set to : " << cl.getNickname() << std::endl;
 	cl.welcome();
 	return 0;
 }

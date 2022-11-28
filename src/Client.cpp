@@ -1,6 +1,6 @@
 #include "Client.hpp"
 
-Client::Client(int sockfd, std::string hostname) : _sockfd(sockfd), _hostname(hostname) 
+Client::Client(int sockfd, std::string hostname) : _sockfd(sockfd), _hostname(hostname), _isoper(false)
 {
     _state = HANDSHAKE;
 }
@@ -38,13 +38,16 @@ String  Client::getUsername() const {return _username;}
 String  Client::getRealname() const {return _realname;}
 String  Client::getHostname() const {return _hostname;}
 String  Client::getMsg() const {return _msg;}
-State  Client::getState() const {return _state;}
+State	Client::getState() const {return _state;}
+bool	Client::getisoper() const {return _isoper;}
 
-void  Client::setNickname(String newName) {_nickname = newName;}
-void  Client::setUsername(String newName) {_username = newName;}
-void  Client::setRealname(String newName) {_realname = newName;}
-void  Client::setHostname(String newName) {_hostname = newName;}
-void  Client::setMsg(String newMsg) {_msg = newMsg;}
+
+void	Client::setNickname(String newName) {_nickname = newName;}
+void	Client::setUsername(String newName) {_username = newName;}
+void	Client::setRealname(String newName) {_realname = newName;}
+void	Client::setHostname(String newName) {_hostname = newName;}
+void	Client::setMsg(String newMsg) {_msg = newMsg;}
+void	Client::setisoper(bool isoper) {_isoper = isoper;}
 
 void  Client::setState(State new_state)
 {

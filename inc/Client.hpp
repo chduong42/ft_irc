@@ -24,6 +24,8 @@ class Client {
 		String		_hostname;
 		String		_msg;
 		State		_state;
+		bool		_isoper;
+
 		
 	public:
 		Client(int fd, String host);
@@ -40,6 +42,7 @@ class Client {
 		String		getHostname() const;
 		String		getMsg() const;
 		State		getState() const;
+		bool		getisoper() const;
 		
 		void		setNickname(String newName);
 		void		setUsername(String newName);
@@ -47,6 +50,7 @@ class Client {
 		void		setHostname(String newName);
 		void		setMsg(String newMsg);
 		void		setState(State newState);
+		void		setisoper(bool isoper);
 
 };
 

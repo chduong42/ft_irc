@@ -2,7 +2,7 @@
 #include <cstring>
 
 Server::Server(int port, const String &pass)
-	: _loop(1), _port(port), _host("127.0.0.1"), _password(pass) {
+	: _loop(1), _port(port), _host("127.0.0.1"), _password(pass), _operPassword("operpass") {
 	_sock = createSocket();
 }
 
@@ -46,8 +46,9 @@ void	Server::displayClient()
 	}
 	for (size_t j = 0; j < i; j++)
 	{
-		std::cout << "client[" << i << "]" <<_clients.at(j).getNickname() << std::endl;
-		std::cout << "client[" << i << "]" <<_clients.at(j).getUsername() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getNickname() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getUsername() << std::endl;
+		std::cout << "client[" << j << "]" <<_clients.at(j).getRealname() << std::endl;
 	}
 	
 	return ;
@@ -159,6 +160,7 @@ void	Server::handleMessage(int fd) {
 	}
 	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
 		parseCmd(*it, findClient(fd));
+	displayClient();
 	return ;
 }
 
@@ -184,30 +186,31 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = " << tmp << std::endl;
 
-	std::string cmds[5] = {"PASS", "NICK", "USER", "PRIVMSG", "JOIN"};
+	std::string cmds[6] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN",};
 
-	int		(Server::*ptr[5])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[6])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
+			&Server::cmdOper,
 			&Server::cmdUser,
 			&Server::cmdPrvMsg,
 			&Server::cmdJoin,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 4)
+	while (tmp != cmds[i] && i <= 5)
 		i++;
 	if (tmp == cmds[i])
 	{
-		if (i == 2 || i == 3)
-		{
-			while (std::getline(ss, tmp, ' '))
-				args.push_back(tmp);
-		}
-		else
-		{
-			std::getline(ss, tmp, '\0');
+		//if (i >= 2)
+		//{
+		while (std::getline(ss, tmp, ' '))
 			args.push_back(tmp);
-		}
+		//}
+		//else
+		//{
+		//	std::getline(ss, tmp, '\0');
+		//	args.push_back(tmp);
+		//}
 		(this->*ptr[i])(args, cl);
 	}
 	else

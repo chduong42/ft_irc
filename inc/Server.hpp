@@ -34,6 +34,7 @@ class Server {
 		int						_port;
 		String					_host;
 		String					_password;
+		String					_operPassword;
 		std::vector<String>		_cmd;
 		std::vector<pollfd>		_pollfds;
 		std::vector<Client>		_clients;
@@ -67,9 +68,12 @@ class Server {
 		int						cmdPrvMsg(std::vector<String> pass, Client &cl);
 		int						cmdPing(std::vector<String> args, Client &cl);
 		int						cmdJoin(std::vector<String> args, Client &cl);
+		int						cmdOper(std::vector<String> args, Client &cl);
 
 };
 
+//utils
+String					erasebr(String str);
 // enum    numRepl {
 // 	RPL_WELCOME = 001,
 // 	RPL_YOURHOST = 002,
