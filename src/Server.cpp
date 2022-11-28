@@ -112,8 +112,8 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
-
-	while (!std::strstr(buff, "\r\n"))
+	std::cout << "in readmsg" << std::endl;
+	while (!std::strstr(buff, "\n"))
 	{
 		int k = 0;
 		bzero(buff, 256);
@@ -126,7 +126,7 @@ String	Server::readMsg(int fd) {
 		{
 			throw(std::out_of_range("TEST DECO"));
 		}
-		msg = buff;
+		msg += buff;
 	}
 	return msg;
 }
