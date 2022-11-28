@@ -41,16 +41,14 @@ void	Server::displayClient()
 {
 	size_t i = 0;
 	for (std::vector<Client>::iterator it = this->_clients.begin() ; it != this->_clients.end(); ++it)
-	{
 		i++;
-	}
-	for (size_t j = 0; j < i; j++)
-	{
-		std::cout << "client[" << j << "]" <<_clients.at(j).getNickname() << std::endl;
-		std::cout << "client[" << j << "]" <<_clients.at(j).getUsername() << std::endl;
-		std::cout << "client[" << j << "]" <<_clients.at(j).getRealname() << std::endl;
-	}
-	
+	i -=1;
+	//for (size_t j = 0; j <= i; j++)
+	//{
+		std::cout << "client[" << i << "]" <<_clients.at(i).getNickname() << std::endl;
+		std::cout << "client[" << i << "]" <<_clients.at(i).getUsername() << std::endl;
+		std::cout << "client[" << i << "]" <<_clients.at(i).getRealname() << std::endl;
+	//}
 	return ;
 }
 
@@ -184,32 +182,25 @@ void	Server::parseCmd(String str, Client &cl) {
 	std::getline(ss, tmp, ' ');
 
 	args.push_back(tmp);
-  	std::cout << "tmp = " << tmp << std::endl;
+  	std::cout << "tmp = [" << tmp << "]" << std::endl;
 
-	std::string cmds[5] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG"};
+	std::string cmds[6] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "kill"};
 
-	int		(Server::*ptr[5])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[6])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
 			&Server::cmdUser,
 			&Server::cmdPrvMsg,
+			&Server::cmdKill,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 3)
+	while (tmp != cmds[i] && i <= 5)
 		i++;
 	if (tmp == cmds[i])
 	{
-		//if (i >= 2)
-		//{
 		while (std::getline(ss, tmp, ' '))
 			args.push_back(tmp);
-		//}
-		//else
-		//{
-		//	std::getline(ss, tmp, '\0');
-		//	args.push_back(tmp);
-		//}
 		(this->*ptr[i])(args, cl);
 	}
 	else

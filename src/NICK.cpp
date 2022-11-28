@@ -51,7 +51,6 @@ String	SUCCESS_NICK(String newNick) {
 int Server::cmdNick(std::vector<String> args, Client &cl)
 {
 	String newNick = erasebr(args[1]); // enleve le \r a la fin de pass
-
 	if (newNick == cl.getNickname())
 		return (0);
 	if (newNick.empty())

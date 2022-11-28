@@ -1,13 +1,13 @@
 #include "Server.hpp"
 
-bool	validUsername(String str) {
+/*bool	validUsername(String str) {
 	for (size_t i = 1; i < str.size(); ++i)
 	{
 		if (str[i] == 0x00 && str[i] == 0x0A && str[i] == 0x0D && str[i] == 0x20 && str[i] == 40)
 			return false;
 	}
 	return true;
-}
+}*/
 
 int Server::cmdUser(std::vector<String> args, Client &cl) {
 	String tmp;
@@ -17,10 +17,11 @@ int Server::cmdUser(std::vector<String> args, Client &cl) {
 		cl.reply("461 " + cl.getNickname() + " " + cmd + " :Not enough parameters");
 		return -1;
 	}
-	//else if (validUsername(args.at(1)) == false)
-	//{
-	//	cl.reply
-	//}
+	/*else if (validUsername(args.at(1)) == false)
+	{
+		//cl.reply
+		return -1;
+	}*/
 	else if (cl.getUsername() == args.at(1))
 	{
 		cl.reply("462 " + cl.getNickname() + " " + cmd + " :Unauthorized command (already registered)");
@@ -29,7 +30,10 @@ int Server::cmdUser(std::vector<String> args, Client &cl) {
 	else if (args.size() == 5)
 	{
 		cl.setUsername(args.at(1));
-		tmp = args.at(1) + " " + args.at(2) + " " + args.at(3) + " " + args.at(4);
+		size_t i;
+		for (i = 1; i < args.size() - 1; i++)
+			tmp += args.at(i) + " ";
+		tmp += args.at(i);
 		cl.setRealname(tmp);
 	}
 	cl.welcome();

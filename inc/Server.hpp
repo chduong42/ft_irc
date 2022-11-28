@@ -66,11 +66,13 @@ class Server {
 		int						cmdPrvMsg(std::vector<String> pass, Client &cl);
 		int						cmdPing(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
+		int						cmdKill(std::vector<String> args, Client &cl);
 
 };
 
 //utils
 String					erasebr(String str);
+
 // enum    numRepl {
 // 	RPL_WELCOME = 001,
 // 	RPL_YOURHOST = 002,

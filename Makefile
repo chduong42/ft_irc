@@ -6,7 +6,7 @@
 #    By: msainton <msainton@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/27 11:42:02 by msainton         ###   ########.fr        #
+#    Updated: 2022/11/28 09:54:20 by msainton         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ INC			=	-I inc
 #########################################
 SRC		=	main.cpp		Server.cpp		Client.cpp\
 			NICK.cpp 		USER.cpp 		PASS.cpp	\
-			PRVMSG.cpp		OPER.cpp
+			PRVMSG.cpp		OPER.cpp		KILL.cpp
 			
 
 OBJ		=	$(SRC:%.cpp=%.o)
