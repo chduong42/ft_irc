@@ -70,12 +70,15 @@ Channel							&findChannel(String name);
 		int						cmdPing(std::vector<String> args, Client &cl);
 		int						cmdJoin(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
+		int						cmdKill(std::vector<String> args, Client &cl);
 
 };
 
 //utils
 String					erasebr(String str);
 bool        			isClientInChannel(Channel chan, int fd);
+String					ERR_NEEDMOREPARAMS(Client &client, String cmd);
+
 // enum    numRepl {
 // 	RPL_WELCOME = 001,
 // 	RPL_YOURHOST = 002,

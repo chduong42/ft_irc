@@ -20,8 +20,8 @@ bool	isSpecial(char c) {
 }
 
 bool	valid_nickname(String name) {
-	if (name.size() > 9)
-		return (false);
+	// if (name.size() > 9)
+	// 	return (false);
 	if (!(isSpecial(name[0]) || isalpha(name[0])))
 		return (false);
 	for (size_t i = 1; i < name.size(); ++i)
@@ -45,25 +45,22 @@ String	ERR_NICKNAMEINUSE(Client cl, String newNick) {
 }
 
 String	SUCCESS_NICK(String newNick) {
-	return ("NICK " + newNick);
+	return (" NICK " + newNick);
 }
 
 int Server::cmdNick(std::vector<String> args, Client &cl)
 {
-	String newNick = erasebr(args[1]); // enleve le \r a la fin de pass
-
-	if (newNick == cl.getNickname())
-		return (0);
-	if (newNick.empty())
+	if (args.size() < 2)
 	{
 		cl.reply(ERR_NONICKNAMEGIVEN(cl));
 		return (-1);
 	}
-	//if (valid_nickname(newNick) == false)
-	//{
-	//	cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
-	//	return (-1);
-	//}
+	String newNick = erasebr(args[1]); // enleve le \r a la fin de pass
+	if (valid_nickname(newNick) == false)
+	{
+		cl.reply(ERR_ERRONEUSNICKNAME(cl, newNick));
+		return (-1);
+	}
 	if (already_used(newNick, cl) == true)
 	{
 		cl.reply(ERR_NICKNAMEINUSE(cl, newNick));

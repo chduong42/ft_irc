@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: msainton <msainton@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/06/10 17:16:04 by chduong           #+#    #+#              #
-#    Updated: 2022/11/27 11:42:02 by msainton         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #########################################
 #			EXEC NAME & FOLDERS			#
 #########################################
@@ -40,11 +28,13 @@ INC			=	-I inc
 #           & OBJECT FILES    	        #
 #           & DEPENDENCIES    	        #
 #########################################
-SRC		=	main.cpp		Server.cpp		Client.cpp\
-			NICK.cpp 		USER.cpp 		PASS.cpp	\
-			PRVMSG.cpp		Channel.cpp		JOIN.cpp	\
-			OPER.cpp
-			
+
+SRC		=	main.cpp\
+${addprefix class/,\
+			Server.cpp		Client.cpp		Channel.cpp}\
+${addprefix cmd/,\
+			NICK.cpp 		USER.cpp 		PASS.cpp		PRVMSG.cpp\
+			JOIN.cpp		OPER.cpp		PING.cpp		KILL.cpp}
 
 OBJ		=	$(SRC:%.cpp=%.o)
 OBJ		:=	$(addprefix $(OBJ_DIR), $(OBJ))

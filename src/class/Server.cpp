@@ -39,18 +39,13 @@ int		Server::createSocket()
 
 void	Server::displayClient()
 {
-	size_t i = 0;
-	for (std::vector<Client>::iterator it = this->_clients.begin() ; it != this->_clients.end(); ++it)
-	{
-		i++;
-	}
+	size_t i = _clients.size();
 	for (size_t j = 0; j < i; j++)
 	{
 		std::cout << "client[" << j << "]" <<_clients.at(j).getNickname() << std::endl;
 		std::cout << "client[" << j << "]" <<_clients.at(j).getUsername() << std::endl;
 		std::cout << "client[" << j << "]" <<_clients.at(j).getRealname() << std::endl;
 	}
-	
 	return ;
 }
 
@@ -185,33 +180,27 @@ void	Server::parseCmd(String str, Client &cl) {
 	std::getline(ss, tmp, ' ');
 
 	args.push_back(tmp);
-  	std::cout << "tmp = " << tmp << std::endl;
+  	std::cout << "tmp = [" << tmp << "]" << std::endl;
 
-	std::string cmds[6] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN",};
+	std::string cmds[8] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING"};
 
-	int		(Server::*ptr[6])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[8])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
 			&Server::cmdUser,
 			&Server::cmdPrvMsg,
 			&Server::cmdJoin,
+			&Server::cmdKill,
+			&Server::cmdPing,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 5)
+	while (tmp != cmds[i] && i <= 7)
 		i++;
 	if (tmp == cmds[i])
 	{
-		//if (i >= 2)
-		//{
 		while (std::getline(ss, tmp, ' '))
 			args.push_back(tmp);
-		//}
-		//else
-		//{
-		//	std::getline(ss, tmp, '\0');
-		//	args.push_back(tmp);
-		//}
 		(this->*ptr[i])(args, cl);
 	}
 	else

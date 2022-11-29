@@ -1,21 +1,20 @@
 #include "Server.hpp"
 
 String	erasebr(String str) {
+	if (str.empty())
+		return NULL;
 	if (str[str.size() - 1] == '\r')
 		return str.substr(0, (str.size() - 1));
 	return str;
 }
 
-String	ERR_PASSWDMISMATCH(Client &client)
-{
+String	ERR_PASSWDMISMATCH(Client &client) {
 	return ("464 " + client.getNickname() + " :Password incorrect");
 }
 
-String	ERR_NEEDMOREPARAMS(Client &client)
-{
-	String cmd = "PASS";
+String	ERR_NEEDMOREPARAMS(Client &client, String cmd) {
 	return ("461 " + client.getNickname() + " " + cmd + " :Not enough parameters");
-} // a mettre ailleur pourrait servir ailleur que pass d'ou le cmd a mettre en parametre?
+}
 
 int		teststring(String test)
 {
@@ -41,7 +40,7 @@ int Server::cmdPass(std::vector<String> pass, Client &cl) {
 	
 	if (pass.size() < 2)
 	{
-		cl.reply(ERR_NEEDMOREPARAMS(cl));
+		cl.reply(ERR_NEEDMOREPARAMS(cl, "PASS"));
 		return -1;
 	}
 	String mdp = erasebr(pass[1]); // enleve le \r a la fin de pass
