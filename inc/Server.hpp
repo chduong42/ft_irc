@@ -71,6 +71,7 @@ Channel							&findChannel(String name);
 		int						cmdJoin(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
 		int						cmdKill(std::vector<String> args, Client &cl);
+		int						cmdTopic(std::vector<String> args, Client &cl);
 
 };
 
