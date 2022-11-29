@@ -47,6 +47,7 @@ class Client {
 		String		getRealname() const;
 		String		getHostname() const;
 		String		getMsg() const;
+		String		getPrefix();
 		State		getState() const;
 		bool		getisoper() const;
 		

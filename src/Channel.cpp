@@ -40,9 +40,11 @@ void                    Channel::eraseClient(Client &cl)
 
 void                    Channel::broadcast(std::string message)
 {
+    message += "\r\n";
     for (unsigned int i = 0; i < _clients.size(); i++)
     {
-        _clients[i].reply(message);
+        if (send(_clients[i].getFd(), message.c_str(), message.length(), 0) < 0)
+            throw std::out_of_range("error while broadcasting");
     }
 }
 
