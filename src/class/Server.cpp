@@ -102,7 +102,7 @@ void	Server::clientDisconnect(int fd)
 	close(fd);
 	std::cout << "disconnexion succefull" << std::endl;
 
-}
+}//ajouter la suppression de chanel (par name ou par fd?)
 
 String	Server::readMsg(int fd) {
 	String	msg;
@@ -124,6 +124,7 @@ String	Server::readMsg(int fd) {
 		}
 		msg += buff;
 	}
+	std::cout << msg << std::endl;
 	return msg;
 }
 

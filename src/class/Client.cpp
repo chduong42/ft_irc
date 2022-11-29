@@ -13,6 +13,12 @@ void    Client::debug() {
     std::cout << "[" << _nickname<<"]" << std::endl;
 }
 
+String  Client::getPrefix()
+{
+    String prefix = ":" + _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
+    return prefix;
+}
+
 void    Client::reply(String msg) {
     String prefix = _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
     String paquet = ":" + prefix + " " + msg + "\r\n";

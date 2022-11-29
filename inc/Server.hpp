@@ -53,6 +53,7 @@ class Server {
 		void					handleMessage(int fd);
 		void					parseCmd(String str, Client &cl);
 		void					displayClient();
+Channel							&findChannel(String name);
 
 		std::vector<String>		splitCmd(String msg);
 		String					readMsg(int fd);
@@ -75,6 +76,7 @@ class Server {
 
 //utils
 String					erasebr(String str);
+bool        			isClientInChannel(Channel chan, int fd);
 String					ERR_NEEDMOREPARAMS(Client &client, String cmd);
 
 // enum    numRepl {
