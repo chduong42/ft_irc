@@ -1,14 +1,15 @@
 #include "Server.hpp"
 
-bool        isClientInChannel(Channel chan, std::string name)
+bool        isClientInChannel(Channel chan, int fd)
 {
     for (unsigned int i = 0; i < chan.getClients().size(); i++)
     {
-        if (chan.getClients()[i].getNickname() == name)
+        if (chan.getClients()[i].getFd() == fd)
             return true;
     }
     return false;
-}
+}//mettre le fd a la place
+
 std::string     RPL_NAMREPLY(Client &cl, std::string chan_name, std::string users)
 {
     std::string ret = "353 " + cl.getNickname() + " = " + chan_name + " :" + users;
@@ -50,7 +51,7 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
     try
     {
         Channel chan = findChannel(name);
-        if (isClientInChannel(chan, cl.getNickname()))
+        if (isClientInChannel(chan, cl.getFd()))
         {
             std::cout << "isinclient" << std::endl;
             return -1;

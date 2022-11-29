@@ -48,5 +48,18 @@ void                    Channel::broadcast(std::string message)
     }
 }
 
+void                    Channel::broadcast(std::string message, Client &cl)
+{
+    message += "\r\n";
+    for (unsigned int i = 0; i < _clients.size(); i++)
+    {
+        if (cl.getFd() != _clients[i].getFd())
+        {
+            if (send(_clients[i].getFd(), message.c_str(), message.length(), 0) < 0)
+                throw std::out_of_range("error while broadcasting");
+        }
+    }
+}
+
 
 

@@ -20,6 +20,8 @@ class Channel
         void                    addClient(Client &client);
         void                    eraseClient(Client &cl);
         void                    broadcast(std::string message);
+        void                    broadcast(std::string message, Client &cl);
+
 
 
 

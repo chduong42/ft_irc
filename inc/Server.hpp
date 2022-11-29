@@ -75,6 +75,7 @@ Channel							&findChannel(String name);
 
 //utils
 String					erasebr(String str);
+bool        			isClientInChannel(Channel chan, int fd);
 // enum    numRepl {
 // 	RPL_WELCOME = 001,
 // 	RPL_YOURHOST = 002,
