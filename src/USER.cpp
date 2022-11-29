@@ -26,6 +26,7 @@ int Server::cmdUser(std::vector<String> args, Client &cl) {
 		if (i + 1 == args.size())
 		{
 			cl.setRealname(tmp);
+			cl.welcome();
 			return 0;
 		}
 		i++;
