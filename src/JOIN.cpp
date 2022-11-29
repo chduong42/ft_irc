@@ -29,7 +29,7 @@ void        join(Channel &chan, Client &cl)
     }
     cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
 	cl.reply(RPL_ENDOFNAMES(cl, chan.getName()));
-    chan.broadcast(cl.getPrefix() + " JOIN :" + chan.getName());//changer broadcast
+    chan.broadcast(cl.getPrefix() + " JOIN :" + chan.getName());
 }
 
 int         Server::cmdJoin(std::vector<String> params, Client &cl)

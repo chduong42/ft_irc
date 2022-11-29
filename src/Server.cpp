@@ -107,7 +107,7 @@ void	Server::clientDisconnect(int fd)
 	close(fd);
 	std::cout << "disconnexion succefull" << std::endl;
 
-}
+}//ajouter la suppression de chanel
 
 String	Server::readMsg(int fd) {
 	String	msg;
