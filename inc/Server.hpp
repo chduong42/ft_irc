@@ -69,6 +69,7 @@ class Server {
 		int						cmdPing(std::vector<String> args, Client &cl);
 		int						cmdJoin(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
+		int						cmdKill(std::vector<String> args, Client &cl);
 
 };
 

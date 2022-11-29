@@ -16,7 +16,10 @@ int Server::cmdUser(std::vector<String> args, Client &cl) {
 	else if (args.size() == 5)
 	{
 		cl.setUsername(args.at(1));
-		tmp = args.at(1) + " " + args.at(2) + " " + args.at(3) + " " + args.at(4);
+		size_t i;
+		for (i = 1; i < args.size() - 1; i++)
+			tmp += args.at(i) + " ";
+		tmp += args.at(i);
 		cl.setRealname(tmp);
 	}
 	cl.welcome();
