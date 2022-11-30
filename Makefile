@@ -47,7 +47,7 @@ DEP		=	${OBJ:.o=.d}
 #########################################
 $(NAME): $(OBJ)
 	@echo "> $(CYAN)Generate objects$(END) : \t\t[$(GREEN)OK$(END)]"
-	$(LINK) $(LFLAGS) -o $@ $^
+	@$(LINK) $(LFLAGS) -o $@ $^
 	@echo "> $(CYAN)Compilation$(END) : \t\t[$(YELLOW)COMPLETE$(END)]"
 
 -include ${DEP}
