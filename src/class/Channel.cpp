@@ -49,6 +49,8 @@ Channel::~Channel(){}
 std::vector<Client>     &Channel::getClients(){return _clients;}
 
 String                  Channel::getName() const {return _name;}
+String                  Channel::getTopic() const {return _topic;}
+
 
 void                    Channel::addClient(Client &cl) {_clients.push_back(cl);}
 

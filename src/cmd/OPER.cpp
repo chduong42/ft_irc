@@ -25,7 +25,7 @@ int	Server::cmdOper(std::vector<String> args, Client &cl)
 	else
 	{
 		cl.setisoper(true);
-		cl.reply("381 " + cl.getNickname() + " " + cmd + " :you are now an operator");
+		cl.reply("381 " + cl.getNickname() + " " + cmd + " :you are now an IRC operator");
 	}
 	return 0;
 }

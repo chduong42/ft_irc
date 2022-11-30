@@ -183,9 +183,9 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = [" << tmp << "]" << std::endl;
 
-	std::string cmds[9] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART"};
+	std::string cmds[10] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST"};
 
-	int		(Server::*ptr[9])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[10])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
@@ -195,9 +195,10 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdKill,
 			&Server::cmdPing,
 			&Server::cmdPart,
+            &Server::cmdList,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 8)
+	while (tmp != cmds[i] && i <= 9)
 		i++;
 	if (tmp == cmds[i])
 	{
