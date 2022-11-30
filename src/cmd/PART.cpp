@@ -8,7 +8,7 @@ int         Server::cmdPart(std::vector<String> params, Client &cl)
     }
     if (params.size() < 2)
     {
-        //errneedmorparams
+        cl.reply("error : PART :need more params");//errneedmorparams
         return -1;
     }
     try

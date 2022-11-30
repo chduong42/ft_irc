@@ -75,6 +75,7 @@ std::vector<Channel>::iterator	findChannelIt(String name);
 		int						cmdPart(std::vector<String> args, Client &cl);
 
 		void	eraseClientChannel(Client &cl);
+		int		chanMessage(std::vector<String> params, Client &cl);
 
 };
 

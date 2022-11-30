@@ -25,16 +25,35 @@ String      getMessage(std::vector<String> params)
 
 }
 //Faire le neddmoreparams
+
+int Server::chanMessage(std::vector<String> params, Client &cl)
+{
+    if (params.size() < 3)
+    {
+        cl.reply("need more params");
+        return -1;
+    }
+    String  message = getMessage(params);
+    std::cout << "MESSAGE IN chanMessage" << std::endl;
+    std::cout << message << std::endl;
+    return 0;
+}
+
 int Server::cmdPrvMsg(std::vector<String> params, Client &cl)
 {
     std::cout << "ENTER IN PRIVMSG" << std::endl;
-    if (!cl.getFd())
+    if (cl.getState() != REGISTERED)
+    {
+        cl.reply("you need to register first (prvmsg)");
         return -1;
+    }
     if (params.size() < 3)
 	{
         cl.reply("461 " + cl.getNickname() + " " + "PRIVMSG" + " :Not enough parameters");
 		return -1;
 	}
+    if (params[1].at(0) == '#')
+        return (chanMessage(params, cl));
     try
     {
         Client  recipient = findClient(params[1]);      
