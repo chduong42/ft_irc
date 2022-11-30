@@ -50,25 +50,27 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
     name = erasebr(params[1]);
     try
     {
-        Channel chan = findChannel(name);
-        if (isClientInChannel(chan, cl.getFd()))
+        std::vector<Channel>::iterator chan = findChannelIt(name);
+        if (isClientInChannel(*chan, cl.getFd()))
         {
             std::cout << "isinclient" << std::endl;
             return -1;
         }
-        chan.addClient(cl);
-        join(chan, cl);
+        chan->addClient(cl);
+        join(*chan, cl);
        // return 0;
     }
     catch(const std::exception& e)
     {
 
         std::cerr << e.what() << '\n';
+        std::cout << "New chan open : " << name << std::endl;
         Channel new_chan(name);
         new_chan.addClient(cl);
         _channels.push_back(new_chan);
         join(new_chan, cl);
         //return 0;
     }
+    _channels[0].debug();
     return 0;
 }
