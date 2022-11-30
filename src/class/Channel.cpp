@@ -54,7 +54,7 @@ void                    Channel::addClient(Client &cl) {_clients.push_back(cl);}
 
 std::string     RPL_PART(std::string prefix, std::string name_chan)
 {
-    return (":" + prefix + " PART :" + name_chan);
+    return (prefix + " PART :" + name_chan);
 }
 
 void                    Channel::eraseClient(Client &cl)

@@ -72,6 +72,7 @@ std::vector<Channel>::iterator	findChannelIt(String name);
 		int						cmdJoin(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
 		int						cmdKill(std::vector<String> args, Client &cl);
+		int						cmdPart(std::vector<String> args, Client &cl);
 
 		void	eraseClientChannel(Client &cl);
 
