@@ -34,8 +34,21 @@ int Server::chanMessage(std::vector<String> params, Client &cl)
         return -1;
     }
     String  message = getMessage(params);
-    std::cout << "MESSAGE IN chanMessage" << std::endl;
-    std::cout << message << std::endl;
+  //  std::cout << "MESSAGE IN chanMessage" << std::endl;
+   // std::cout << message << std::endl;
+    try
+    {
+        std::vector<Channel>::iterator chan = findChannelIt(params[1]);
+        if (isClientInChannel(*chan, cl.getFd()))
+            chan->broadcast(RPL_PRIVMSG(cl, params[1], message), cl);
+        else
+            cl.reply("404 " + cl.getNickname() + " you are not in the channel " + chan->getName());
+    }
+    catch(const std::exception& e)
+    {
+       cl.reply(e.what());
+    }
+    
     return 0;
 }
 
@@ -64,8 +77,6 @@ int Server::cmdPrvMsg(std::vector<String> params, Client &cl)
         paquet += "\r\n";
         if (send(recipient.getFd(), paquet.c_str(), paquet.length(), 0) < 0)
             throw std::out_of_range("error while sendig in privmsg");
-
-        /* code */
     }
     catch(const std::exception& e)
     {
