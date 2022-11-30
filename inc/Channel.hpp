@@ -21,6 +21,7 @@ class Channel
         void                    eraseClient(Client &cl);
         void                    broadcast(std::string message);
         void                    broadcast(std::string message, Client &cl);
+        void                debug();
 
 
 

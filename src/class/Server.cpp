@@ -89,6 +89,7 @@ void	Server::eraseClient(int fd)
 void	Server::clientDisconnect(int fd)
 {
 	std::vector<pollfd>::iterator it = _pollfds.begin();
+	eraseClientChannel(findClient(fd));
 	eraseClient(fd);
 	while (it != _pollfds.end())
 	{
