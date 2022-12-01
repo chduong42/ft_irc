@@ -34,8 +34,6 @@ int Server::chanMessage(std::vector<String> params, Client &cl)
         return -1;
     }
     String  message = getMessage(params);
-  //  std::cout << "MESSAGE IN chanMessage" << std::endl;
-   // std::cout << message << std::endl;
     try
     {
         std::vector<Channel>::iterator chan = findChannelIt(params[1]);
@@ -48,7 +46,6 @@ int Server::chanMessage(std::vector<String> params, Client &cl)
     {
        cl.reply(e.what());
     }
-    
     return 0;
 }
 

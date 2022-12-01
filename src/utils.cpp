@@ -14,6 +14,10 @@ String	ERR_NEEDMOREPARAMS(Client &client, String cmd) {
 	return ("461 " + client.getNickname() + " " + cmd + " :Not enough parameters");
 }
 
+String  RPL_TOPIC(Client cl, String channel, String topic) {
+	return ("332 " + cl.getNickname() + " " + channel + " :" + topic);
+}
+
 bool	isClientInChannel(Channel &chan, int fd)
 {
 	for (unsigned int i = 0; i < chan.getClients().size(); i++)

@@ -21,13 +21,9 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-
-typedef struct sockaddr_in SOCKADDR_IN;
-typedef struct sockaddr SOCKADDR;
 typedef std::string String;
 
+class Client;
 class Channel;
 
 class Server {
@@ -47,27 +43,35 @@ class Server {
 		Server(int port, const String &password);
 		~Server();
 
+	// Server init
 		int									createSocket();
 		void								launch();
-		void								newClient();
-		void								clientDisconnect(int fd);
-		void								eraseClient(int fd);
+	// Server display
 		void								handleMessage(int fd);
-		void								parseCmd(String str, Client &cl);
 		void								displayClient();
+	// Server receipt 
 		std::vector<String>					splitCmd(String msg);
+		void								parseCmd(String str, Client &cl);
 		String								readMsg(int fd);
+	// Manage Clients
+		void								newClient();
+		void								eraseClient(int fd);
+		void								eraseClientChannel(Client &cl);
+		void								clientDisconnect(int fd);
+
+	// Server utils
+		int									chanMessage(std::vector<String> params, Client &cl);
+		bool								already_used(String name, Client cl);
 
 		Client								&findClient(int fd);
 		Client								&findClient(String nickname);
 		std::vector<Client>::iterator		findClientIt(int fd);
 		
+
 		Channel								&findChannel(String name);
 		std::vector<Channel>::iterator		findChannelIt(String name);
 
-		bool								already_used(String name, Client cl);
-
-		// COMMANDE IRC
+	// COMMANDE IRC
 		int									cmdPass(std::vector<String> pass, Client &cl);
 		int									cmdNick(std::vector<String> pass, Client &cl);
 		int									cmdUser(std::vector<String> pass, Client &cl);
@@ -77,17 +81,16 @@ class Server {
 		int									cmdOper(std::vector<String> args, Client &cl);
 		int									cmdKill(std::vector<String> args, Client &cl);
 		int									cmdPart(std::vector<String> args, Client &cl);
-
-		void								eraseClientChannel(Client &cl);
-		int									chanMessage(std::vector<String> params, Client &cl);
+        int                     			cmdList(std::vector<String> args, Client &cl);
+        int                     			cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
-
 };
 
-//utils
-String										erasebr(String str);
-String										ERR_NEEDMOREPARAMS(Client &client, String cmd);
-bool        								isClientInChannel(Channel &chan, int fd);
-bool        								isOperInChannel(Client cl, Channel chan);
+// Other Utils
+	String								erasebr(String str);
+	String								ERR_NEEDMOREPARAMS(Client &client, String cmd);
+	String								RPL_TOPIC(Client cl, String channel, String topic);
+	bool        						isClientInChannel(Channel &chan, int fd);
+	bool        						isOperInChannel(Client cl, Channel chan);
 
 #endif

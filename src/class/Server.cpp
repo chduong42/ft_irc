@@ -23,7 +23,7 @@ int		Server::createSocket()
 	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) 
 		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
 
-	SOCKADDR_IN serv_address = {};
+	sockaddr_in serv_address = {};
 	bzero((char *) &serv_address, sizeof(serv_address));
 	serv_address.sin_family = AF_INET;
 	serv_address.sin_addr.s_addr = INADDR_ANY;
@@ -40,13 +40,13 @@ int		Server::createSocket()
 void	Server::displayClient()
 {
 	size_t i = _clients.size();
+	std::cout << "\nList of clients:" << std::endl; 
 	for (size_t j = 0; j < i; j++)
-	{
-		std::cout << "client[" << j << "] : "
-		<<_clients.at(j).getNickname() << " ; "
-		<<_clients.at(j).getUsername() << " ; "
-		<< _clients.at(j).getRealname() << std::endl;
-	}
+		std::cout << "client[" << j << "]" 
+		<< " nick:" << _clients.at(j).getNickname() 
+		<< " username:" <<_clients.at(j).getUsername() 
+		<< " realname:" <<_clients.at(j).getRealname() 
+		<< std::endl;
 	return ;
 }
 
@@ -116,7 +116,7 @@ String	Server::readMsg(int fd) {
 	{
 		int k = 0;
 		bzero(buff, 256);
-		if ((k = recv(fd, buff, 256, 0)) < 0)
+		if ((k = recv(fd, buff, 256, MSG_DONTWAIT)) < 0)
 		{
 			if (errno != EWOULDBLOCK)
 				throw std::runtime_error("error in recv");
@@ -156,7 +156,8 @@ std::vector<String>	Server::splitCmd(String msg) {
 	std::stringstream str(msg);
 	String tmp;
 	int i = 0;
-
+	if (msg == "\n")
+		return cmd;
 	while (std::getline(str, tmp, '\n')) {
 		cmd.push_back(tmp);
 		std::cout << cmd.at(i++) << std::endl;
@@ -173,9 +174,9 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "Parse command : [" << tmp << "]" << std::endl;
 
-	std::string cmds[10] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "TOPIC"};
+	std::string cmds[12] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST", "NAMES", "TOPIC"};
 
-	int		(Server::*ptr[10])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[12])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
@@ -185,20 +186,20 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdKill,
 			&Server::cmdPing,
 			&Server::cmdPart,
+            &Server::cmdList,
+			&Server::cmdNames,
 			&Server::cmdTopic,
 	};
-	int i = 0;
-	while (tmp != cmds[i] && i < 10)
-		i++;
-	if (tmp == cmds[i])
+	for (int i =0; i <= 11; ++i)
 	{
-		while (std::getline(ss, tmp, ' '))
-			args.push_back(tmp);
-		(this->*ptr[i])(args, cl);
+		if (tmp == cmds[i])
+		{
+			while (std::getline(ss, tmp, ' '))
+				args.push_back(tmp);
+			(this->*ptr[i])(args, cl);
+			return;
+		}
 	}
-	else
-		std::cout << "Command not managed" << std::endl;
-	return ;	
 }
 
 void	Server::launch()
@@ -259,6 +260,20 @@ Client		&Server::findClient(String nick)
 	}
 	throw(std::out_of_range("Error while searching for user"));
 }
+
+std::vector<Client>::iterator	Server::findClientIt(int fd)
+{
+	std::vector<Client>::iterator ret = _clients.begin();
+	std::vector<Client>::iterator end = _clients.end();
+	while (ret != end)
+	{
+		if (ret->getFd() == fd)
+			return (ret);
+		ret++;
+	}
+	throw(std::out_of_range("Error while searching for user"));
+}
+
 
 std::vector<Channel>::iterator Server::findChannelIt(std::string name)
 {

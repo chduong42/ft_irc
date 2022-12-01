@@ -5,6 +5,8 @@
 
 typedef std::string String;
 
+class Client;
+
 class Channel 
 {
 	private:
@@ -17,14 +19,15 @@ class Channel
 		Channel(std::string _name);
 		~Channel();
 
+	// Getter
+		int						getFdOp() const; 
 		String					getName() const;
 		String					getTopic() const;
 		std::vector<Client>		&getClients();
-		int						getFdOp() const; 
-
+	// Setter
 		void					setTopic(String newTopic);
 		void					setFdOp(int fd);
-		
+	// Channel functions
 		void					addClient(Client &client);
 		void					eraseClient(Client &cl);
 		void					broadcast(std::string message);
