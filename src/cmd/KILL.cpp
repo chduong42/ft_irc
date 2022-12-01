@@ -8,7 +8,7 @@ int	Server::cmdKill(std::vector<String> args, Client &cl)
 
 	if (cl.getisoper() == false)
 	{
-		cl.reply("481 " + cl.getNickname() + " " +  cmd + " :you are not an oper");
+		cl.reply("481 " + cl.getNickname() + " " +  cmd + " :Permission Denied- You're not an IRC operator");
 		return -1;
 	}
 	if (args.size() < 2)
@@ -26,7 +26,7 @@ int	Server::cmdKill(std::vector<String> args, Client &cl)
 	}
 	if (check != 1)
 	{
-		cl.reply("401 " + cl.getNickname() + " " + cmd + " " + args.at(1) + " :doesn't exist");
+		cl.reply("401 " + cl.getNickname() + " " + args.at(1) + " :No such nick");
 		return -1;
 	}
 	clientDisconnect(_clients.at(i).getFd());

@@ -41,12 +41,7 @@ void	Server::displayClient()
 {
 	size_t i = _clients.size();
 	for (size_t j = 0; j < i; j++)
-	{
-		std::cout << "client[" << j << "] : "
-		<<_clients.at(j).getNickname() << " ; "
-		<<_clients.at(j).getUsername() << " ; "
-		<< _clients.at(j).getRealname() << std::endl;
-	}
+		std::cout << "client[" << j << "]" << " nick:" << _clients.at(j).getNickname() << " username:" <<_clients.at(j).getUsername() << " realname:" <<_clients.at(j).getRealname() << std::endl;
 	return ;
 }
 
@@ -116,7 +111,7 @@ String	Server::readMsg(int fd) {
 	{
 		int k = 0;
 		bzero(buff, 256);
-		if ((k = recv(fd, buff, 256, 0)) < 0)
+		if ((k = recv(fd, buff, 256, MSG_DONTWAIT)) < 0)
 		{
 			if (errno != EWOULDBLOCK)
 				throw std::runtime_error("error in recv");
@@ -156,7 +151,8 @@ std::vector<String>	Server::splitCmd(String msg) {
 	std::stringstream str(msg);
 	String tmp;
 	int i = 0;
-
+	if (msg == "\n")
+		return cmd;
 	while (std::getline(str, tmp, '\n')) {
 		cmd.push_back(tmp);
 		std::cout << cmd.at(i++) << std::endl;
@@ -173,9 +169,9 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "Parse command : [" << tmp << "]" << std::endl;
 
-	std::string cmds[10] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "TOPIC"};
+	std::string cmds[12] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST", "NAMES", "TOPIC"};
 
-	int		(Server::*ptr[10])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[12])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
@@ -185,10 +181,12 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdKill,
 			&Server::cmdPing,
 			&Server::cmdPart,
+            &Server::cmdList,
+			&Server::cmdNames,
 			&Server::cmdTopic,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i < 10)
+	while (tmp != cmds[i] && i <= 11)
 		i++;
 	if (tmp == cmds[i])
 	{
