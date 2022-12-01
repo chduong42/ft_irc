@@ -35,7 +35,6 @@ class Client {
 	// Client functions
 		void		reply(String msg);
 		void		welcome();
-		void		debug();
 
 	// Getter functions
 		int			getFd() const;

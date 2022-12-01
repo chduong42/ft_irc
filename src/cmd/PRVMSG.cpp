@@ -79,8 +79,6 @@ int Server::cmdPrvMsg(std::vector<String> params, Client &cl)
     {
         std::cerr << e.what() << '\n';
     }
-    
-    
 
     return 0;
 }
