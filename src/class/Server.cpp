@@ -85,6 +85,7 @@ void	Server::eraseClient(int fd)
 void	Server::clientDisconnect(int fd)
 {
 	std::vector<pollfd>::iterator it = _pollfds.begin();
+	eraseClientChannel(findClient(fd));
 	eraseClient(fd);
 	while (it != _pollfds.end())
 	{
@@ -178,9 +179,9 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = [" << tmp << "]" << std::endl;
 
-	std::string cmds[8] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING"};
+	std::string cmds[10] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST"};
 
-	int		(Server::*ptr[8])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[10])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
@@ -189,9 +190,11 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdJoin,
 			&Server::cmdKill,
 			&Server::cmdPing,
+			&Server::cmdPart,
+            &Server::cmdList,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 7)
+	while (tmp != cmds[i] && i <= 9)
 		i++;
 	if (tmp == cmds[i])
 	{

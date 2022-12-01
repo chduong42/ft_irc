@@ -54,6 +54,7 @@ class Server {
 		void					parseCmd(String str, Client &cl);
 		void					displayClient();
 Channel							&findChannel(String name);
+std::vector<Channel>::iterator	findChannelIt(String name);
 
 		std::vector<String>		splitCmd(String msg);
 		String					readMsg(int fd);
@@ -71,6 +72,12 @@ Channel							&findChannel(String name);
 		int						cmdJoin(std::vector<String> args, Client &cl);
 		int						cmdOper(std::vector<String> args, Client &cl);
 		int						cmdKill(std::vector<String> args, Client &cl);
+		int						cmdPart(std::vector<String> args, Client &cl);
+        int                     cmdList(std::vector<String> args, Client &cl);
+
+		void	eraseClientChannel(Client &cl);
+		int		chanMessage(std::vector<String> params, Client &cl);
+		int						cmdTopic(std::vector<String> args, Client &cl);
 
 };
 
