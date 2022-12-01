@@ -17,10 +17,10 @@ class Channel
 		Channel(std::string _name);
 		~Channel();
 
+		int						getFdOp() const; 
 		String					getName() const;
 		String					getTopic() const;
 		std::vector<Client>		&getClients();
-		int						getFdOp() const; 
 
 		void					setTopic(String newTopic);
 		void					setFdOp(int fd);

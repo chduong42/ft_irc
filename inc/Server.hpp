@@ -47,7 +47,10 @@ class Server {
 		Server(int port, const String &password);
 		~Server();
 
+		// Server utils
 		int									createSocket();
+		int									chanMessage(std::vector<String> params, Client &cl);
+
 		void								launch();
 		void								newClient();
 		void								clientDisconnect(int fd);
@@ -55,9 +58,14 @@ class Server {
 		void								handleMessage(int fd);
 		void								parseCmd(String str, Client &cl);
 		void								displayClient();
+		void								eraseClientChannel(Client &cl);
+		
+		bool								already_used(String name, Client cl);
+		
 		std::vector<String>					splitCmd(String msg);
 		String								readMsg(int fd);
 
+		// Finder
 		Client								&findClient(int fd);
 		Client								&findClient(String nickname);
 		std::vector<Client>::iterator		findClientIt(int fd);
@@ -65,10 +73,7 @@ class Server {
 		Channel								&findChannel(String name);
 		std::vector<Channel>::iterator		findChannelIt(String name);
 
-		bool								already_used(String name, Client cl);
-
 		// COMMANDE IRC
-		
 		int									cmdPass(std::vector<String> pass, Client &cl);
 		int									cmdNick(std::vector<String> pass, Client &cl);
 		int									cmdUser(std::vector<String> pass, Client &cl);
@@ -81,13 +86,9 @@ class Server {
         int                     			cmdList(std::vector<String> args, Client &cl);
         int                     			cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
-		
-		void								eraseClientChannel(Client &cl);
-		int									chanMessage(std::vector<String> params, Client &cl);
-
 };
 
-//utils
+//	UTILS
 String										erasebr(String str);
 String										ERR_NEEDMOREPARAMS(Client &client, String cmd);
 bool        								isClientInChannel(Channel &chan, int fd);
