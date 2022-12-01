@@ -60,6 +60,7 @@ class Server {
 
 		Client								&findClient(int fd);
 		Client								&findClient(String nickname);
+		std::vector<Client>::iterator		findClientIt(int fd);
 		
 		Channel								&findChannel(String name);
 		std::vector<Channel>::iterator		findChannelIt(String name);
