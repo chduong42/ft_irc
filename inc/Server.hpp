@@ -20,6 +20,7 @@
 
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Colors.hpp"
 
 typedef std::string String;
 
@@ -85,10 +86,11 @@ class Server {
 		int									cmdTopic(std::vector<String> args, Client &cl);
 };
 
-// Other Utils
+// Utils.cpp
 	String								erasebr(String str);
 	String								ERR_NEEDMOREPARAMS(Client &client, String cmd);
 	String								RPL_TOPIC(Client cl, String channel, String topic);
+	
 	bool        						isClientInChannel(Channel &chan, int fd);
 	bool        						isOperInChannel(Client cl, Channel chan);
 

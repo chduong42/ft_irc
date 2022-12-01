@@ -8,6 +8,5 @@ int Server::cmdPing(std::vector<String> args, Client &cl)
 		return (-1);
 	}
     cl.reply("PONG " + args[1]);
-	std::cout << "PONG " + args[1] << std::endl;
     return (0);
 }

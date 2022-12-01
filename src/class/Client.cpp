@@ -31,7 +31,7 @@ void    Client::reply(String msg) {
 void    Client::welcome() {
     if (_state != LOGIN || _nickname.empty() || _username.empty())
     {
-        std::cout << "if welcome" << _state << _nickname << std::endl;
+        std::cout << "Waiting registration... " << _nickname << std::endl;
         return ;
     }
     _state = REGISTERED;
