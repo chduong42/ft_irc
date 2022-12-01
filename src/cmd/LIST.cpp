@@ -20,29 +20,31 @@ int Server::cmdList(std::vector<String> args, Client &cl) {
             String size = ss.str();
             cl.reply("322 " + cl.getNickname() + " " + _channels.at(i).getName() + " " + size + " :" + _channels.at(i).getTopic());
         }
+		cl.reply("323 " + cl.getNickname() + " :End of /LIST");
         return 0;
     }
     if (args.size() > 1)
     {
         for (size_t i = 1; i < args.size(); i++)
         {
+			int check = 0;
             size_t j = 0;
             for (; j < _channels.size() ; j++)
             {
-                if (args.at(i) == _channels.at(j).getName())
+                if (erasebr(args.at(i)) == _channels.at(j).getName())
                 {
                     std::stringstream ss;
                     ss << _channels.at(j).getClients().size();
                     String size = ss.str();
                     cl.reply("322 " + cl.getNickname() + " " + _channels.at(j).getName() + " " + size + " :" + _channels.at(j).getTopic());
-                    j = 0;
-                    break ;
+					check = 1;
+					break ;
 
                 }
             }
-            if (j + 1 == _channels.size())
+            if (check == 0)
             {
-                cl.reply("403 " + cl.getNickname() + " " + args.at(i) + " :No such channel");
+                cl.reply("403 " + cl.getNickname() + " " + erasebr(args.at(i)) + " :No such channel");
                 return -1;
             }
             

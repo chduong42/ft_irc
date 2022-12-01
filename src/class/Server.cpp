@@ -110,10 +110,11 @@ String	Server::readMsg(int fd) {
 	{
 		int k = 0;
 		bzero(buff, 256);
-		if ((k = recv(fd, buff, 256, 0)) < 0)
+		if ((k = recv(fd, buff, 256, MSG_DONTWAIT)) < 0)
 		{
 			if (errno != EWOULDBLOCK)
 				throw std::runtime_error("error in recv");
+			return ("");
 		}
 		else if (k == 0)
 		{
@@ -162,7 +163,8 @@ std::vector<String>	Server::splitCmd(String msg) {
 	std::stringstream str(msg);
 	String tmp;
 	int i = 0;
-
+	if (msg == "\n")
+		return cmd;
 	while (std::getline(str, tmp, '\n')) {
 		cmd.push_back(tmp);
 		std::cout << cmd.at(i++) << std::endl;
@@ -179,9 +181,9 @@ void	Server::parseCmd(String str, Client &cl) {
 	args.push_back(tmp);
   	std::cout << "tmp = [" << tmp << "]" << std::endl;
 
-	std::string cmds[10] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST"};
+	std::string cmds[11] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST", "NAMES"};
 
-	int		(Server::*ptr[10])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[11])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
@@ -192,9 +194,10 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdPing,
 			&Server::cmdPart,
             &Server::cmdList,
+			&Server::cmdNames,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 9)
+	while (tmp != cmds[i] && i <= 10)
 		i++;
 	if (tmp == cmds[i])
 	{
