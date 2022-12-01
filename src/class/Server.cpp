@@ -226,8 +226,6 @@ void	Server::launch()
 				{
 					newClient();
 					displayClient();
-					if (_clients.size())
-						_clients[_clients.size() - 1].debug();
 					break;
 				}
 			}

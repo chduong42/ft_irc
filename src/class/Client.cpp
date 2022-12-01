@@ -8,12 +8,6 @@ Client::Client(int sockfd, std::string hostname) : _sockfd(sockfd), _hostname(ho
 
 Client::~Client() {}
 
-void    Client::debug() {
-    std::cout << "[" << _sockfd << "]" << std::endl;
-    std::cout << "[" << _hostname << "]" << std::endl;
-    std::cout << "[" << _nickname<<"]" << std::endl;
-}
-
 String  Client::getPrefix()
 {
     String prefix = ":" + _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
