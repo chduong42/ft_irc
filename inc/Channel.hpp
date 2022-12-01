@@ -1,30 +1,35 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
-
-class Channel;
-
 # include "Client.hpp"
 # include "Server.hpp"
 
+typedef std::string String;
+
 class Channel 
 {
-    private:
-        std::string                  _name;
-        std::vector<Client>          _clients;
-        std::string                  _topic;
-    public:
-        Channel(std::string _name);
-        ~Channel();
+	private:
+		String						_name;
+		String						_topic;
+		int							_fdOp;
+		std::vector<Client>			_clients;
 
-        std::string             getName() const;
-        std::vector<Client>     &getClients();
-        std::string             getTopic() const;
-        void                    addClient(Client &client);
-        void                    eraseClient(Client &cl);
-        void                    broadcast(std::string message);
-        void                    broadcast(std::string message, Client &cl);
-        void                debug();
+	public:
+		Channel(std::string _name);
+		~Channel();
 
+		String					getName() const;
+		String					getTopic() const;
+		std::vector<Client>		&getClients();
+		int						getFdOp() const; 
+
+		void					setTopic(String newTopic);
+		void					setFdOp(int fd);
+		
+		void					addClient(Client &client);
+		void					eraseClient(Client &cl);
+		void					broadcast(std::string message);
+		void					broadcast(std::string message, Client &cl);
+		void					debug();
 };
 
 #endif

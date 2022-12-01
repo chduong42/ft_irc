@@ -19,6 +19,7 @@ enum State{
 	REGISTERED
 };
 
+class Channel;
 
 class Client {
 	private:
@@ -56,6 +57,7 @@ class Client {
 		void		setRealname(String newName);
 		void		setHostname(String newName);
 		void		setMsg(String newMsg);
+		void		addMsg(String buff);
 		void		setState(State newState);
 		void		setisoper(bool isoper);
 

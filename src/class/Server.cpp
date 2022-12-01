@@ -79,7 +79,6 @@ void	Server::eraseClient(int fd)
 		}
 		it++;
 	}
-
 }
 
 void	Server::clientDisconnect(int fd)
@@ -105,7 +104,9 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
-	std::cout << "in readmsg" << std::endl;
+	std::vector<Client>::iterator cl = findClientIt(fd);
+	msg = cl->getMsg();
+	//std::cout << "in readmsg" << std::endl;
 	while (!std::strstr(buff, "\n"))
 	{
 		int k = 0;
@@ -120,30 +121,17 @@ String	Server::readMsg(int fd) {
 		{
 			throw(std::out_of_range("TEST DECO"));
 		}
+		cl->addMsg(buff);
 		msg += buff;
+	//	std::cout << "last call to stock : " << cl->getMsg() << std::endl;
 	}
-	std::cout << msg << std::endl;
+	//std::cout << "QUITTING READMSG : " << cl->getMsg() << std::endl;
+	cl->setMsg("");
 	return msg;
-}
+}//findClientIt(int fd); 
 
 void	Server::handleMessage(int fd) {
-	/*try
-	{
-		Client	client = findClient(fd);
-		client.debug();
-		std::cout << "HandleMsg" << std::endl;
-		std::cout << readMsg(fd) << std::endl;
-		//client.execute(readMsg(fd))
-	}
-
-	catch (std::out_of_range &e)
-	{
-
-	}*/
-	//std::cout << "HandleMsg" << std::endl;
-	//std::cout << readMsg(fd) << std::endl;
-	try
-	{
+	try {
 		this->_cmd = splitCmd(readMsg(fd));
 	}
 	catch(const std::exception& e)
@@ -179,11 +167,11 @@ void	Server::parseCmd(String str, Client &cl) {
 	std::getline(ss, tmp, ' ');
 
 	args.push_back(tmp);
-  	std::cout << "tmp = [" << tmp << "]" << std::endl;
+  	std::cout << "Parse command : [" << tmp << "]" << std::endl;
 
-	std::string cmds[11] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST", "NAMES"};
+	std::string cmds[12] = {"PASS", "NICK", "OPER", "USER", "PRIVMSG", "JOIN", "kill", "PING", "PART", "LIST", "NAMES", "TOPIC"};
 
-	int		(Server::*ptr[11])(std::vector<String> args, Client &cl) = {
+	int		(Server::*ptr[12])(std::vector<String> args, Client &cl) = {
 			&Server::cmdPass,
 			&Server::cmdNick,
 			&Server::cmdOper,
@@ -195,9 +183,10 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdPart,
             &Server::cmdList,
 			&Server::cmdNames,
+			&Server::cmdTopic,
 	};
 	int i = 0;
-	while (tmp != cmds[i] && i <= 10)
+	while (tmp != cmds[i] && i <= 11)
 		i++;
 	if (tmp == cmds[i])
 	{
@@ -206,7 +195,7 @@ void	Server::parseCmd(String str, Client &cl) {
 		(this->*ptr[i])(args, cl);
 	}
 	else
-		std::cout << "on gere pas ca" << std::endl;
+		std::cout << "Command not managed" << std::endl;
 	return ;	
 }
 
@@ -269,4 +258,57 @@ Client		&Server::findClient(String nick)
 	throw(std::out_of_range("Error while searching for user"));
 }
 
+std::vector<Client>::iterator	Server::findClientIt(int fd)
+{
+	std::vector<Client>::iterator ret = _clients.begin();
+	std::vector<Client>::iterator end = _clients.end();
+	while (ret != end)
+	{
+		if (ret->getFd() == fd)
+			return (ret);
+		ret++;
+	}
+	throw(std::out_of_range("Error while searching for user"));
+}
 
+
+std::vector<Channel>::iterator Server::findChannelIt(std::string name)
+{
+	std::vector<Channel>::iterator  ret = _channels.begin();
+	std::vector<Channel>::iterator  it_end = _channels.end();
+	while (ret != it_end)
+	{
+		if (ret->getName() == name)
+			return (ret);
+		ret++;
+	}
+	throw (std::out_of_range("didnt find channel"));
+}
+
+Channel     &Server::findChannel(std::string name)
+{
+	for (unsigned int i = 0; i < _channels.size(); i++)
+	{
+		if (_channels[i].getName() == name)
+			return (_channels[i]);
+	}
+	throw (std::out_of_range("didnt find channel"));
+}
+
+void    Server::eraseClientChannel(Client &cl)
+{
+	for (unsigned int i = 0; i < _channels.size(); i++)
+	{
+		_channels[i].eraseClient(cl);
+	}
+
+	std::vector<Channel>::iterator   it = _channels.begin();
+	while (it != _channels.end())
+	{
+		if (it->getClients().empty())
+			it = _channels.erase(it);
+		else
+			it++;
+	}
+	std::cout << "eraseClientChannel" << std::endl;
+}
