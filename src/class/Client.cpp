@@ -48,7 +48,6 @@ String  Client::getMsg() const {return _msg;}
 State	Client::getState() const {return _state;}
 bool	Client::getisoper() const {return _isoper;}
 
-
 void	Client::setNickname(String newName) {_nickname = newName;}
 void	Client::setUsername(String newName) {_username = newName;}
 void	Client::setRealname(String newName) {_realname = newName;}

@@ -19,6 +19,7 @@ enum State{
 	REGISTERED
 };
 
+class Channel;
 
 class Client {
 	private:

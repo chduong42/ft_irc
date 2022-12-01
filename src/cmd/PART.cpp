@@ -15,6 +15,8 @@ int         Server::cmdPart(std::vector<String> params, Client &cl)
     {
         String chan_name = erasebr(params[1]);
         std::vector<Channel>::iterator chan = findChannelIt(chan_name);
+        if (chan->getFdOp() == cl.getFd())
+            chan->setFdOp(0);
         chan->eraseClient(cl);
         if (chan->getClients().empty())
             _channels.erase(chan);
