@@ -27,8 +27,6 @@ void        join(Channel &chan, Client &cl)
 
 int         Server::cmdJoin(std::vector<String> params, Client &cl)
 {
-    std::cout << "JOIN COMMAND" << std::endl;
-    String  name;
     if (cl.getState() != REGISTERED)
     {
         cl.reply("you need to finalize your registration first");
@@ -39,7 +37,7 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
         cl.reply(ERR_NEEDMOREPARAMS(cl, "JOIN"));
         return -1;
     }
-    name = erasebr(params[1]);
+    String name = erasebr(params[1]);
     try
     {
         std::vector<Channel>::iterator chan = findChannelIt(name);
@@ -49,16 +47,15 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
             return -1;
         }
         chan->addClient(cl);
-        chan->setFdOp(cl.getFd());
         join(*chan, cl);
     }
     catch(const std::exception& e)
     {
-
         std::cerr << e.what() << '\n';
         std::cout << "New chan open : " << name << std::endl;
         Channel new_chan(name);
         new_chan.addClient(cl);
+        new_chan.setFdOp(cl.getFd());
         _channels.push_back(new_chan);
         join(new_chan, cl);
     }
