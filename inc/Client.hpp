@@ -1,16 +1,11 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
-
-class Client;
-
 # include <iostream>
 # include <vector>
 # include <sstream>
 # include <sys/socket.h>
 # include <Channel.hpp>
 
-typedef struct sockaddr_in SOCKADDR_IN;
-typedef struct sockaddr SOCKADDR;
 typedef std::string String;
 
 enum State{
@@ -33,15 +28,16 @@ class Client {
 		bool		_isoper;
 		std::vector<Channel>	_channels;
 
-		
 	public:
 		Client(int fd, String host);
 		~Client();
 
+	// Client functions
 		void		reply(String msg);
 		void		welcome();
 		void		debug();
 
+	// Getter functions
 		int			getFd() const;
 		String		getNickname() const;
 		String		getUsername() const;
@@ -51,7 +47,8 @@ class Client {
 		String		getPrefix();
 		State		getState() const;
 		bool		getisoper() const;
-		
+
+	// Setter functions
 		void		setNickname(String newName);
 		void		setUsername(String newName);
 		void		setRealname(String newName);
@@ -60,7 +57,6 @@ class Client {
 		void		addMsg(String buff);
 		void		setState(State newState);
 		void		setisoper(bool isoper);
-
 };
 
 #endif

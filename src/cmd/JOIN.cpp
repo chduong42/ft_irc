@@ -19,9 +19,10 @@ void        join(Channel &chan, Client &cl)
     {
         users += chan.getClients()[i].getNickname() + " ";
     }
+    chan.broadcast(cl.getPrefix() + " JOIN :" + chan.getName());
+    cl.reply(RPL_TOPIC(cl, chan.getName(), chan.getTopic()));
     cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
 	cl.reply(RPL_ENDOFNAMES(cl, chan.getName()));
-    chan.broadcast(cl.getPrefix() + " JOIN :" + chan.getName());
 }
 
 int         Server::cmdJoin(std::vector<String> params, Client &cl)
@@ -44,7 +45,7 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
         std::vector<Channel>::iterator chan = findChannelIt(name);
         if (isClientInChannel(*chan, cl.getFd()))
         {
-            std::cout << "isinclient" << std::endl;
+            std::cout << "is already in channel" << std::endl;
             return -1;
         }
         chan->addClient(cl);

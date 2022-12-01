@@ -1,5 +1,5 @@
 #include "Server.hpp"
-#include "colors.hpp"
+#include "Colors.hpp"
 #include <signal.h>
 
 //	Interruption statut (global var) 

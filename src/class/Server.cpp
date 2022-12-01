@@ -23,7 +23,7 @@ int		Server::createSocket()
 	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) 
 		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
 
-	SOCKADDR_IN serv_address = {};
+	sockaddr_in serv_address = {};
 	bzero((char *) &serv_address, sizeof(serv_address));
 	serv_address.sin_family = AF_INET;
 	serv_address.sin_addr.s_addr = INADDR_ANY;
@@ -40,8 +40,13 @@ int		Server::createSocket()
 void	Server::displayClient()
 {
 	size_t i = _clients.size();
+	std::cout << "\nList of clients:" << std::endl; 
 	for (size_t j = 0; j < i; j++)
-		std::cout << "client[" << j << "]" << " nick:" << _clients.at(j).getNickname() << " username:" <<_clients.at(j).getUsername() << " realname:" <<_clients.at(j).getRealname() << std::endl;
+		std::cout << "client[" << j << "]" 
+		<< " nick:" << _clients.at(j).getNickname() 
+		<< " username:" <<_clients.at(j).getUsername() 
+		<< " realname:" <<_clients.at(j).getRealname() 
+		<< std::endl;
 	return ;
 }
 
@@ -185,18 +190,16 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdNames,
 			&Server::cmdTopic,
 	};
-	int i = 0;
-	while (tmp != cmds[i] && i <= 11)
-		i++;
-	if (tmp == cmds[i])
+	for (int i =0; i <= 11; ++i)
 	{
-		while (std::getline(ss, tmp, ' '))
-			args.push_back(tmp);
-		(this->*ptr[i])(args, cl);
+		if (tmp == cmds[i])
+		{
+			while (std::getline(ss, tmp, ' '))
+				args.push_back(tmp);
+			(this->*ptr[i])(args, cl);
+			return;
+		}
 	}
-	else
-		std::cout << "Command not managed" << std::endl;
-	return ;	
 }
 
 void	Server::launch()

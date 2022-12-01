@@ -8,10 +8,6 @@ String  RPL_NOTOPIC(Client cl, String channel) {
 	return ("331 " + cl.getNickname() + " " + channel +" :No topic is set");
 }
 
-String  RPL_TOPIC(Client cl, String channel, String topic) {
-	return ("332 " + cl.getNickname() + " " + channel + " :" + topic);
-}
-
 String  ERR_CHANOPRIVSNEEDED(Client cl, String channel) {
 	return ("482 " + cl.getNickname() + " " + channel + " :You're not channel operator");
 }
@@ -33,30 +29,30 @@ int		Server::cmdTopic(std::vector<String> args, Client &cl)
 		return -1;
 	}
 
-	String chan_name = erasebr(args[1]);
+	String chan_name;
 
 	try {
-		if (chan_name.empty())
-		{
-			cl.reply(ERR_NEEDMOREPARAMS(cl, "TOPIC"));
-			return (-1);
-		}
-
 		std::vector<Channel>::iterator chan = findChannelIt(chan_name);
 
+		if (args.size() == 2)
+		{
+			chan_name = erasebr(args[1]);
+			if (chan_name.empty())
+			{
+				cl.reply(ERR_NEEDMOREPARAMS(cl, "TOPIC"));
+				return (-1);
+			}
+			if (chan->getTopic().empty())
+			{
+				std::cout << "topic = " << chan->getTopic() << " ?" << std::endl;
+				cl.reply(RPL_NOTOPIC(cl, chan_name));
+			}
+			else
+				cl.reply(RPL_TOPIC(cl, chan_name, chan->getTopic()));
+			return (0);
+		}
 		if (isClientInChannel(*chan, cl.getFd()))
 		{
-			if (args.size() == 2)
-			{
-				if (chan->getTopic().empty())
-				{
-					std::cout << "topic = " << chan->getTopic() << " ?" << std::endl;
-					cl.reply(RPL_NOTOPIC(cl, chan_name));
-				}
-				else
-					cl.reply(RPL_TOPIC(cl, chan_name, chan->getTopic()));
-				return (0);
-			}
 
 			if (isOperInChannel(cl, *chan))
 				return (changeTopic(*chan, chan_name));
