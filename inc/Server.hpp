@@ -59,6 +59,7 @@ std::vector<Channel>::iterator	findChannelIt(String name);
 		std::vector<String>		splitCmd(String msg);
 		String					readMsg(int fd);
 		Client					&findClient(int fd);
+		std::vector<Client>::iterator	findClientIt(int fd);
 		Client					&findClient(String nickname);
 
 		bool					already_used(String name, Client cl);
