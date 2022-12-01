@@ -28,95 +28,65 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef std::string String;
 
+class Channel;
+
 class Server {
 	private:
-		int						_loop;
-		int						_port;
-		String					_host;
-		String					_password;
-		String					_operPassword;
-		std::vector<String>		_cmd;
-		std::vector<pollfd>		_pollfds;
-		std::vector<Client>		_clients;
-		int						_sock;
-		std::vector<Channel>	_channels;
+		int									_loop;
+		int									_port;
+		String								_host;
+		String								_password;
+		String								_operPassword;
+		std::vector<String>					_cmd;
+		std::vector<pollfd>					_pollfds;
+		std::vector<Client>					_clients;
+		int									_sock;
+		std::vector<Channel>				_channels;
 
 	public:
 		Server(int port, const String &password);
 		~Server();
 
-		int						createSocket();
-		void					launch();
-		void					newClient();
-		void					clientDisconnect(int fd);
-		void					eraseClient(int fd);
-		void					handleMessage(int fd);
-		void					parseCmd(String str, Client &cl);
-		void					displayClient();
-Channel							&findChannel(String name);
-std::vector<Channel>::iterator	findChannelIt(String name);
+		int									createSocket();
+		void								launch();
+		void								newClient();
+		void								clientDisconnect(int fd);
+		void								eraseClient(int fd);
+		void								handleMessage(int fd);
+		void								parseCmd(String str, Client &cl);
+		void								displayClient();
+		std::vector<String>					splitCmd(String msg);
+		String								readMsg(int fd);
 
-		std::vector<String>		splitCmd(String msg);
-		String					readMsg(int fd);
-		Client					&findClient(int fd);
-		Client					&findClient(String nickname);
+		Client								&findClient(int fd);
+		Client								&findClient(String nickname);
+		
+		Channel								&findChannel(String name);
+		std::vector<Channel>::iterator		findChannelIt(String name);
 
-		bool					already_used(String name, Client cl);
+		bool								already_used(String name, Client cl);
 
 		// COMMANDE IRC
-		int						cmdPass(std::vector<String> pass, Client &cl);
-		int						cmdNick(std::vector<String> pass, Client &cl);
-		int						cmdUser(std::vector<String> pass, Client &cl);
-		int						cmdPrvMsg(std::vector<String> pass, Client &cl);
-		int						cmdPing(std::vector<String> args, Client &cl);
-		int						cmdJoin(std::vector<String> args, Client &cl);
-		int						cmdOper(std::vector<String> args, Client &cl);
-		int						cmdKill(std::vector<String> args, Client &cl);
-		int						cmdPart(std::vector<String> args, Client &cl);
+		int									cmdPass(std::vector<String> pass, Client &cl);
+		int									cmdNick(std::vector<String> pass, Client &cl);
+		int									cmdUser(std::vector<String> pass, Client &cl);
+		int									cmdPrvMsg(std::vector<String> pass, Client &cl);
+		int									cmdPing(std::vector<String> args, Client &cl);
+		int									cmdJoin(std::vector<String> args, Client &cl);
+		int									cmdOper(std::vector<String> args, Client &cl);
+		int									cmdKill(std::vector<String> args, Client &cl);
+		int									cmdPart(std::vector<String> args, Client &cl);
 
-		void	eraseClientChannel(Client &cl);
-		int		chanMessage(std::vector<String> params, Client &cl);
-		int						cmdTopic(std::vector<String> args, Client &cl);
+		void								eraseClientChannel(Client &cl);
+		int									chanMessage(std::vector<String> params, Client &cl);
+		int									cmdTopic(std::vector<String> args, Client &cl);
 
 };
 
 //utils
-String					erasebr(String str);
-bool        			isClientInChannel(Channel chan, int fd);
-String					ERR_NEEDMOREPARAMS(Client &client, String cmd);
-
-// enum    numRepl {
-// 	RPL_WELCOME = 001,
-// 	RPL_YOURHOST = 002,
-// 	RPL_CREATED = 003,
-// 	RPL_MYINFO = 004,
-
-// 	RPL_UMODEIS = 221,
-// 	RPL_AWAY = 301,
-// 	RPL_WHOISREGNICK = 307,
-// 	RPL_WHOSIUSER = 311,
-// 	RPL_WHOISOPERATOR = 313,
-// 	RPL_ENDOFWHOIS = 318,
-// 	RPL_CHANNELMODEIS = 324,
-// 	RPL_TOPIC = 332,
-// 	RPL_WHOISMODES = 379,
-// 	RPL_YOUREOPER = 381,
-
-// 	ERR_NOSUCHNICK = 401,
-// 	ERR_NOSUCHCHANNEL = 403,
-// 	ERR_CANTSENDTOCHAN = 404,
-// 	ERR_NORECIPENT = 411,
-// 	ERR_NOTEXTTOSEND = 412,
-// 	ERR_NONICKNAMEGIVEN = 431,
-// 	ERR_ERRONEUSNICKNAME = 432,
-// 	ERR_NICKNAMEINUSE = 433,
-// 	ERR_NEEDMOREPARAMS = 461,
-// 	ERR_ALREADYREGISTRED = 462,
-// 	ERR_PASSWDMISMATCH = 464,
-// 	ERR_UNKNOWNMODE = 472,
-// 	ERR_NOPRIVILEGES = 481,
-// 	ERR_UMODEUNKNOWNFLAG = 501,
-// 	ERR_USERSDONTMATCH = 502
-// };
+String										erasebr(String str);
+String										ERR_NEEDMOREPARAMS(Client &client, String cmd);
+bool        								isClientInChannel(Channel &chan, int fd);
+bool        								isOperInChannel(Client cl, Channel chan);
 
 #endif

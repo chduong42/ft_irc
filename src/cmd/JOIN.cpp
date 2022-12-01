@@ -1,14 +1,5 @@
 #include "Server.hpp"
 
-bool        isClientInChannel(Channel chan, int fd)
-{
-    for (unsigned int i = 0; i < chan.getClients().size(); i++)
-    {
-        if (chan.getClients()[i].getFd() == fd)
-            return true;
-    }
-    return false;
-}//mettre le fd a la place
 
 std::string     RPL_NAMREPLY(Client &cl, std::string chan_name, std::string users)
 {
@@ -16,11 +7,11 @@ std::string     RPL_NAMREPLY(Client &cl, std::string chan_name, std::string user
     std::cout << "namereply " << ret << std::endl;
     return (ret);
 }
-std::string     RPL_ENDOFNAMES(Client &cl, std::string chan_name)
-{
-    return ("366 " + cl.getNickname() + " " + chan_name + " :End of /NAMES list.");
 
+std::string     RPL_ENDOFNAMES(Client &cl, std::string chan_name) {
+    return ("366 " + cl.getNickname() + " " + chan_name + " :End of /NAMES list.");
 }
+
 void        join(Channel &chan, Client &cl)
 {
     std::string users;
@@ -44,7 +35,7 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
     }
     if (params.size() < 2)
     {
-       // cl->reply()errorneedmoreparams
+        cl.reply(ERR_NEEDMOREPARAMS(cl, "JOIN"));
         return -1;
     }
     name = erasebr(params[1]);
@@ -57,8 +48,8 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
             return -1;
         }
         chan->addClient(cl);
+        chan->setFdOp(cl.getFd());
         join(*chan, cl);
-       // return 0;
     }
     catch(const std::exception& e)
     {
@@ -69,7 +60,6 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
         new_chan.addClient(cl);
         _channels.push_back(new_chan);
         join(new_chan, cl);
-        //return 0;
     }
     _channels[0].debug();
     return 0;

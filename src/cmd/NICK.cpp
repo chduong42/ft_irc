@@ -44,9 +44,7 @@ String	ERR_NICKNAMEINUSE(Client cl, String newNick) {
 	return ("433 " + cl.getNickname() + " " + newNick + " " + newNick + " :Nickname is already in use");
 }
 
-String	SUCCESS_NICK(String newNick) {
-	return (" NICK " + newNick);
-}
+String	SUCCESS_NICK(String newNick) {return (" NICK " + newNick);}
 
 int Server::cmdNick(std::vector<String> args, Client &cl)
 {
