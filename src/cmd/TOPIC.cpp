@@ -34,7 +34,6 @@ int		Server::cmdTopic(std::vector<String> args, Client &cl)
 	}
 
 	String chan_name = erasebr(args[1]);
-	std::cout << "[" << chan_name << "]" << std::endl;
 
 	try {
 		if (chan_name.empty())
@@ -50,7 +49,10 @@ int		Server::cmdTopic(std::vector<String> args, Client &cl)
 			if (args.size() == 2)
 			{
 				if (chan->getTopic().empty())
+				{
+					std::cout << "topic = " << chan->getTopic() << " ?" << std::endl;
 					cl.reply(RPL_NOTOPIC(cl, chan_name));
+				}
 				else
 					cl.reply(RPL_TOPIC(cl, chan_name, chan->getTopic()));
 				return (0);
@@ -59,7 +61,7 @@ int		Server::cmdTopic(std::vector<String> args, Client &cl)
 			if (isOperInChannel(cl, *chan))
 				return (changeTopic(*chan, chan_name));
 			else
-				cl.reply(ERR_NOTONCHANNEL(cl, chan_name));
+				cl.reply(ERR_CHANOPRIVSNEEDED(cl, chan_name));
 		}
 		else
 			cl.reply(ERR_NOTONCHANNEL(cl, chan_name));
