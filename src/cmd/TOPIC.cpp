@@ -25,8 +25,6 @@ int	changeTopic(Channel &chan, String newTopic) {
 	return (0);
 }
 
-
-
 int		Server::cmdTopic(std::vector<String> args, Client &cl)
 {
 	if (args.size() < 2)

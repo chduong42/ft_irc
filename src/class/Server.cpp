@@ -109,7 +109,9 @@ String	Server::readMsg(int fd) {
 	String	msg;
 	char	buff[256];
 	bzero(buff, 256);
-	std::cout << "in readmsg" << std::endl;
+	std::vector<Client>::iterator cl = findClientIt(fd);
+	msg = cl->getMsg();
+	//std::cout << "in readmsg" << std::endl;
 	while (!std::strstr(buff, "\n"))
 	{
 		int k = 0;
@@ -118,16 +120,20 @@ String	Server::readMsg(int fd) {
 		{
 			if (errno != EWOULDBLOCK)
 				throw std::runtime_error("error in recv");
+			return ("");
 		}
 		else if (k == 0)
 		{
 			throw(std::out_of_range("TEST DECO"));
 		}
+		cl->addMsg(buff);
 		msg += buff;
+	//	std::cout << "last call to stock : " << cl->getMsg() << std::endl;
 	}
-	std::cout << msg << std::endl;
+	//std::cout << "QUITTING READMSG : " << cl->getMsg() << std::endl;
+	cl->setMsg("");
 	return msg;
-}
+}//findClientIt(int fd); 
 
 void	Server::handleMessage(int fd) {
 	try {
