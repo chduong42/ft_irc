@@ -24,20 +24,22 @@
 
 typedef std::string String;
 
+extern bool g_interrupt;
+
 class Client;
 class Channel;
 
 class Server {
 	private:
-		int									_loop;
-		int									_port;
 		String								_host;
 		String								_password;
 		String								_operPassword;
+		int									_port;
+		int									_sock;
+
 		std::vector<String>					_cmd;
 		std::vector<pollfd>					_pollfds;
 		std::vector<Client>					_clients;
-		int									_sock;
 		std::vector<Channel>				_channels;
 
 	public:

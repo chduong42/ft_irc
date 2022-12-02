@@ -35,7 +35,7 @@ void    Channel::eraseClient(Client &cl)
 	std::cout << "not realy erasing client" << _clients.size() << std::endl;
 }
 
-void                    Channel::broadcast(std::string message)
+void	Channel::broadcast(std::string message)
 {
 	message += "\r\n";
 	std::cout << "----> " << message << std::endl;
@@ -46,7 +46,7 @@ void                    Channel::broadcast(std::string message)
 	}
 }
 
-void                    Channel::broadcast(std::string message, Client &cl)
+void	Channel::broadcast(std::string message, Client &cl)
 {
 	message += "\r\n";
 	for (unsigned int i = 0; i < _clients.size(); i++)
@@ -59,13 +59,10 @@ void                    Channel::broadcast(std::string message, Client &cl)
 	}
 }
 
-void          Channel::debug()
+void	Channel::debug()
 {
 	for (unsigned int i = 0; i < _clients.size(); i++)
 	{
 		std::cout << "#client " << i << " " << _clients[i].getNickname() << std::endl;
 	}
 }
-
-
-
