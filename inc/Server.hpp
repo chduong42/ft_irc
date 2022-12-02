@@ -64,11 +64,13 @@ class Server {
 
 	// Server utils
 		int									chanMessage(std::vector<String> params, Client &cl);
+		int									chanNotice(std::vector<String> params, Client &cl);
 		bool								already_used(String name, Client cl);
 
 		Client								&findClient(int fd);
 		Client								&findClient(String nickname);
 		std::vector<Client>::iterator		findClientIt(int fd);
+		
 
 		bool     							isChannel(std::string name);
 		Channel								&findChannel(String name);
@@ -88,6 +90,7 @@ class Server {
 		int									cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
 		int									cmdKick(std::vector<String> args, Client &cl);
+		int									cmdNotice(std::vector<String> args, Client &cl);
 		int									cmdMode(std::vector<String> args, Client &cl);
 };
 

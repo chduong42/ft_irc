@@ -17,11 +17,17 @@ void        join(Channel &chan, Client &cl)
     std::string users;
     for(unsigned int i = 0; i < chan.getClients().size(); i++)
     {
-        users += chan.getClients()[i].getNickname() + " ";
+        if (chan.getClients()[i].getFd() == chan.getFdOp())
+            users += "@" + chan.getClients()[i].getNickname() + " ";
+        else
+            users += chan.getClients()[i].getNickname() + " ";
     }
     chan.broadcast(cl.getPrefix() + " JOIN :" + chan.getName());
     cl.reply(RPL_TOPIC(cl, chan.getName(), chan.getTopic()));
-    cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
+    if (cl.getFd() == chan.getFdOp())
+        cl.reply(RPL_NAMREPLY(cl, "@" + chan.getName(), users));
+    else
+        cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
 	cl.reply(RPL_ENDOFNAMES(cl, chan.getName()));
 }
 
@@ -38,6 +44,12 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
         return -1;
     }
     String name = erasebr(params[1]);
+    std::cout << "name = " << name<< std::endl;
+    if (!name[0] || name[0] != '#')
+    {
+        cl.reply("Error : Channel must start with '#'");
+        return -1;
+    }
     try
     {
         std::vector<Channel>::iterator chan = findChannelIt(name);

@@ -62,8 +62,9 @@ int Server::cmdMode(std::vector<String> args, Client &cl) {
 		cl.reply(ERR_NOSUCHCHANNEL(cl, args[1]));
 		return -1;
 	}
-	if (args.at(2) == "-l")
-	{
-		if ()
-	}
+//	if (args.at(2) == "-l")
+//	{
+//		if ()
+//	}
+	return 1;
 }
