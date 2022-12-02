@@ -40,6 +40,12 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
         return -1;
     }
     name = erasebr(params[1]);
+    std::cout << "name = " << name<< std::endl;
+    if (!name[0] || name[0] != '#')
+    {
+        cl.reply("Error : Channel must start with '#'");
+        return -1;
+    }
     try
     {
         std::vector<Channel>::iterator chan = findChannelIt(name);
