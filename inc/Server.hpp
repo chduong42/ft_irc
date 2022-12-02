@@ -91,6 +91,7 @@ class Server {
 		int									cmdTopic(std::vector<String> args, Client &cl);
 		int									cmdKick(std::vector<String> args, Client &cl);
 		int									cmdNotice(std::vector<String> args, Client &cl);
+		int									cmdMode(std::vector<String> args, Client &cl);
 };
 
 // Utils.cpp
