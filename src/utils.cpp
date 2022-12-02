@@ -4,7 +4,7 @@
 
 String	erasebr(String str) {
 	if (str.empty())
-		return NULL;
+		return "";
 	if (str[str.size() - 1] == '\r')
 		return str.substr(0, (str.size() - 1));
 	return str;
