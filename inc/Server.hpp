@@ -24,20 +24,22 @@
 
 typedef std::string String;
 
+extern bool g_interrupt;
+
 class Client;
 class Channel;
 
 class Server {
 	private:
-		int									_loop;
-		int									_port;
 		String								_host;
 		String								_password;
 		String								_operPassword;
+		int									_port;
+		int									_sock;
+
 		std::vector<String>					_cmd;
 		std::vector<pollfd>					_pollfds;
 		std::vector<Client>					_clients;
-		int									_sock;
 		std::vector<Channel>				_channels;
 
 	public:
@@ -69,6 +71,7 @@ class Server {
 		std::vector<Client>::iterator		findClientIt(int fd);
 		
 
+		bool     							isChannel(std::string name);
 		Channel								&findChannel(String name);
 		std::vector<Channel>::iterator		findChannelIt(String name);
 
@@ -85,6 +88,7 @@ class Server {
         int                     			cmdList(std::vector<String> args, Client &cl);
         int                     			cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
+		int									cmdKick(std::vector<String> args, Client &cl);
 };
 
 // Utils.cpp

@@ -10,7 +10,7 @@ void	sigintHandler(int const sig) {
 	(void)sig;
 	g_interrupt = true;
 	std::cout << "\b\b";
-	exit(0);
+	// exit(0);
 }
 
 //	Verification et recuperation du port
