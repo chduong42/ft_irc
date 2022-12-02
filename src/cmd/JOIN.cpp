@@ -37,7 +37,7 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
         cl.reply(ERR_NEEDMOREPARAMS(cl, "JOIN"));
         return -1;
     }
-    name = erasebr(params[1]);
+    String name = erasebr(params[1]);
     std::cout << "name = " << name<< std::endl;
     if (!name[0] || name[0] != '#')
     {
