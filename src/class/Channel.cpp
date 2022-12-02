@@ -49,6 +49,7 @@ void	Channel::broadcast(std::string message)
 void	Channel::broadcast(std::string message, Client &cl)
 {
 	message += "\r\n";
+	std::cout << "----> "<< message << std::endl;
 	for (unsigned int i = 0; i < _clients.size(); i++)
 	{
 		if (cl.getFd() != _clients[i].getFd())

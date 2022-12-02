@@ -50,7 +50,7 @@ int Server::chanNotice(std::vector<String> params, Client &cl)
 
 int Server::cmdNotice(std::vector<String> params, Client &cl)
 {
-    std::cout << "ENTER IN PRIVMSG" << std::endl;
+    std::cout << "ENTER IN NOTICE" << std::endl;
     if (cl.getState() != REGISTERED)
     {
         cl.reply("you need to register first (prvmsg)");
@@ -58,11 +58,12 @@ int Server::cmdNotice(std::vector<String> params, Client &cl)
     }
     if (params.size() < 3)
 	{
+        std::cout << "paramas size = "<< params.size() << std::endl;
         cl.reply("461 " + cl.getNickname() + " " + "NOTICE" + " :Not enough parameters");
 		return -1;
 	}
     if (params[1].at(0) == '#')
-        return (chanMessage(params, cl));
+        return (chanNotice(params, cl));
     try
     {
         Client  recipient = findClient(params[1]);      
