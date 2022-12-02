@@ -1,15 +1,7 @@
 #include "Server.hpp"
 
-String  ERR_NOSUCHCHANNEL(Client cl, String channel) {
-	return ("403 " + cl.getNickname() + " " + channel +" :No such channel");
-}
-
 String  RPL_NOTOPIC(Client cl, String channel) {
 	return ("331 " + cl.getNickname() + " " + channel +" :No topic is set");
-}
-
-String  ERR_CHANOPRIVSNEEDED(Client cl, String channel) {
-	return ("482 " + cl.getNickname() + " " + channel + " :You're not channel operator");
 }
 
 String  ERR_NOTONCHANNEL(Client cl, String channel) {

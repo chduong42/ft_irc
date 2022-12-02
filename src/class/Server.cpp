@@ -194,6 +194,7 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdKick,
 			&Server::cmdMode,
 			&Server::cmdNotice,
+
 	};
 	for (int i =0; i <= 14; ++i)
 	{
