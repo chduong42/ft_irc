@@ -22,7 +22,10 @@ int Server::cmdUser(std::vector<String> args, Client &cl) {
 			if (args.at(i)[0] == ':')
 				break ;
 		}
-		tmp = args.at(i).substr(1);
+		if (args.at(1)[0] == ':')
+			tmp = args.at(i).substr(1);
+		else
+			tmp = args.at(i);
 		if (i + 1 == args.size())
 		{
 			cl.setRealname(tmp);
