@@ -2,7 +2,7 @@
 #include <cstring>
 
 Server::Server(int port, const String &pass)
-	: _loop(1), _port(port), _host("127.0.0.1"), _password(pass), _operPassword("operpass") {
+	: _host("127.0.0.1"), _password(pass), _operPassword("operpass"), _port(port) {
 	_sock = createSocket();
 }
 
@@ -211,7 +211,7 @@ void	Server::launch()
 	_pollfds.push_back(fd_server);
 	
 	std::cout << BWHT << "Server IRC launched !" << RESET << std::endl;
-	while (_loop)
+	while (g_interrupt == false)
 	{
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			throw std::runtime_error("Error while polling");
