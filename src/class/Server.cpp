@@ -39,14 +39,18 @@ int		Server::createSocket()
 
 void	Server::displayClient()
 {
+	String state;
 	size_t i = _clients.size();
 	std::cout << "Clients connected: " << i << std::endl;
 	for (size_t j = 0; j < i; j++)
-		std::cout << "client[" << j << "]:" 
-		<< " nick:" << _clients.at(j).getNickname() 
+	{
+		state = (_clients.at(j).getState() == REGISTERED) ? "yes" : "no";
+		std::cout << "client[" << j << "]:" << " registered:" << state
+		<< "   nick:" << _clients.at(j).getNickname() 
 		<< "   user:" <<_clients.at(j).getUsername() 
 		<< "   realname:" <<_clients.at(j).getRealname() 
 		<< std::endl;
+	}
 	std::cout << std::endl; 
 	return ;
 }

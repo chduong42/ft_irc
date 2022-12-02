@@ -37,5 +37,6 @@ int Server::cmdPass(std::vector<String> pass, Client &cl) {
 		return -1;
 	}
 	cl.setState(LOGIN);
+	cl.welcome();
 	return 0;
 }
