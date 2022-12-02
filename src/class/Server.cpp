@@ -39,33 +39,36 @@ int		Server::createSocket()
 
 void	Server::displayClient()
 {
+	String state;
 	size_t i = _clients.size();
-	std::cout << "\nList of clients:" << std::endl; 
+	std::cout << "Clients connected: " << i << std::endl;
 	for (size_t j = 0; j < i; j++)
-		std::cout << "client[" << j << "]" 
-		<< " nick:" << _clients.at(j).getNickname() 
-		<< " username:" <<_clients.at(j).getUsername() 
-		<< " realname:" <<_clients.at(j).getRealname() 
+	{
+		state = (_clients.at(j).getState() == REGISTERED) ? "yes" : "no";
+		std::cout << "client[" << j << "]:" << " registered:" << state
+		<< "   nick:" << _clients.at(j).getNickname() 
+		<< "   user:" <<_clients.at(j).getUsername() 
+		<< "   realname:" <<_clients.at(j).getRealname() 
 		<< std::endl;
+	}
+	std::cout << std::endl; 
 	return ;
 }
 
 void	Server::newClient()
 {
 	int new_fd;
+	char hostname[2048];
 	sockaddr_in s_address = {};
 	socklen_t s_size = sizeof(s_address);
 
 	new_fd = accept(_sock, (sockaddr *) &s_address, &s_size);
 	if (new_fd < 0)
 		throw std::runtime_error("Error while accepting new client.");
-	std::cout << "POLLiN events" << std::endl;
 
-	char hostname[2048];
 	if (getnameinfo((struct sockaddr *) &s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) !=
 		0)
 		throw std::runtime_error("Error while getting hostname on new client.");
-	//std::cout << hostname << std::endl;
 	_clients.push_back(Client(new_fd, hostname));
 	pollfd pollfd = {new_fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
@@ -148,7 +151,6 @@ void	Server::handleMessage(int fd) {
 	for (std::vector<String>::iterator it = this->_cmd.begin(); it != this->_cmd.end(); it++)
 		parseCmd(*it, findClient(fd));
 	displayClient();
-	return ;
 }
 
 std::vector<String>	Server::splitCmd(String msg) {
@@ -208,7 +210,7 @@ void	Server::launch()
 	pollfd fd_server = {_sock, POLLIN, 0};
 	_pollfds.push_back(fd_server);
 	
-	std::cout << "size struct pollfds " << _pollfds.size() << std::endl;
+	std::cout << BWHT << "Server IRC launched !" << RESET << std::endl;
 	while (_loop)
 	{
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
@@ -228,13 +230,10 @@ void	Server::launch()
 				if (_pollfds[i].fd == _sock)
 				{
 					newClient();
-					std::cout << "size ==" <<_clients.size() << std::endl;
-					if (_clients.size())
-						_clients[_clients.size() - 1].debug();
+					displayClient();
 					break;
 				}
 			}
-
 			//get deconnection ''          ''   == POLLOUT
 			handleMessage(_pollfds[i].fd);
 		}
@@ -274,7 +273,6 @@ std::vector<Client>::iterator	Server::findClientIt(int fd)
 	}
 	throw(std::out_of_range("Error while searching for user"));
 }
-
 
 std::vector<Channel>::iterator Server::findChannelIt(std::string name)
 {

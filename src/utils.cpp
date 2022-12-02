@@ -15,7 +15,7 @@ String	ERR_NEEDMOREPARAMS(Client &client, String cmd) {
 }
 
 String  RPL_TOPIC(Client cl, String channel, String topic) {
-	return ("332 " + cl.getNickname() + " " + channel + " :" + topic);
+	return ("332 " + cl.getNickname() + " " + channel + " " + topic);
 }
 
 bool	isClientInChannel(Channel &chan, int fd)
@@ -34,3 +34,4 @@ bool	isOperInChannel(Client cl, Channel chan)
 		return true;
 	return false;
 }
+

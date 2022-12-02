@@ -29,7 +29,7 @@ INC			=	-I inc
 #           & DEPENDENCIES    	        #
 #########################################
 
-SRC		=	main.cpp	utils.cpp\
+SRC		=	main.cpp		utils.cpp\
 ${addprefix class/,\
 			Server.cpp		Client.cpp		Channel.cpp}\
 ${addprefix cmd/,\
