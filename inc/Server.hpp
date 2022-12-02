@@ -64,6 +64,7 @@ class Server {
 
 	// Server utils
 		int									chanMessage(std::vector<String> params, Client &cl);
+		int									chanNotice(std::vector<String> params, Client &cl);
 		bool								already_used(String name, Client cl);
 
 		Client								&findClient(int fd);
@@ -89,6 +90,7 @@ class Server {
         int                     			cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
 		int									cmdKick(std::vector<String> args, Client &cl);
+		int									cmdNotice(std::vector<String> args, Client &cl);
 };
 
 // Utils.cpp
