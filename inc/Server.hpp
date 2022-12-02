@@ -84,8 +84,8 @@ class Server {
 		int									cmdOper(std::vector<String> args, Client &cl);
 		int									cmdKill(std::vector<String> args, Client &cl);
 		int									cmdPart(std::vector<String> args, Client &cl);
-        int                     			cmdList(std::vector<String> args, Client &cl);
-        int                     			cmdNames(std::vector<String> args, Client &cl);
+		int									cmdList(std::vector<String> args, Client &cl);
+		int									cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
 		int									cmdKick(std::vector<String> args, Client &cl);
 		int									cmdMode(std::vector<String> args, Client &cl);
@@ -94,9 +94,11 @@ class Server {
 // Utils.cpp
 	String								erasebr(String str);
 	String								ERR_NEEDMOREPARAMS(Client &client, String cmd);
+	String								ERR_NOSUCHCHANNEL(Client cl, String channel);
+	String								ERR_CHANOPRIVSNEEDED(Client cl, String channel);
 	String								RPL_TOPIC(Client cl, String channel, String topic);
 	
-	bool        						isClientInChannel(Channel &chan, int fd);
-	bool        						isOperInChannel(Client cl, Channel chan);
+	bool								isClientInChannel(Channel &chan, int fd);
+	bool								isOperInChannel(Client cl, Channel chan);
 
 #endif

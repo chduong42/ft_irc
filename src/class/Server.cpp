@@ -192,7 +192,7 @@ void	Server::parseCmd(String str, Client &cl) {
 			&Server::cmdNames,
 			&Server::cmdTopic,
 			&Server::cmdKick,
-			&Server::cmdMode,
+			// &Server::cmdMode,
 	};
 	for (int i =0; i <= 13; ++i)
 	{
