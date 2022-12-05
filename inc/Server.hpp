@@ -102,6 +102,7 @@ class Server {
 	String								RPL_TOPIC(Client cl, String channel, String topic);
 	
 	bool								isClientInChannel(Channel &chan, int fd);
+	bool								isClientNInChannel(Channel &chan, String name);
 	bool								isOperInChannel(Client cl, Channel chan);
 
 #endif

@@ -36,6 +36,16 @@ bool	isClientInChannel(Channel &chan, int fd)
 	return false;
 }
 
+bool	isClientNInChannel(Channel &chan, String name)
+{
+	for (unsigned int i = 0; i < chan.getClients().size(); i++)
+	{
+		if (chan.getClients()[i].getNickname() == name)
+			return true;
+	}
+	return false;
+}
+
 bool	isOperInChannel(Client cl, Channel chan)
 {
 	if (chan.getFdOp() == cl.getFd())

@@ -2,77 +2,129 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 
-int	giveOprivilege() {}
+int	giveOprivilege(std::vector<String> args, Channel &chan) {
+	int check = 0;
+	size_t i = 0;
+	for (; i < chan.getClients().size(); i++)
+	{
+		if (chan.getClients().at(i).getNickname() == erasebr(args.at(3)))
+		{
+			std::cout << "je suis ici" << std::endl;
+			check = 1;
+			break ;
+		}
+	}
+	if (check == 1)
+		chan.setFdOp(chan.getClients().at(i).getFd());
+	
+	return 0;
+}
 
-int	setLimit(int limit) {}
 
-int setPassword(String password) {}
+int setPassword(String password, Channel &chan) {
+	if (password.empty())
+		return -1;
+	chan.setPassword(password);
+	return 0;
+}
 
-int	parseLimit(char *arg) {
+int removePassword(String password, Channel &chan) {
+	if (password.empty())
+		return -1;
+
+	if (chan.getPassword() == password)
+		chan.setPassword("");
+	else
+		std::cout << "Wrong pass" << std::endl;
+	return 0;
+}
+
+
+size_t	parseLimit(std::string arg) {
 	char	*buff;
 
-	if (*arg == '\0')
+	std::string tmp = erasebr(arg);
+	if (tmp.empty())
 		return (0);
 
-	long int limit = strtol(arg, &buff, 10);
+	long int limit = strtol(tmp.c_str(), &buff, 10);
 
 	if (*buff != '\0')
 		return (0);
 	return (limit);
 }
 
-int	check_flag(std::vector<String> args, Client &cl) {
+int	setLimit(size_t limit, Channel &chan)
+{
+	if (limit < chan.getClients().size() && limit != 0)
+	{
+		std::cout << "to many people on chan to set this limit" << std::endl;
+		return -1;
+	}
+	chan.setLimit(limit);
+	return 0;
+}
+
+int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
+	if (args.size() < 4)
+		return -1;
 	std::string flags[7] = {"O","+o","-o","+l","-l","+k","-k"};
 	int i = 0;
 	
-	while (args[2] != flags[i] && i < 7)
+	while (erasebr(args[2]) != flags[i] && i < 7)
 		++i;
-
+	std::cout << "IN CHECK_FLAG" << std::endl;
 	switch (i) {
 		case 0:
-			return (giveOprivilege());
+			return (giveOprivilege(args, chan));
 		case 1:
-			return (giveOprivilege());
+			return (giveOprivilege(args, chan));
 		case 2:
-			cl.reply(ERR_CHANOPRIVSNEEDED());
-			return;
+			std::cout << "case 2" << std::endl;
+			cl.reply(ERR_CHANOPRIVSNEEDED(cl, chan.getName()));
+			return -1;
 		case 3:
-			return (setLimit(parseLimit(args[4])));
+			return (setLimit(parseLimit(args[3]), chan));
 		case 4:
-			return (setLimit(0));
+			return (setLimit(0, chan));
 		case 5:
-			return (setPassword(erasebr(args[4])));
+			return (setPassword(erasebr(args[3]), chan));
 		case 6:
-			return (setPassword(""));
+			return (removePassword(erasebr(args[3]), chan));
 		default:
-			std::cout << "This flag is not used on our channels" << std::endl;
-			return;
+			std::cout << "This flag is not used on our channels" << args[2] << std::endl;
+			return -1;
 	}
+	return 0;
 }
 
 
 int Server::cmdMode(std::vector<String> args, Client &cl) {
-	if (args.size() < 4) //pas sur suivant les cmd qu'on implemente
+	std::cout << "in MODE->args = " << std::endl;
+	
+	for (unsigned int i = 0; i < args.size(); i++)
 	{
-		cl.reply(ERR_NEEDMOREPARAMS(cl, ));
+		std::cout << args[i] << std::endl ;
+	}
+	std::cout << std::endl;
+
+	if (args.size() < 2) //pas sur suivant les cmd qu'on implemente
+	{
+		cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
 		return -1;
 	}
 	if (isChannel(args.at(1)) == false)
 	{
+		if (erasebr(args[1]).at(0) != '#')
+			return -1;
 		cl.reply(ERR_NOSUCHCHANNEL(cl, args[1]));
 		return -1;
 	}
-<<<<<<< HEAD
-	/*if (args.at(2) == "-l")
+	if (cl.getFd() != findChannel(args.at(1)).getFdOp())
 	{
-		if ()
-	}*/
-	return 0;
-=======
-//	if (args.at(2) == "-l")
-//	{
-//		if ()
-//	}
+		cl.reply(ERR_CHANOPRIVSNEEDED(cl, args.at(1)));
+		return -1;
+	}
+	check_flag(args, cl, findChannel(args.at(1)));
 	return 1;
->>>>>>> d6e0d81f1ebda40cb9b731a2641c2bdb888b8a83
 }

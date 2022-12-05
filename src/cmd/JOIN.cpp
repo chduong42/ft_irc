@@ -27,7 +27,7 @@ void        join(Channel &chan, Client &cl)
     if (cl.getFd() == chan.getFdOp())
         cl.reply(RPL_NAMREPLY(cl, "@" + chan.getName(), users));
     else
-        cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
+		cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
 	cl.reply(RPL_ENDOFNAMES(cl, chan.getName()));
 }
 
@@ -58,6 +58,24 @@ int         Server::cmdJoin(std::vector<String> params, Client &cl)
             std::cout << "is already in channel" << std::endl;
             return -1;
         }
+		if (findChannel(name).getClients().size() >= findChannel(name).getLimit() && findChannel(name).getLimit() != 0)
+		{
+			cl.reply("471 " + cl.getNickname() + " " + name + " :Cannot join channel(full)");
+			return -1;
+		}
+		if (findChannel(name).getPassword() != "" && params.size() == 3)
+		{
+			if (erasebr(params.at(2)) != findChannel(name).getPassword())
+			{
+				cl.reply("bad pass");
+				return -1;
+			}
+		}
+		if (findChannel(name).getPassword() != "" && params.size() < 3)
+		{
+			cl.reply("475 " + cl.getNickname() + " " + name + " :bad channel mask");
+			return -1;
+		}
         chan->addClient(cl);
         join(*chan, cl);
     }
