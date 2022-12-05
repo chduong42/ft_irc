@@ -28,7 +28,7 @@ void    Channel::eraseClient(Client &cl)
 	for(it = _clients.begin(); it != _clients.end(); it++)
 	{
 		std::cout << it->getNickname() << "==" << cl.getNickname() << std::endl;
-		if (it->getNickname() == cl.getNickname())
+		if (it->getFd() == cl.getFd())
 		{
 			std::cout << "erasing client" << std::endl;
 			broadcast(RPL_PART(cl.getPrefix(), _name));
