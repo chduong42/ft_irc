@@ -15,10 +15,10 @@ MKDIR		=	mkdir -p
 AR			=	ar rcs
 RM			= 	rm -rf
 
-CXXFLAGS	=	-Wall -Wextra -Werror $(VX) $(INC) $(DEP)
+CXXFLAGS	=	-Wall -Wextra -Werror $(VX) $(INC) $(DEPFLAG)
 VX			=	-std=c++98
 INC			=	-I inc
-DEP			=	-MMD -MP
+DEPFLAG		=	-MMD -MP
 DEBUG		=	-g3 -fsanitize=address,undefined
 
 LFLAGS		=	
