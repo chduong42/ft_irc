@@ -2,7 +2,7 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 
-int	giveOprivilege(std::vector<String> args, Channel &chan) {
+int	giveOprivilege(Client &cl, std::vector<String> args, Channel &chan) {
 	int check = 0;
 	size_t i = 0;
 	for (; i < chan.getClients().size(); i++)
@@ -16,7 +16,8 @@ int	giveOprivilege(std::vector<String> args, Channel &chan) {
 	}
 	if (check == 1)
 		chan.setFdOp(chan.getClients().at(i).getFd());
-	
+	else
+		cl.reply("401 " + cl.getNickname() + " " + erasebr(args.at(3)) + " :No such nick/channel");
 	return 0;
 }
 
@@ -68,7 +69,7 @@ int	setLimit(size_t limit, Channel &chan)
 int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
 	if (args.size() < 4)
 		return -1;
-	std::string flags[7] = {"O","+o","-o","+l","-l","+k","-k"};
+	std::string flags[7] = {"+O","+o","-o","+l","-l","+k","-k"};
 	int i = 0;
 	
 	while (erasebr(args[2]) != flags[i] && i < 7)
@@ -76,12 +77,12 @@ int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
 	std::cout << "IN CHECK_FLAG" << std::endl;
 	switch (i) {
 		case 0:
-			return (giveOprivilege(args, chan));
+			return(giveOprivilege(cl, args, chan));
 		case 1:
-			return (giveOprivilege(args, chan));
+			return (giveOprivilege(cl, args, chan));
 		case 2:
 			std::cout << "case 2" << std::endl;
-			cl.reply(ERR_CHANOPRIVSNEEDED(cl, chan.getName()));
+			cl.reply("482 " + cl.getNickname() + " " + chan.getName() + " :We need an operator");
 			return -1;
 		case 3:
 			return (setLimit(parseLimit(args[3]), chan));
