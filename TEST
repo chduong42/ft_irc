@@ -1,0 +1,33 @@
+Basic checks:
+- Makefile compile ==> "ircserv" exec                         OK
+- poll() used : 1                                             OK
+- poll() is called everytime before each accep, recv, send    ?
+- fnctl(fd, F_SETFL, O_NONBLOCK)                              OK
+___________________________________________________________________________
+
+Networking:
+- Server starts and listens all interface on the port :               OK
+- With nc tool ==> connect to server, send and receive server answer: OK
+- reference IRC client :          irssi                               OK
+- Connect with irssi:                                                 OK
+- Multiple clients, no block, answer all demands : (test nc/irssi)    ?
+    - ctrl+D ?
+    - ctrl+Z ? 
+___________________________________________________________________
+
+Test:
+
+TOPIC                           OK
+TOPIC "             "           OK
+TOPIC <channel>                 OK
+TOPIC <channel> <topic>         OK
+
+LIST                            KO ==> nombre de client afficher
+                                        exemple :
+                                        19:51 -!- #a 2          
+                                        19:51 -!- #b 23 les bg
+                                        19:51 -!- #c 232 
+                                        19:51 -!- End of /LIST
+LIST <channel1,channel2,etc>    KO
+
+NAMES   KO ==> pas le @ pour le premier du channel
