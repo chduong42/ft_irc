@@ -7,8 +7,7 @@ OBJ_DIR		=	obj/
 INC_DIR		=	inc/
 
 #########################################
-#				COMMANDS				#
-#				FLAGS					#
+#			COMMANDS & FLAGS			#
 #########################################
 CXX			=	c++ -c
 LINK		=	c++
@@ -16,19 +15,22 @@ MKDIR		=	mkdir -p
 AR			=	ar rcs
 RM			= 	rm -rf
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98
-CXXFLAGS	+=	-MMD -MP
+CXXFLAGS	=	-Wall -Wextra -Werror $(VX) $(INC) $(DEP)
+VX			=	-std=c++98
+INC			=	-I inc
+DEP			=	-MMD -MP
+DEBUG		=	-g3 -fsanitize=address,undefined
 
 LFLAGS		=	
-DEBUG		=	-g3 -fsanitize=address,undefined
-INC			=	-I inc
+
+VALGRIND	=	valgrind $(FD) $(LEAK)
+FD			=	--track-fds=yes
+LEAK		=	--leak-check=yes --show-reachable=yes
+MEMCHECK	=	--tool=memcheck
 
 #########################################
-#			SOURCES	FILES				#
-#           & OBJECT FILES    	        #
-#           & DEPENDENCIES    	        #
+#	SOURCES - OBJECTS - DEPENDENCIES	#
 #########################################
-
 SRC		=	main.cpp		utils.cpp\
 ${addprefix class/,\
 			Server.cpp		Client.cpp		Channel.cpp}\
@@ -60,7 +62,7 @@ ${OBJ_DIR}%.o:	${SRC_DIR}%.cpp
 all: $(NAME)
 
 check:
-	valgrind $(FD) $(LEAK) ./${NAME} 6667 mdp 
+	$(VALGRIND) ./${NAME} 6667 mdp 
 
 clean:
 	@$(RM) $(OBJ_DIR)
@@ -88,10 +90,3 @@ CYAN		=   $'\033[0;96m
 WHITE		=   $'\033[0;37m
 END			=   $'\033[0;m
 BOLD		=   $'\e[1m
-
-#########################################
-#			VALGRIND FLAG				#
-#########################################
-FD			= --track-fds=yes
-LEAK		= --leak-check=yes --show-reachable=yes
-MEMCHECK	= --tool=memcheck
