@@ -45,9 +45,7 @@ int Server::cmdList(std::vector<String> args, Client &cl) {
                 cl.reply("403 " + cl.getNickname() + " " + erasebr(channel_name.at(i)) + " :No such channel");
                 return -1;
             }
-			cl.reply("323 " + cl.getNickname() + " :End of /LIST");
         }
-        
     }
     return 0;
 }

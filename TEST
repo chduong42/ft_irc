@@ -15,19 +15,38 @@ Networking:
     - ctrl+Z ? 
 ___________________________________________________________________
 
-Test:
+Test:                           NC                                 IRSSI
 
-TOPIC                           OK
-TOPIC "             "           OK
-TOPIC <channel>                 OK
-TOPIC <channel> <topic>         OK
+TOPIC                           OK                                 ?
+TOPIC "             "           OK                                 ?
+TOPIC <channel>                 OK                                 ?
+TOPIC <channel> <topic>         OK (with op priv)                  ?
+TOPIC <bad_channel>             OK                                 ?
+TOPIC no in channel             OK                                 ?
+TOPIC no op priv                OK                                 ?
 
-LIST                            KO ==> nombre de client afficher
-                                        exemple :
-                                        19:51 -!- #a 2          
-                                        19:51 -!- #b 23 les bg
-                                        19:51 -!- #c 232 
-                                        19:51 -!- End of /LIST
-LIST <channel1,channel2,etc>    KO
+LIST                            OK                                 OK with -YES
+LIST  "             "           OK                                 OK with -YES
+LIST <channel>                  OK                                 OK
+LIST <channel1,channel2,etc>    OK                                 OK
+LIST <bad_channel>              OK                                 OK
+LIST  "         "<channel>      OK                                 ?
 
-NAMES   KO ==> pas le @ pour le premier du channel
+NAMES                           OK                                 ?
+NAMES "                "        OK                                 ?
+NAMES <good_channel>            OK                                 ?
+NAMES <bad_channel>             OK (nothing happened)              ?
+NAMES <chan1,chan2>             OK                                 ?
+
+JOIN                            OK                                 OK
+JOIN <channel_noexist>          OK                                 OK
+JOIN <channel_exist>            OK                                 OK
+JOIN <channel_exist> x2         OK ==> nc:nothing                  OK  irssi:change d'onglet
+JOIN <chan1> <chan2>            OK ==> join chan1 only             ?
+JOIN <chan1,chan2>              KO ==> must join chan1 and chan2   ?
+
+PART                            OK                                 ?
+PART <channel>                  OK                                 ?
+PART <chan1> <chan2>            OK ==> part only chan1              ?
+PART <chan1,chan2>              KO ==> must part chan1 and chan2    ?
+

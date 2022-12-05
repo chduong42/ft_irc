@@ -2,6 +2,10 @@
 #			EXEC NAME & FOLDERS			#
 #########################################
 NAME		=	ircserv
+EXEC		=	./$(NAME) $(PORT) $(MDP)
+PORT		=	6667
+MDP			=	a
+
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 INC_DIR		=	inc/
@@ -61,8 +65,11 @@ ${OBJ_DIR}%.o:	${SRC_DIR}%.cpp
 
 all: $(NAME)
 
+test:
+	$(EXEC)
+
 check:
-	$(VALGRIND) ./${NAME} 6667 mdp 
+	$(VALGRIND) $(EXEC)
 
 clean:
 	@$(RM) $(OBJ_DIR)

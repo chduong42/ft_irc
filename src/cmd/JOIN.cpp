@@ -11,7 +11,8 @@ std::string     RPL_NAMREPLY(Client &cl, std::string chan_name, std::string user
 std::string     RPL_JOIN(Client cl, Channel channel, String topic) {
     if (channel.getFdOp() == cl.getFd())
         return (("332 @" + cl.getNickname() + " " + channel.getName() + " " + topic));
-	return ("332 " + cl.getNickname() + " " + channel.getName() + " " + topic);
+	else
+        return ("332 " + cl.getNickname() + " " + channel.getName() + " " + topic);
 }
 
 std::string     RPL_ENDOFNAMES(Client &cl, std::string chan_name) {
