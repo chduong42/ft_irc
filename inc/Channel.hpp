@@ -14,6 +14,7 @@ class Channel
 		String						_topic;
 		int							_fdOp;
 		std::vector<Client>			_clients;
+		int							_limit;
 
 	public:
 		Channel(std::string _name);
@@ -24,9 +25,11 @@ class Channel
 		String					getName() const;
 		String					getTopic() const;
 		std::vector<Client>		&getClients();
+		int						getLimit() const;
 	// Setter
 		void					setTopic(String newTopic);
 		void					setFdOp(int fd);
+		void					setLimit(int new_limit);
 	// Channel functions
 		void					addClient(Client &client);
 		void					eraseClient(Client &cl);

@@ -1,7 +1,8 @@
 #include "Channel.hpp"
 #include "Server.hpp"
 
-Channel::Channel(String Name) : _name(Name), _topic(), _fdOp(0) {}
+Channel::Channel(String Name) : _name(Name), _topic(), _fdOp(0), _limit(0) {}
+
 
 Channel::~Channel(){}
 
@@ -9,9 +10,11 @@ std::vector<Client>		&Channel::getClients(){return _clients;}
 String					Channel::getName() const {return _name;}
 String					Channel::getTopic() const {return _topic;}
 int						Channel::getFdOp() const {return _fdOp;}
+int						Channel::getLimit() const {return _limit;}
 
 void					Channel::setTopic(String newTopic) {_topic = newTopic;}
 void					Channel::setFdOp(int fd) {_fdOp = fd;}
+void					Channel::setLimit(int new_limit) {_limit = new_limit;}
 void					Channel::addClient(Client &cl) {_clients.push_back(cl);}
 
 std::string     RPL_PART(std::string prefix, std::string name_chan) {
