@@ -8,6 +8,12 @@ std::string     RPL_NAMREPLY(Client &cl, std::string chan_name, std::string user
     return (ret);
 }
 
+std::string     RPL_JOIN(Client cl, Channel channel, String topic) {
+    if (channel.getFdOp() == cl.getFd())
+        return (("332 @" + cl.getNickname() + " " + channel.getName() + " " + topic));
+	return ("332 " + cl.getNickname() + " " + channel.getName() + " " + topic);
+}
+
 std::string     RPL_ENDOFNAMES(Client &cl, std::string chan_name) {
     return ("366 " + cl.getNickname() + " " + chan_name + " :End of /NAMES list.");
 }
@@ -23,11 +29,9 @@ void        join(Channel &chan, Client &cl)
             users += chan.getClients()[i].getNickname() + " ";
     }
     chan.broadcast(cl.getPrefix() + " JOIN :" + chan.getName());
+    
     cl.reply(RPL_TOPIC(cl, chan.getName(), chan.getTopic()));
-    if (cl.getFd() == chan.getFdOp())
-        cl.reply(RPL_NAMREPLY(cl, "@" + chan.getName(), users));
-    else
-		cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
+	cl.reply(RPL_NAMREPLY(cl, chan.getName(), users));
 	cl.reply(RPL_ENDOFNAMES(cl, chan.getName()));
 }
 
