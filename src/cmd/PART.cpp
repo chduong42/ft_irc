@@ -8,7 +8,7 @@ int         Server::cmdPart(std::vector<String> params, Client &cl)
     }
     if (params.size() < 2)
     {
-        cl.reply("error : PART :need more params");//errneedmorparams
+        cl.reply(ERR_NEEDMOREPARAMS(cl, "PART"));//errneedmorparams
         return -1;
     }
     try
@@ -23,7 +23,7 @@ int         Server::cmdPart(std::vector<String> params, Client &cl)
     }
     catch(const std::exception& e)
     {
-        cl.reply(" no such channel");
+        cl.reply("403 " + cl.getNickname() + " " + params.at(1) + " :No such channel");
     }
     
     return 0;

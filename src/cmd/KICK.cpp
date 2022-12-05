@@ -29,8 +29,12 @@ int	Server::cmdKick(std::vector<String> args, Client &cl) {
 	}
 	if (cl.getFd() != findChannel(args.at(1)).getFdOp())
 	{
-		std::cout << cl.getFd() << " ett  " << findChannel(args.at(1)).getFdOp() << std::endl;
-		cl.reply("482 " + cl.getNickname() + " " + args.at(1) + " :You're not channel operator");
+		cl.reply(ERR_CHANOPRIVSNEEDED(cl, args.at(1)));
+		return -1;
+	}
+	if (isClientNInChannel(findChannel(args.at(1)), erasebr(args.at(2))) == false)
+	{
+		cl.reply("441 " + cl.getNickname() + " " + erasebr(args.at(2)) + " " + args.at(1) + " :They aren't on that channel");
 		return -1;
 	}
 	std::vector<String> tmp;

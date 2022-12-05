@@ -13,8 +13,9 @@ class Channel
 		String						_name;
 		String						_topic;
 		int							_fdOp;
+		size_t						_limit;
+		String						_password;
 		std::vector<Client>			_clients;
-		int							_limit;
 
 	public:
 		Channel(std::string _name);
@@ -22,14 +23,16 @@ class Channel
 
 	// Getter
 		int						getFdOp() const; 
+		size_t					getLimit() const;
 		String					getName() const;
 		String					getTopic() const;
+		String					getPassword() const;
 		std::vector<Client>		&getClients();
-		int						getLimit() const;
 	// Setter
 		void					setTopic(String newTopic);
+		void					setPassword(String pass);
 		void					setFdOp(int fd);
-		void					setLimit(int new_limit);
+		void					setLimit(size_t limit);
 	// Channel functions
 		void					addClient(Client &client);
 		void					eraseClient(Client &cl);
