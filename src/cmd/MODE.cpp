@@ -40,7 +40,7 @@ int	check_flag(std::vector<String> args, Client &cl) {
 	std::string flags[7] = {"O","+o","-o","+l","-l","+k","-k"};
 	int i = 0;
 	
-	while (args[2] != flags[i] && i < 7)
+	while (erasebr(args[2]) != flags[i] && i < 7)
 		++i;
 	std::cout << "IN CHECK_FLAG" << std::endl;
 	switch (i) {
@@ -61,7 +61,7 @@ int	check_flag(std::vector<String> args, Client &cl) {
 		case 6:
 			return (setPassword(""));
 		default:
-			std::cout << "This flag is not used on our channels" << std::endl;
+			std::cout << "This flag is not used on our channels" << args[2] << std::endl;
 			return -1;
 	}
 	return 0;
@@ -76,13 +76,15 @@ int Server::cmdMode(std::vector<String> args, Client &cl) {
 	}
 	std::cout << std::endl;
 
-	if (args.size() < 4) //pas sur suivant les cmd qu'on implemente
+	if (args.size() < 3) //pas sur suivant les cmd qu'on implemente
 	{
 		cl.reply(ERR_NEEDMOREPARAMS(cl, "mode"));
 		return -1;
 	}
 	if (isChannel(args.at(1)) == false)
 	{
+		if (args[1].at(0) != '#')
+			return -1;
 		cl.reply(ERR_NOSUCHCHANNEL(cl, args[1]));
 		return -1;
 	}
