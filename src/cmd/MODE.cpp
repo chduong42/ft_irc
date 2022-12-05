@@ -11,8 +11,9 @@ int Server::cmdMode(std::vector<String> args, Client &cl) {
 		cl.reply("403 " + cl.getNickname() + " " + args.at(1) + " :No such channel");
 		return -1;
 	}
-	if (args.at(2) == "-l")
+	/*if (args.at(2) == "-l")
 	{
 		if ()
-	}
+	}*/
+	return 0;
 }
