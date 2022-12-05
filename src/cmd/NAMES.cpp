@@ -1,25 +1,24 @@
 #include <Server.hpp>
 
 int	Server::cmdNames(std::vector<String> args, Client &cl) {
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		std::cout << args.at(i) << " ";
-	}
 	
 	if (args.size() == 1)
 	{
 		std::vector<String> tmp;
 		tmp.push_back("LIST");
 		cmdList(tmp, cl);
+		return 0;
 	}
-	else if (args.size() >= 1)
+	char	*tmp = strdup(args.at(1).c_str());
+	std::vector<String> channel_name = split(tmp, ",");
+	if (args.size() > 1)
 	{
-		size_t i = 1;
-		for (; i < args.size(); i++)
+		size_t i = 0;
+		for (; i < channel_name.size(); i++)
 		{
 			for (size_t j = 0; j < _channels.size(); j++)
 			{
-				if (erasebr(args.at(i)) == _channels.at(j).getName())
+				if (erasebr(channel_name.at(i)) == _channels.at(j).getName())
 				{
 					String str;
 					size_t x = 0;

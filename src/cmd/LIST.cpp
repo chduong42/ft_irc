@@ -1,10 +1,6 @@
 #include "Server.hpp"
 
 int Server::cmdList(std::vector<String> args, Client &cl) {
-    for (size_t i = 0; i < args.size(); i++)
-        std::cout << "TEST ICI [" << args.at(i)<< "] "<< std::endl;
-    
-
     if (args.size() == 1 || (args.size() == 2 && args.at(1) == "\r"))
     {
         if (_channels.size() == 0)
@@ -23,15 +19,17 @@ int Server::cmdList(std::vector<String> args, Client &cl) {
 		cl.reply("323 " + cl.getNickname() + " :End of /LIST");
         return 0;
     }
+	char	*tmp = strdup(args.at(1).c_str());
+	std::vector<String> channel_name = split(tmp, ",");
     if (args.size() > 1)
     {
-        for (size_t i = 1; i < args.size(); i++)
+        for (size_t i = 0; i < channel_name.size(); i++)
         {
 			int check = 0;
             size_t j = 0;
             for (; j < _channels.size() ; j++)
             {
-                if (erasebr(args.at(i)) == _channels.at(j).getName())
+                if (erasebr(channel_name.at(i)) == _channels.at(j).getName())
                 {
                     std::stringstream ss;
                     ss << _channels.at(j).getClients().size();
@@ -44,10 +42,10 @@ int Server::cmdList(std::vector<String> args, Client &cl) {
             }
             if (check == 0)
             {
-                cl.reply("403 " + cl.getNickname() + " " + erasebr(args.at(i)) + " :No such channel");
+                cl.reply("403 " + cl.getNickname() + " " + erasebr(channel_name.at(i)) + " :No such channel");
                 return -1;
             }
-            
+			cl.reply("323 " + cl.getNickname() + " :End of /LIST");
         }
         
     }
