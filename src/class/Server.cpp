@@ -217,7 +217,8 @@ void	Server::launch()
 	while (g_interrupt == false)
 	{
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
-			throw std::runtime_error("Error while polling");
+			break ;
+//			throw std::runtime_error("Error while polling");
 
 		for (unsigned int i = 0; i < _pollfds.size(); i++)
 		{
@@ -242,6 +243,8 @@ void	Server::launch()
 		}
 		//read and handle messages
 	}
+	for (size_t i = 0; i < _pollfds.size(); i++)
+		close(_pollfds[i].fd);
 }
 
 Client		&Server::findClient(int fd)
