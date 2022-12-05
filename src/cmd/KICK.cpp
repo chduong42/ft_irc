@@ -12,7 +12,7 @@ bool     Server::isChannel(std::string name)
 
 int	Server::cmdKick(std::vector<String> args, Client &cl) {
 	String cmd = args.at(0);
-	if (args.size() < 2)
+	if (args.size() < 3)
 	{
 		cl.reply("461 " + cl.getNickname() + " " + cmd + " :Not enough parameters");
 		return -1;
