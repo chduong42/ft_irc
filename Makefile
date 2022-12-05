@@ -59,6 +59,9 @@ ${OBJ_DIR}%.o:	${SRC_DIR}%.cpp
 
 all: $(NAME)
 
+check:
+	valgrind $(FD) $(LEAK) ./${NAME} 6667 mdp 
+
 clean:
 	@$(RM) $(OBJ_DIR)
 	@echo "> $(PURPLE)Clean objects$(END) : \t\t[$(GREEN)OK$(END)]"
@@ -74,14 +77,21 @@ re: fclean all
 #########################################
 #			SYNTAX COLORS				#
 #########################################
-GREY       =   $'\033[0;30m
-RED        =   $'\033[0;31m
-GREEN      =   $'\033[0;92m
-YELLOW     =   $'\033[0;33m
-BLUE       =   $'\033[0;34m
-U_BLUE     =   $'\033[4;34m
-PURPLE     =   $'\033[0;35m
-CYAN       =   $'\033[0;96m
-WHITE      =   $'\033[0;37m
-END        =   $'\033[0;m
-BOLD       =   $'\e[1m
+GREY		=   $'\033[0;30m
+RED			=   $'\033[0;31m
+GREEN		=   $'\033[0;92m
+YELLOW		=   $'\033[0;33m
+BLUE		=   $'\033[0;34m
+U_BLUE		=   $'\033[4;34m
+PURPLE		=   $'\033[0;35m
+CYAN		=   $'\033[0;96m
+WHITE		=   $'\033[0;37m
+END			=   $'\033[0;m
+BOLD		=   $'\e[1m
+
+#########################################
+#			VALGRIND FLAG				#
+#########################################
+FD			= --track-fds=yes
+LEAK		= --leak-check=yes --show-reachable=yes
+MEMCHECK	= --tool=memcheck
