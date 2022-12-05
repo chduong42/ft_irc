@@ -2,7 +2,6 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 
-
 int	giveOprivilege(Client &cl, std::vector<String> args, Channel &chan) {
 	int check = 0;
 	size_t i = 0;

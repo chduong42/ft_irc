@@ -7,8 +7,7 @@ OBJ_DIR		=	obj/
 INC_DIR		=	inc/
 
 #########################################
-#				COMMANDS				#
-#				FLAGS					#
+#			COMMANDS & FLAGS			#
 #########################################
 CXX			=	c++ -c
 LINK		=	c++
@@ -16,19 +15,22 @@ MKDIR		=	mkdir -p
 AR			=	ar rcs
 RM			= 	rm -rf
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98
-CXXFLAGS	+=	-MMD -MP
+CXXFLAGS	=	-Wall -Wextra -Werror $(VX) $(INC) $(DEPFLAG)
+VX			=	-std=c++98
+INC			=	-I inc
+DEPFLAG		=	-MMD -MP
+DEBUG		=	-g3 -fsanitize=address,undefined
 
 LFLAGS		=	
-DEBUG		=	-g3 -fsanitize=address,undefined
-INC			=	-I inc
+
+VALGRIND	=	valgrind $(FD) $(LEAK)
+FD			=	--track-fds=yes
+LEAK		=	--leak-check=yes --show-reachable=yes
+MEMCHECK	=	--tool=memcheck
 
 #########################################
-#			SOURCES	FILES				#
-#           & OBJECT FILES    	        #
-#           & DEPENDENCIES    	        #
+#	SOURCES - OBJECTS - DEPENDENCIES	#
 #########################################
-
 SRC		=	main.cpp		utils.cpp\
 ${addprefix class/,\
 			Server.cpp		Client.cpp		Channel.cpp}\
@@ -55,9 +57,12 @@ $(NAME): $(OBJ)
 
 ${OBJ_DIR}%.o:	${SRC_DIR}%.cpp
 	@${MKDIR} ${@D}
-	${CXX} ${CXXFLAGS} ${INC} $< -o $@
+	${CXX} ${CXXFLAGS} $< -o $@
 
 all: $(NAME)
+
+check:
+	$(VALGRIND) ./${NAME} 6667 mdp 
 
 clean:
 	@$(RM) $(OBJ_DIR)
@@ -74,14 +79,14 @@ re: fclean all
 #########################################
 #			SYNTAX COLORS				#
 #########################################
-GREY       =   $'\033[0;30m
-RED        =   $'\033[0;31m
-GREEN      =   $'\033[0;92m
-YELLOW     =   $'\033[0;33m
-BLUE       =   $'\033[0;34m
-U_BLUE     =   $'\033[4;34m
-PURPLE     =   $'\033[0;35m
-CYAN       =   $'\033[0;96m
-WHITE      =   $'\033[0;37m
-END        =   $'\033[0;m
-BOLD       =   $'\e[1m
+GREY		=   $'\033[0;30m
+RED			=   $'\033[0;31m
+GREEN		=   $'\033[0;92m
+YELLOW		=   $'\033[0;33m
+BLUE		=   $'\033[0;34m
+U_BLUE		=   $'\033[4;34m
+PURPLE		=   $'\033[0;35m
+CYAN		=   $'\033[0;96m
+WHITE		=   $'\033[0;37m
+END			=   $'\033[0;m
+BOLD		=   $'\e[1m
