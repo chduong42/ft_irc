@@ -67,7 +67,7 @@ int	setLimit(size_t limit, Channel &chan)
 }
 
 int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
-	if (args.size() < 4)
+	if (args.size() < 3)
 		return -1;
 	std::string flags[7] = {"+O","+o","-o","+l","-l","+k","-k"};
 	int i = 0;
@@ -93,7 +93,7 @@ int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
 		case 6:
 			return (removePassword(erasebr(args[3]), chan));
 		default:
-			std::cout << "This flag is not used on our channels" << args[2] << std::endl;
+			cl.reply("501 " + cl.getNickname() + " :Unknown MODE flag");
 			return -1;
 	}
 	return 0;
@@ -118,7 +118,7 @@ int Server::cmdMode(std::vector<String> args, Client &cl) {
 	{
 		if (erasebr(args[1]).at(0) != '#')
 			return -1;
-		cl.reply(ERR_NOSUCHCHANNEL(cl, args[1]));
+		cl.reply(ERR_NOSUCHCHANNEL(cl, erasebr(args[1])));
 		return -1;
 	}
 	if (cl.getFd() != findChannel(args.at(1)).getFdOp())
