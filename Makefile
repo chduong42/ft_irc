@@ -57,7 +57,7 @@ $(NAME): $(OBJ)
 
 ${OBJ_DIR}%.o:	${SRC_DIR}%.cpp
 	@${MKDIR} ${@D}
-	${CXX} ${CXXFLAGS} ${INC} $< -o $@
+	${CXX} ${CXXFLAGS} $< -o $@
 
 all: $(NAME)
 
