@@ -36,7 +36,7 @@ ${addprefix cmd/,\
 			NICK.cpp 		USER.cpp 		PASS.cpp		PRVMSG.cpp\
 			JOIN.cpp		OPER.cpp		PING.cpp		KILL.cpp\
 			PART.cpp		LIST.cpp		NAMES.cpp		TOPIC.cpp\
-			KICK.cpp		MODE.cpp}
+			KICK.cpp		NOTICE.cpp		MODE.cpp}
 
 OBJ		=	$(SRC:%.cpp=%.o)
 OBJ		:=	$(addprefix $(OBJ_DIR), $(OBJ))

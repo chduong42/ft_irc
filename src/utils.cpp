@@ -14,6 +14,14 @@ String	ERR_NEEDMOREPARAMS(Client &client, String cmd) {
 	return ("461 " + client.getNickname() + " " + cmd + " :Not enough parameters");
 }
 
+String  ERR_NOSUCHCHANNEL(Client cl, String channel) {
+	return ("403 " + cl.getNickname() + " " + channel +" :No such channel");
+}
+
+String  ERR_CHANOPRIVSNEEDED(Client cl, String channel) {
+	return ("482 " + cl.getNickname() + " " + channel + " :You're not channel operator");
+}
+
 String  RPL_TOPIC(Client cl, String channel, String topic) {
 	return ("332 " + cl.getNickname() + " " + channel + " " + topic);
 }

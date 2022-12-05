@@ -64,11 +64,13 @@ class Server {
 
 	// Server utils
 		int									chanMessage(std::vector<String> params, Client &cl);
+		int									chanNotice(std::vector<String> params, Client &cl);
 		bool								already_used(String name, Client cl);
 
 		Client								&findClient(int fd);
 		Client								&findClient(String nickname);
 		std::vector<Client>::iterator		findClientIt(int fd);
+		
 
 		bool     							isChannel(std::string name);
 		Channel								&findChannel(String name);
@@ -84,19 +86,22 @@ class Server {
 		int									cmdOper(std::vector<String> args, Client &cl);
 		int									cmdKill(std::vector<String> args, Client &cl);
 		int									cmdPart(std::vector<String> args, Client &cl);
-        int                     			cmdList(std::vector<String> args, Client &cl);
-        int                     			cmdNames(std::vector<String> args, Client &cl);
+		int									cmdList(std::vector<String> args, Client &cl);
+		int									cmdNames(std::vector<String> args, Client &cl);
 		int									cmdTopic(std::vector<String> args, Client &cl);
 		int									cmdKick(std::vector<String> args, Client &cl);
+		int									cmdNotice(std::vector<String> args, Client &cl);
 		int									cmdMode(std::vector<String> args, Client &cl);
 };
 
 // Utils.cpp
 	String								erasebr(String str);
 	String								ERR_NEEDMOREPARAMS(Client &client, String cmd);
+	String								ERR_NOSUCHCHANNEL(Client cl, String channel);
+	String								ERR_CHANOPRIVSNEEDED(Client cl, String channel);
 	String								RPL_TOPIC(Client cl, String channel, String topic);
 	
-	bool        						isClientInChannel(Channel &chan, int fd);
-	bool        						isOperInChannel(Client cl, Channel chan);
+	bool								isClientInChannel(Channel &chan, int fd);
+	bool								isOperInChannel(Client cl, Channel chan);
 
 #endif
