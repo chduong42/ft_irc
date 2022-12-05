@@ -2,9 +2,15 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 
+
 int	giveOprivilege(Client &cl, std::vector<String> args, Channel &chan) {
 	int check = 0;
 	size_t i = 0;
+
+	if (args.size() < 4) {
+		cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
+		return -1;
+	}
 	for (; i < chan.getClients().size(); i++)
 	{
 		if (chan.getClients().at(i).getNickname() == erasebr(args.at(3)))
@@ -67,12 +73,15 @@ int	setLimit(size_t limit, Channel &chan)
 }
 
 int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
-	if (args.size() < 3)
-		return -1;
-	std::string flags[7] = {"+O","+o","-o","+l","-l","+k","-k"};
 	int i = 0;
-	
-	while (erasebr(args[2]) != flags[i] && i < 7)
+	std::string flags[7] = {"+O","+o","-o","+l","-l","+k","-k"};
+
+	if (args.size() < 3)	{
+		cl.reply("482 " + cl.getNickname() + " " + chan.getName() + " :We need an operator");
+		return -1;
+	}
+	String flag = erasebr(args[2]);
+	while (flag != flags[i] && i < 7)
 		++i;
 	std::cout << "IN CHECK_FLAG" << std::endl;
 	switch (i) {
@@ -81,16 +90,27 @@ int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
 		case 1:
 			return (giveOprivilege(cl, args, chan));
 		case 2:
-			std::cout << "case 2" << std::endl;
 			cl.reply("482 " + cl.getNickname() + " " + chan.getName() + " :We need an operator");
 			return -1;
 		case 3:
+			if (args.size() < 4) {
+				cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
+				return -1;
+			}
 			return (setLimit(parseLimit(args[3]), chan));
 		case 4:
 			return (setLimit(0, chan));
 		case 5:
+			if (args.size() < 4) {
+				cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
+				return -1;
+			}
 			return (setPassword(erasebr(args[3]), chan));
 		case 6:
+			if (args.size() < 4) {
+				cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
+				return -1;
+			}
 			return (removePassword(erasebr(args[3]), chan));
 		default:
 			cl.reply("501 " + cl.getNickname() + " :Unknown MODE flag");
@@ -102,11 +122,8 @@ int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
 
 int Server::cmdMode(std::vector<String> args, Client &cl) {
 	std::cout << "in MODE->args = " << std::endl;
-	
 	for (unsigned int i = 0; i < args.size(); i++)
-	{
 		std::cout << args[i] << std::endl ;
-	}
 	std::cout << std::endl;
 
 	if (args.size() < 2) //pas sur suivant les cmd qu'on implemente
