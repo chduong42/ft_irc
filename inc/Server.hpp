@@ -106,6 +106,6 @@ class Server {
 	bool								isClientNInChannel(Channel &chan, String name);
 	bool								isOperInChannel(Client cl, Channel chan);
 
-	std::vector<String> 				split(char *str, const char *delim);
+	std::vector<String> 				split(String str, const char *delim);
 
 #endif

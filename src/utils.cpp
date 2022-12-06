@@ -53,14 +53,11 @@ bool	isOperInChannel(Client cl, Channel chan)
 	return false;
 }
 
-std::vector<String> split(char *str, const char *delim)
+std::vector<String> split(String str, const char *delim)
 {
 	std::vector<String> list;
 
-	if (str == NULL)
-		return list;
-
-	char 	*ptr = strtok(str, delim);
+	char 	*ptr = strtok((char *)str.c_str(), delim);
 
 	while (ptr)
 	{

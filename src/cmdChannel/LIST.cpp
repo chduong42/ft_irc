@@ -19,8 +19,7 @@ int Server::cmdList(std::vector<String> args, Client &cl) {
 		cl.reply("323 " + cl.getNickname() + " :End of /LIST");
         return 0;
     }
-	char	*tmp = strdup(args.at(1).c_str());
-	std::vector<String> channel_name = split(tmp, ",");
+	std::vector<String> channel_name = split(args.at(1), ",");
     if (args.size() > 1)
     {
         for (size_t i = 0; i < channel_name.size(); i++)

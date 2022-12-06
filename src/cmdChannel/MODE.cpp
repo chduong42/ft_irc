@@ -5,7 +5,7 @@
 int	giveOprivilege(Client &cl, std::vector<String> args, Channel &chan) {
 	int check = 0;
 	size_t i = 0;
-
+	std::cout << "HEEEEEEEEEERE" << std::endl;
 	if (args.size() < 4) {
 		cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
 		return -1;
@@ -76,7 +76,7 @@ int	check_flag(std::vector<String> args, Client &cl, Channel &chan) {
 	std::string flags[7] = {"+O","+o","-o","+l","-l","+k","-k"};
 
 	if (args.size() < 3)	{
-		cl.reply("482 " + cl.getNickname() + " " + chan.getName() + " :We need an operator");
+		cl.reply(ERR_NEEDMOREPARAMS(cl, "MODE"));
 		return -1;
 	}
 	String flag = erasebr(args[2]);
