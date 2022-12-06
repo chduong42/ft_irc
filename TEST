@@ -26,16 +26,17 @@ Networking specials
 - Stop a client with ctrl+Z                                       OK 
     --> Flood the channel with another client
     --> The server should not hang
-    --> relaunch 
+    --> relaunch the client with "fg"
+    --> Check leaks
 ___________________________________________________________________
 
 Test:                           NC                                 IRSSI
 
-TOPIC                           OK                                 ?
+TOPIC                           OK                                 OK
 TOPIC "             "           OK                                 ?
 TOPIC <channel>                 OK                                 ?
 TOPIC <channel> <topic>         OK (with op priv)                  ?
-TOPIC <bad_channel>             OK                                 ?
+TOPIC <bad_channel>             OK                                 OK
 TOPIC no in channel             OK                                 ?
 TOPIC no op priv                OK                                 ?
 
@@ -56,7 +57,7 @@ JOIN                            OK                                 OK
 JOIN <channel_noexist>          OK                                 OK
 JOIN <channel_exist>            OK                                 OK
 JOIN <channel_exist> x2         OK ==> nc:nothing                  OK  irssi:change d'onglet
-JOIN <chan1> <chan2>            OK ==> join chan1 only             ?
+JOIN <chan1> <chan2>            OK ==> join chan1 only             OK
 JOIN <chan1,chan2>              KO ==> must join chan1 and chan2   ?
 
 PART                            OK                                 ?
@@ -64,6 +65,17 @@ PART <channel>                  OK                                 ?
 PART <chan1> <chan2>            OK ==> part only chan1              ?
 PART <chan1,chan2>              KO ==> must part chan1 and chan2    ?
 
-KICK                            OK                                  OK
+KICK (all)                      OK                                  OK
+PASS (all)                      OK                                  OK
+NICK (all)                      OK                                  OK
+USER (all)                      OK                                  OK
+PING                            OK                                  OK
+
+A tester :
+MODE
+KILL
+OPER
+NOTICE
+PRIVMSG
 
 
