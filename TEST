@@ -1,7 +1,7 @@
 Basic checks:
 - Makefile compile ==> "ircserv" exec                         OK
 - poll() used : 1                                             OK
-- poll() is called everytime before each accep, recv, send    ?
+- poll() is called everytime before each accep, recv, send    OK
 - fnctl(fd, F_SETFL, O_NONBLOCK)                              OK
 ___________________________________________________________________________
 
@@ -10,9 +10,13 @@ Networking:
 - With nc tool ==> connect to server, send and receive server answer: OK
 - reference IRC client :          irssi                               OK
 - Connect with irssi:                                                 OK
-- Multiple clients, no block, answer all demands : (test nc/irssi)    ?
-    - ctrl+D ?
-    - ctrl+Z ? 
+- Multiple clients, no block, answer all demands : (test nc/irssi)    OK
+
+Networking specials
+- Partial command nc, with ctrl+D                                 OK
+- Unexpectedly kill a client, Server is still                     OK
+- Unexpectedly kill a nc, with just half of cmd                   OK
+- ctrl+Z                                                          OK 
 ___________________________________________________________________
 
 Test:                           NC                                 IRSSI
@@ -49,4 +53,7 @@ PART                            OK                                 ?
 PART <channel>                  OK                                 ?
 PART <chan1> <chan2>            OK ==> part only chan1              ?
 PART <chan1,chan2>              KO ==> must part chan1 and chan2    ?
+
+KICK                            OK                                  OK
+
 
