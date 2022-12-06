@@ -13,10 +13,20 @@ Networking:
 - Multiple clients, no block, answer all demands : (test nc/irssi)    OK
 
 Networking specials
-- Partial command nc, with ctrl+D                                 OK
+- Partial command nc, with ctrl+D :                               OK
+    - Server answer correctly
+    - Partial cmd sent
+    - Other connections still run fine
+
 - Unexpectedly kill a client, Server is still                     OK
-- Unexpectedly kill a nc, with just half of cmd                   OK
-- ctrl+Z                                                          OK 
+
+- Unexpectedly kill a nc, with just half of cmd :                 OK
+    - Not in odd state or blocked
+
+- Stop a client with ctrl+Z                                       OK 
+    --> Flood the channel with another client
+    --> The server should not hang
+    --> relaunch 
 ___________________________________________________________________
 
 Test:                           NC                                 IRSSI
