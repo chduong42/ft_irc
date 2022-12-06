@@ -1,18 +1,11 @@
 #########################################
-#			EXEC NAME & FOLDERS			#
+#		EXEC NAME, COMMANDS & FLAGS		#
 #########################################
 NAME		=	ircserv
-EXEC		=	./$(NAME) $(PORT) $(MDP)
 PORT		=	6667
-MDP			=	a
+PASSWORD	=	a
+EXEC		=	./$(NAME) $(PORT) $(PASSWORD)
 
-SRC_DIR		=	src/
-OBJ_DIR		=	obj/
-INC_DIR		=	inc/
-
-#########################################
-#			COMMANDS & FLAGS			#
-#########################################
 CXX			=	c++ -c
 LINK		=	c++
 MKDIR		=	mkdir -p
@@ -38,16 +31,18 @@ MEMCHECK	=	--tool=memcheck
 SRC		=	main.cpp		utils.cpp\
 ${addprefix class/,\
 			Server.cpp		Client.cpp		Channel.cpp}\
-${addprefix cmd/,\
-			NICK.cpp 		USER.cpp 		PASS.cpp		PRVMSG.cpp\
-			JOIN.cpp		OPER.cpp		PING.cpp		KILL.cpp\
+${addprefix cmdChannel/,\
 			PART.cpp		LIST.cpp		NAMES.cpp		TOPIC.cpp\
-			KICK.cpp		NOTICE.cpp		MODE.cpp}
+			KICK.cpp		MODE.cpp		JOIN.cpp}\
+${addprefix cmdServer/,\
+			NICK.cpp 		USER.cpp 		PASS.cpp		PRVMSG.cpp\
+			OPER.cpp		PING.cpp		KILL.cpp		NOTICE.cpp}
 
-OBJ		=	$(SRC:%.cpp=%.o)
-OBJ		:=	$(addprefix $(OBJ_DIR), $(OBJ))
-
-DEP		=	${OBJ:.o=.d}
+SRC_DIR		=	src/
+OBJ_DIR		=	obj/
+OBJ			=	$(SRC:%.cpp=%.o)
+OBJ			:=	$(addprefix $(OBJ_DIR), $(OBJ))
+DEP			=	${OBJ:.o=.d}
 
 #########################################
 #			MAKE	RULES				#
